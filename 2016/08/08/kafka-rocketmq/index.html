@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="author" content="聽">
+
+
+
+<meta name="description" content="Kafka是Linkin开源的消息中间件Kafka的设计目标是： （1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。（4）同时支持离线数据处理和">
+<meta name="keywords" content="Kafka,RocketMQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka、RocketMQ调研">
+<meta property="og:url" content="http://sohunjug.com/2016/08/08/kafka-rocketmq/index.html">
+<meta property="og:site_name" content="聽">
+<meta property="og:description" content="Kafka是Linkin开源的消息中间件Kafka的设计目标是： （1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。（4）同时支持离线数据处理和">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-19T06:10:04.767Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kafka、RocketMQ调研">
+<meta name="twitter:description" content="Kafka是Linkin开源的消息中间件Kafka的设计目标是： （1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。（4）同时支持离线数据处理和">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="聽" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <!--prettify代码高亮主题css引入-->
+  <link href="/plugins/prettify/themes/atelier-cave-light.css" rel="stylesheet">
+
+
+
+<title>Kafka、RocketMQ调研 | 聽</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57a8843ce7c63ecd"></script>
+
+
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/author.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">聽</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">Opportunity favors only the prepared mind. And everything change with time.</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/tags/随笔">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/message/">留言板</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:sohunjug@gmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="http://weibo.com/sohunjug" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="http://github.com/sohunjug" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="http://v2ex.com/member/sohunjug" title="V2EX"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa Google" href="https://plus.google.com/u/0/109689650361403547561" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="https://twitter.com/sohunjug" title="Twitter"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com/users/3881470/sohunjug" title="StackOverflow"></a>
+                            
+                                <a class="fa QQ" href="tencent://message/?uin=52642241&Site=sohunjug.com&Menu=yes" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Define/">Define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kafka/">Kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux-shell/">Linux shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Memory/">Memory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MongoDB/">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-JS/">Node.JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oracle/">Oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pool/">Pool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Task/">Task</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-profile/">Vim profile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-xml/">Vim xml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webmail/">Webmail</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k3s/">k3s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/makefile/">makefile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/micro/">micro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/octopress/">octopress</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/">ssh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/telnet/">telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress-custom/">wordpress custom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress-menu/">wordpress menu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://stdrc.cc/">Richard Chien</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://shaoyuan1943.github.io/">shaoyuan1943</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我是一个vimer。专注于服务端，精通c/c++，熟悉python，lua，objective-c，swift，shell, rust, nodejs, 以及运维docker, k8s。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">聽</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/author.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">聽</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">Opportunity favors only the prepared mind. And everything change with time.</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/tags/随笔">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/message/">留言板</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:sohunjug@gmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="http://weibo.com/sohunjug" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="http://github.com/sohunjug" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="http://v2ex.com/member/sohunjug" title="V2EX"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa Google" target="_blank" href="https://plus.google.com/u/0/109689650361403547561" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="https://twitter.com/sohunjug" title="Twitter"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/users/3881470/sohunjug" title="StackOverflow"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="tencent://message/?uin=52642241&Site=sohunjug.com&Menu=yes" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-kafka-rocketmq" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/08/kafka-rocketmq/" class="article-date">
+      <time datetime="2016-08-08T01:10:28.000Z" itemprop="datePublished">2016-08-08</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Kafka、RocketMQ调研
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kafka/">Kafka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h3 id="Kafka是Linkin开源的消息中间件"><a href="#Kafka是Linkin开源的消息中间件" class="headerlink" title="Kafka是Linkin开源的消息中间件"></a>Kafka是Linkin开源的消息中间件</h3><h4 id="Kafka的设计目标是："><a href="#Kafka的设计目标是：" class="headerlink" title="Kafka的设计目标是："></a>Kafka的设计目标是：</h4><blockquote>
+<p>（1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。<br>（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。<br>（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。<br>（4）同时支持离线数据处理和实时数据处理。<br>（5）Scale out：支持在线水平扩展。</p>
+</blockquote>
+<h3 id="RocketMQ是阿里开源的消息中间件"><a href="#RocketMQ是阿里开源的消息中间件" class="headerlink" title="RocketMQ是阿里开源的消息中间件"></a>RocketMQ是阿里开源的消息中间件</h3><blockquote>
+<p>其最初也是基于Kafka发展而来。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="数据可靠性"><a href="#数据可靠性" class="headerlink" title="数据可靠性"></a>数据可靠性</h2><ul>
+<li>RocketMQ支持异步实时刷盘，同步刷盘，同步Replication，异步Replication</li>
+<li>Kafka使用异步刷盘方式，异步Replication/同步Replication</li>
+</ul>
+<h2 id="性能对比"><a href="#性能对比" class="headerlink" title="性能对比"></a>性能对比</h2><ul>
+<li>Kafka会在Producer端将多个小消息合并，批量发向Broker，所以在批量发送消息时有着大量的优势，在批量时，Kafka单机写入TPS约在百万条/秒，消息大小100个字节</li>
+<li>RocketMQ单机写入TPS单实例约7万条/秒，RocketMQ在阿里使用在淘宝支付宝端，在处理异步消息需要保证消息到达，所以未实现api级别批量发送消息</li>
+</ul>
+<h2 id="单机支持的队列数"><a href="#单机支持的队列数" class="headerlink" title="单机支持的队列数"></a>单机支持的队列数</h2><ul>
+<li>Kafka单机超过64个队列/分区，Load会发生明显的飙高现象，队列越多，load越高，发送消息响应时间变长。</li>
+<li>RocketMQ单机支持最高5万个队列，Load不会发生明显变化</li>
+</ul>
+<h2 id="严格的消息顺序"><a href="#严格的消息顺序" class="headerlink" title="严格的消息顺序"></a>严格的消息顺序</h2><ul>
+<li>Kafka支持消息顺序，但是一台Broker宕机后，就会产生消息乱序</li>
+<li>RocketMQ支持严格的消息顺序，在顺序消息场景下，一台Broker宕机后，发送消息会失败，但是不会乱序</li>
+</ul>
+<h2 id="分布式事务消息"><a href="#分布式事务消息" class="headerlink" title="分布式事务消息"></a>分布式事务消息</h2><ul>
+<li>Kafka不支持分布式事务消息</li>
+<li>阿里云MQ支持分布式事务消息，未来开源版本的RocketMQ也有计划支持分布式事务消息</li>
+</ul>
+<h2 id="消息查询"><a href="#消息查询" class="headerlink" title="消息查询"></a>消息查询</h2><ul>
+<li>Kafka不支持消息查询</li>
+<li>RocketMQ支持根据Message Id查询消息，也支持根据消息内容查询消息（发送消息时指定一个Message Key，任意字符串，例如指定为订单Id）</li>
+</ul>
+<blockquote>
+<p>总结：消息查询对于定位消息丢失问题非常有帮助，例如某个订单处理失败，是消息没收到还是收到处理出错了。</p>
+</blockquote>
+<h2 id="消息回溯"><a href="#消息回溯" class="headerlink" title="消息回溯"></a>消息回溯</h2><ul>
+<li>Kafka理论上可以按照Offset来回溯消息</li>
+<li>RocketMQ支持按照时间来回溯消息，精度毫秒，例如从一天之前的某时某分某秒开始重新消费消息</li>
+</ul>
+<blockquote>
+<p>总结：典型业务场景如consumer做订单分析，但是由于程序逻辑或者依赖的系统发生故障等原因，导致今天消费的消息全部无效，需要重新从昨天零点开始消费，那么以时间为起点的消息重放功能对于业务非常有帮助。</p>
+</blockquote>
+<h2 id="消费并行度"><a href="#消费并行度" class="headerlink" title="消费并行度"></a>消费并行度</h2><ul>
+<li>Kafka的消费并行度依赖Topic配置的分区数，如分区数为10，那么最多10台机器来并行消费（每台机器只能开启一个线程），或者一台机器消费（10个线程并行消费）。即消费并行度和分区数一致。</li>
+<li>RocketMQ消费并行度分两种情况<ul>
+<li>顺序消费方式并行度同Kafka完全一致</li>
+<li>乱序方式并行度取决于Consumer的线程数，如Topic配置10个队列，10台机器消费，每台机器100个线程，那么并行度为1000。</li>
+</ul>
+</li>
+</ul>
+<h2 id="Broker端消息过滤"><a href="#Broker端消息过滤" class="headerlink" title="Broker端消息过滤"></a>Broker端消息过滤</h2><ul>
+<li>Kafka不支持Broker端的消息过滤</li>
+<li>RocketMQ支持两种Broker端消息过滤方式<ul>
+<li>根据Message Tag来过滤，相当于子topic概念</li>
+<li>向服务器上传一段Java代码，可以对消息做任意形式的过滤，甚至可以做Message Body的过滤拆分。</li>
+</ul>
+</li>
+</ul>
+<h2 id="单机系统可靠性"><a href="#单机系统可靠性" class="headerlink" title="单机系统可靠性"></a>单机系统可靠性</h2><ul>
+<li>模拟进程退出</li>
+</ul>
+<blockquote>
+<p>在消息收发过程中，利用Kill -9 命令使Broker进程终止，然后重新启动，得到可靠性数据如下：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">产品</th>
+<th style="text-align:left">刷盘策略</th>
+<th style="text-align:left">并发</th>
+<th style="text-align:left">tps</th>
+<th style="text-align:left">丢失</th>
+<th style="text-align:left">重复</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Kafka</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">600</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">Kafka</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">30</td>
+<td style="text-align:left">10500</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">Kafka</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">150</td>
+<td style="text-align:left">49200</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">重复7条</td>
+</tr>
+<tr>
+<td style="text-align:left">RocketMQ</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">4066</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">RocketMQ</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">10900</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">RocketMQ</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">140</td>
+<td style="text-align:left">52428</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>在Broker进程被终止重启，Kafka和RMQ都能保证同步发送的消息不丢，因为进程退出后操作系统能确保将该进程遗留在内存的数据刷到磁盘上。实验中，Kafka出现了极少量的消息重复。再次可以确定此场景中，二者的可靠性都很高。</p>
+</blockquote>
+<ul>
+<li>模拟机器掉电</li>
+</ul>
+<blockquote>
+<p>在消息收发过程中，直接拔掉Broker所在的宿主机电源，然后重启宿主机和Broker应用。因受到机房断电限制，我们在本场景测试中使用的是普通PC机器。得到可靠性数据如下：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>产品</th>
+<th>刷盘策略</th>
+<th>并发</th>
+<th>tps</th>
+<th>丢失</th>
+<th>重复</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kafka</td>
+<td>异步</td>
+<td>5</td>
+<td>2000</td>
+<td>丢失3条</td>
+<td>掉电前所有发送重新消费</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>同步</td>
+<td>5</td>
+<td>300</td>
+<td>不丢</td>
+<td>重复3条</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>同步</td>
+<td>60</td>
+<td>500</td>
+<td>不丢</td>
+<td>重复2w条</td>
+</tr>
+<tr>
+<td>RocketMQ</td>
+<td>异步</td>
+<td>5</td>
+<td>2500</td>
+<td>丢失19条</td>
+<td>不重复</td>
+</tr>
+<tr>
+<td>RocketMQ</td>
+<td>同步</td>
+<td>5</td>
+<td>800</td>
+<td>不丢</td>
+<td>掉电前所有发送重新消费</td>
+</tr>
+<tr>
+<td>RocketMQ</td>
+<td>同步</td>
+<td>60</td>
+<td>4000</td>
+<td>不丢</td>
+<td>掉电前所有发送重新消费</td>
+</tr>
+</tbody>
+</table>
+<p>###测试结论</p>
+<blockquote>
+<ol>
+<li>在Broker进程被Kill的场景， Kafka和RocketMQ都能在保证吞吐量的情况下，不丢消息，可靠性都比较高。</li>
+<li>在宿主机掉电的场景，Kafka与RocketMQ均能做到不丢消息，此时Kafka的吞吐量会急剧下跌，几乎不可用。RocketMQ则仍能保持较高的吞吐量。</li>
+<li>在单机可靠性方面，RocketMQ综合表现优于Kafka。</li>
+</ol>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/08/08/kafka-rocketmq/">Kafka、RocketMQ调研</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">聽</a></p>
+        <p><span>发布时间:</span>2016-08-08, 09:10:28</p>
+        <p><span>最后更新:</span>2019-08-19, 14:10:04</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/08/08/kafka-rocketmq/" title="Kafka、RocketMQ调研">http://sohunjug.com/2016/08/08/kafka-rocketmq/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://sohunjug.com/2016/08/08/kafka-rocketmq/　　作者: 聽" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/08/08/ssh-telnet/">
+                    自动登录ssh或telnet脚本
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2015/01/13/c-define/">
+                    C/C++中宏定义的用法
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Kafka是Linkin开源的消息中间件"><span class="toc-text">Kafka是Linkin开源的消息中间件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Kafka的设计目标是："><span class="toc-text">Kafka的设计目标是：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#RocketMQ是阿里开源的消息中间件"><span class="toc-text">RocketMQ是阿里开源的消息中间件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#数据可靠性"><span class="toc-text">数据可靠性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#性能对比"><span class="toc-text">性能对比</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单机支持的队列数"><span class="toc-text">单机支持的队列数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#严格的消息顺序"><span class="toc-text">严格的消息顺序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分布式事务消息"><span class="toc-text">分布式事务消息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息查询"><span class="toc-text">消息查询</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消息回溯"><span class="toc-text">消息回溯</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#消费并行度"><span class="toc-text">消费并行度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Broker端消息过滤"><span class="toc-text">Broker端消息过滤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#单机系统可靠性"><span class="toc-text">单机系统可靠性</span></a>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+
+    
+        <div class="addthis_sharing_toolbox"></div>
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'http://sohunjug.com/2016/08/08/kafka-rocketmq/';
+            this.page.identifier = '2016/08/08/kafka-rocketmq/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//sohunjug.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/08/ssh-telnet/" title="上一篇: 自动登录ssh或telnet脚本">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2015/01/13/c-define/" title="下一篇: C/C++中宏定义的用法">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/10/22/k3s-introduce/">k3s 指引</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/21/microservice/">微服务概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/nodejs-restful-gulp/">TypeScript: (Node.JS + gulp + express) 写RESTful API 做后端</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/18/PacketSender/">PacketSender 发送接收socket macOS App</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/ssh-telnet/">自动登录ssh或telnet脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/kafka-rocketmq/">Kafka、RocketMQ调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/01/13/c-define/">C/C++中宏定义的用法</a></li><li class="post-list-item"><a class="post-list-link" href="/2014/06/24/git-webmail/">个人搭建git服务器与webmail服务器</a></li><li class="post-list-item"><a class="post-list-link" href="/2014/04/19/octopress/">终于从wordpress转移到了octopress</a></li><li class="post-list-item"><a class="post-list-link" href="/2014/02/27/parld/">Mac应用开发-启程</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/11/28/task-with-thread/">基于类成员函数回调的线程池-连接池-任务队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/08/26/mongodb-oracle/">MongoDB与OracleDB效率测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/07/26/mac-fan-control/">MacBook Pro – Fan Control</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/06/26/memory/">简单的内存管理类（关于malloc与free）</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/06/23/makefile/">关于makefile的通用方案（个人测试推荐方案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/05/21/521/">521随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/24/oracle-dirty/">关于脏数据、脏数据块的正确定义，commit的内部机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/23/oracle-commit/">没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/23/linux-shell/">Linux脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/22/vim-profile/">我的vim配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/21/vim-xml/">Vim的xml排版</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/21/diary/">末日杂记</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/19/custom-wordpress-menu/">让wordpress支持自定义菜单</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2013-2019 聽
+                | <a href="http://www.miitbeian.gov.cn/" target="_blank">粤ICP备14034266号</a>
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 24;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+<!--prettify代码高亮脚本引入-->
+<script src="/plugins/prettify/prettify.js"></script>
+<script type="text/javascript">
+$(window).load(function(){
+$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+ prettyPrint();
+})
+</script>
+
+
+  </div>
+</body>
+</html>
