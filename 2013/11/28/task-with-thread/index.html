@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="聽">
 <meta property="og:description" content="在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。 其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。因为使用模板来构造，所以目前只支持类成员函数的回调。与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。 此基于成员函数回调的线">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-19T06:10:04.769Z">
+<meta property="og:updated_time" content="2019-08-19T06:10:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="基于类成员函数回调的线程池-连接池-任务队列">
 <meta name="twitter:description" content="在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。 其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。因为使用模板来构造，所以目前只支持类成员函数的回调。与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。 此基于成员函数回调的线">
@@ -495,37 +495,54 @@
     </script>
 </div>
       <footer id="footer">
-    <div class="outer">
-        <div id="footer-info">
-            <div class="footer-left">
-                <i class="fa fa-copyright"></i> 
-                2013-2019 聽
-                | <a href="http://www.miitbeian.gov.cn/" target="_blank">粤ICP备14034266号</a>
-            </div>
-            <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
-            </div>
-        </div>
-        
-            <div class="visit">
-                
-                    <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
-                        </span>
-                    </span>
-                
-                
-                    <span>| </span>
-                
-                
-                    <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
-                        </span>
-                    </span>
-                
-            </div>
-        
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        <i class="fa fa-copyright"></i>
+        2013-2020 聽 |
+        <a href="http://beian.miit.gov.cn/" target="_blank"
+          >粤ICP备14034266号-1</a
+        >
+      </div>
+      <div class="footer-right">
+        <a
+          href="http://hexo.io/"
+          target="_blank"
+          title="快速、简洁且高效的博客框架"
+          >Hexo</a
+        >
+        Theme
+        <a
+          href="https://github.com/MOxFIVE/hexo-theme-yelee"
+          target="_blank"
+          title="简而不减 Hexo 双栏博客主题  v3.5"
+          >Yelee</a
+        >
+        by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+      </div>
     </div>
+    
+    <div class="visit">
+      
+      <span id="busuanzi_container_site_pv" style="display:none">
+        <span id="site-visit" title="本站到访数"
+          ><i class="fa fa-user" aria-hidden="true"></i
+          ><span id="busuanzi_value_site_uv"></span>
+        </span>
+      </span>
+       
+      <span>| </span>
+       
+      <span id="busuanzi_container_page_pv" style="display:none">
+        <span id="page-visit" title="本页阅读量"
+          ><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i
+          ><span id="busuanzi_value_page_pv"></span>
+        </span>
+      </span>
+      
+    </div>
+    
+  </div>
 </footer>
 
     </div>

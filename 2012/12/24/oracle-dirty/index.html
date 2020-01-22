@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="聽">
 <meta property="og:description" content="有人觉得脏数据是指错误的业务流程在系统中产生的无用异常数据。  产生这种数据的原因可能是因为错误的业务流程或者手动在数据库中制造。 例如在百度百科中，对脏数据的定义是这样的，“脏数据是指源系统中的数据不在给定的范围内或对于实际业务毫无意义，或是数据格式非法，以及在源系统中存在不规范的编码和含糊的业务逻辑”。 无论这种定义是否正确，在oracle中脏数据的定义不是这样的。在oracle中，脏数据是指">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-19T06:10:04.764Z">
+<meta property="og:updated_time" content="2019-08-19T06:10:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于脏数据、脏数据块的正确定义，commit的内部机制">
 <meta name="twitter:description" content="有人觉得脏数据是指错误的业务流程在系统中产生的无用异常数据。  产生这种数据的原因可能是因为错误的业务流程或者手动在数据库中制造。 例如在百度百科中，对脏数据的定义是这样的，“脏数据是指源系统中的数据不在给定的范围内或对于实际业务毫无意义，或是数据格式非法，以及在源系统中存在不规范的编码和含糊的业务逻辑”。 无论这种定义是否正确，在oracle中脏数据的定义不是这样的。在oracle中，脏数据是指">
@@ -492,37 +492,54 @@
     </script>
 </div>
       <footer id="footer">
-    <div class="outer">
-        <div id="footer-info">
-            <div class="footer-left">
-                <i class="fa fa-copyright"></i> 
-                2013-2019 聽
-                | <a href="http://www.miitbeian.gov.cn/" target="_blank">粤ICP备14034266号</a>
-            </div>
-            <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
-            </div>
-        </div>
-        
-            <div class="visit">
-                
-                    <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
-                        </span>
-                    </span>
-                
-                
-                    <span>| </span>
-                
-                
-                    <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
-                        </span>
-                    </span>
-                
-            </div>
-        
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        <i class="fa fa-copyright"></i>
+        2013-2020 聽 |
+        <a href="http://beian.miit.gov.cn/" target="_blank"
+          >粤ICP备14034266号-1</a
+        >
+      </div>
+      <div class="footer-right">
+        <a
+          href="http://hexo.io/"
+          target="_blank"
+          title="快速、简洁且高效的博客框架"
+          >Hexo</a
+        >
+        Theme
+        <a
+          href="https://github.com/MOxFIVE/hexo-theme-yelee"
+          target="_blank"
+          title="简而不减 Hexo 双栏博客主题  v3.5"
+          >Yelee</a
+        >
+        by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+      </div>
     </div>
+    
+    <div class="visit">
+      
+      <span id="busuanzi_container_site_pv" style="display:none">
+        <span id="site-visit" title="本站到访数"
+          ><i class="fa fa-user" aria-hidden="true"></i
+          ><span id="busuanzi_value_site_uv"></span>
+        </span>
+      </span>
+       
+      <span>| </span>
+       
+      <span id="busuanzi_container_page_pv" style="display:none">
+        <span id="page-visit" title="本页阅读量"
+          ><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i
+          ><span id="busuanzi_value_page_pv"></span>
+        </span>
+      </span>
+      
+    </div>
+    
+  </div>
 </footer>
 
     </div>
