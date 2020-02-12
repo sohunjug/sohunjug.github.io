@@ -23,14 +23,14 @@
   </url>
   
   <url>
-    <loc>http://sohunjug.com/2012/12/21/diary/</loc>
+    <loc>http://sohunjug.com/2012/12/19/custom-wordpress-menu/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://sohunjug.com/2012/12/19/custom-wordpress-menu/</loc>
+    <loc>http://sohunjug.com/2012/12/21/diary/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -58,6 +58,13 @@
   </url>
   
   <url>
+    <loc>http://sohunjug.com/2013/07/26/mac-fan-control/</loc>
+    
+    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://sohunjug.com/2012/12/23/linux-shell/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
@@ -66,13 +73,6 @@
   
   <url>
     <loc>http://sohunjug.com/2013/06/23/makefile/</loc>
-    
-    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://sohunjug.com/2013/07/26/mac-fan-control/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -100,21 +100,7 @@
   </url>
   
   <url>
-    <loc>http://sohunjug.com/2012/12/23/oracle-commit/</loc>
-    
-    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://sohunjug.com/2012/12/24/oracle-dirty/</loc>
-    
-    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://sohunjug.com/2014/02/27/parld/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -128,7 +114,14 @@
   </url>
   
   <url>
-    <loc>http://sohunjug.com/2012/12/21/vim-xml/</loc>
+    <loc>http://sohunjug.com/2012/12/23/oracle-commit/</loc>
+    
+    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://sohunjug.com/2014/02/27/parld/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -150,6 +143,13 @@
   
   <url>
     <loc>http://sohunjug.com/2012/12/22/vim-profile/</loc>
+    
+    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://sohunjug.com/2012/12/21/vim-xml/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     

@@ -7,13 +7,13 @@
     <loc>http://sohunjug.com/2019/10/22/k3s-introduce/</loc>
     <lastmod>2019-10-22</lastmod>
   </url>  <url>
-    <loc>http://sohunjug.com/2012/12/23/oracle-commit/</loc>
-    <lastmod>2019-08-19</lastmod>
-  </url>  <url>
-    <loc>http://sohunjug.com/2012/12/21/diary/</loc>
+    <loc>http://sohunjug.com/2012/12/24/oracle-dirty/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
     <loc>http://sohunjug.com/2012/12/19/custom-wordpress-menu/</loc>
+    <lastmod>2019-08-19</lastmod>
+  </url>  <url>
+    <loc>http://sohunjug.com/2012/12/21/diary/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
     <loc>http://sohunjug.com/2014/06/24/git-webmail/</loc>
@@ -25,13 +25,13 @@
     <loc>http://sohunjug.com/2016/08/08/kafka-rocketmq/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
+    <loc>http://sohunjug.com/2013/07/26/mac-fan-control/</loc>
+    <lastmod>2019-08-19</lastmod>
+  </url>  <url>
     <loc>http://sohunjug.com/2012/12/23/linux-shell/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
     <loc>http://sohunjug.com/2013/06/23/makefile/</loc>
-    <lastmod>2019-08-19</lastmod>
-  </url>  <url>
-    <loc>http://sohunjug.com/2013/07/26/mac-fan-control/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
     <loc>http://sohunjug.com/2013/06/26/memory/</loc>
@@ -46,16 +46,13 @@
     <loc>http://sohunjug.com/2016/08/18/PacketSender/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
-    <loc>http://sohunjug.com/2012/12/24/oracle-dirty/</loc>
-    <lastmod>2019-08-19</lastmod>
-  </url>  <url>
-    <loc>http://sohunjug.com/2014/02/27/parld/</loc>
-    <lastmod>2019-08-19</lastmod>
-  </url>  <url>
     <loc>http://sohunjug.com/2016/08/08/ssh-telnet/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
-    <loc>http://sohunjug.com/2012/12/21/vim-xml/</loc>
+    <loc>http://sohunjug.com/2012/12/23/oracle-commit/</loc>
+    <lastmod>2019-08-19</lastmod>
+  </url>  <url>
+    <loc>http://sohunjug.com/2014/02/27/parld/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
     <loc>http://sohunjug.com/2015/01/13/c-define/</loc>
@@ -65,6 +62,9 @@
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
     <loc>http://sohunjug.com/2012/12/22/vim-profile/</loc>
+    <lastmod>2019-08-19</lastmod>
+  </url>  <url>
+    <loc>http://sohunjug.com/2012/12/21/vim-xml/</loc>
     <lastmod>2019-08-19</lastmod>
   </url>  <url>
     <loc>http://sohunjug.com/2013/11/28/task-with-thread/</loc>
