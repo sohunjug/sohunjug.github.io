@@ -5,9 +5,9 @@
   <subtitle>Opportunity favors only the prepared mind. And everything change with time.</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://sohunjug.com/"/>
+  <link href="https://sohunjug.com/"/>
   <updated>2019-10-22T05:53:40.000Z</updated>
-  <id>http://sohunjug.com/</id>
+  <id>https://sohunjug.com/</id>
   
   <author>
     <name>聽</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>k3s 指引</title>
-    <link href="http://sohunjug.com/2019/10/22/k3s-introduce/"/>
-    <id>http://sohunjug.com/2019/10/22/k3s-introduce/</id>
+    <link href="https://sohunjug.com/2019/10/22/k3s-introduce/"/>
+    <id>https://sohunjug.com/2019/10/22/k3s-introduce/</id>
     <published>2019-10-22T05:44:11.000Z</published>
     <updated>2019-10-22T05:53:40.000Z</updated>
     
@@ -32,25 +32,25 @@
     
     </summary>
     
-      <category term="k3s" scheme="http://sohunjug.com/categories/k3s/"/>
+      <category term="k3s" scheme="https://sohunjug.com/categories/k3s/"/>
     
-      <category term="k8s" scheme="http://sohunjug.com/categories/k3s/k8s/"/>
+      <category term="k8s" scheme="https://sohunjug.com/categories/k3s/k8s/"/>
     
-      <category term="kubernetes" scheme="http://sohunjug.com/categories/k3s/k8s/kubernetes/"/>
+      <category term="kubernetes" scheme="https://sohunjug.com/categories/k3s/k8s/kubernetes/"/>
     
     
-      <category term="k3s" scheme="http://sohunjug.com/tags/k3s/"/>
+      <category term="k3s" scheme="https://sohunjug.com/tags/k3s/"/>
     
-      <category term="k8s" scheme="http://sohunjug.com/tags/k8s/"/>
+      <category term="k8s" scheme="https://sohunjug.com/tags/k8s/"/>
     
-      <category term="kubernetes" scheme="http://sohunjug.com/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://sohunjug.com/tags/kubernetes/"/>
     
   </entry>
   
   <entry>
     <title>微服务概念</title>
-    <link href="http://sohunjug.com/2017/10/21/microservice/"/>
-    <id>http://sohunjug.com/2017/10/21/microservice/</id>
+    <link href="https://sohunjug.com/2017/10/21/microservice/"/>
+    <id>https://sohunjug.com/2017/10/21/microservice/</id>
     <published>2017-10-21T09:46:45.000Z</published>
     <updated>2019-10-22T05:57:11.000Z</updated>
     
@@ -65,25 +65,25 @@
     
     </summary>
     
-      <category term="micro" scheme="http://sohunjug.com/categories/micro/"/>
+      <category term="micro" scheme="https://sohunjug.com/categories/micro/"/>
     
-      <category term="微服务" scheme="http://sohunjug.com/categories/micro/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+      <category term="微服务" scheme="https://sohunjug.com/categories/micro/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
     
     
-      <category term="k8s" scheme="http://sohunjug.com/tags/k8s/"/>
+      <category term="k8s" scheme="https://sohunjug.com/tags/k8s/"/>
     
-      <category term="kubernetes" scheme="http://sohunjug.com/tags/kubernetes/"/>
+      <category term="kubernetes" scheme="https://sohunjug.com/tags/kubernetes/"/>
     
-      <category term="micro" scheme="http://sohunjug.com/tags/micro/"/>
+      <category term="micro" scheme="https://sohunjug.com/tags/micro/"/>
     
-      <category term="微服务" scheme="http://sohunjug.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
+      <category term="微服务" scheme="https://sohunjug.com/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/"/>
     
   </entry>
   
   <entry>
     <title>TypeScript: (Node.JS + gulp + express) 写RESTful API 做后端</title>
-    <link href="http://sohunjug.com/2016/09/13/nodejs-restful-gulp/"/>
-    <id>http://sohunjug.com/2016/09/13/nodejs-restful-gulp/</id>
+    <link href="https://sohunjug.com/2016/09/13/nodejs-restful-gulp/"/>
+    <id>https://sohunjug.com/2016/09/13/nodejs-restful-gulp/</id>
     <published>2016-09-13T07:58:43.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -97,27 +97,27 @@
     
     </summary>
     
-      <category term="Node.JS" scheme="http://sohunjug.com/categories/Node-JS/"/>
+      <category term="Node.JS" scheme="https://sohunjug.com/categories/Node-JS/"/>
     
     
-      <category term="JavaScript" scheme="http://sohunjug.com/tags/JavaScript/"/>
+      <category term="JavaScript" scheme="https://sohunjug.com/tags/JavaScript/"/>
     
-      <category term="Node.JS" scheme="http://sohunjug.com/tags/Node-JS/"/>
+      <category term="Node.JS" scheme="https://sohunjug.com/tags/Node-JS/"/>
     
-      <category term="gulp" scheme="http://sohunjug.com/tags/gulp/"/>
+      <category term="gulp" scheme="https://sohunjug.com/tags/gulp/"/>
     
-      <category term="TypeScript" scheme="http://sohunjug.com/tags/TypeScript/"/>
+      <category term="TypeScript" scheme="https://sohunjug.com/tags/TypeScript/"/>
     
-      <category term="express" scheme="http://sohunjug.com/tags/express/"/>
+      <category term="express" scheme="https://sohunjug.com/tags/express/"/>
     
-      <category term="RESTful" scheme="http://sohunjug.com/tags/RESTful/"/>
+      <category term="RESTful" scheme="https://sohunjug.com/tags/RESTful/"/>
     
   </entry>
   
   <entry>
     <title>PacketSender 发送接收socket macOS App</title>
-    <link href="http://sohunjug.com/2016/08/18/PacketSender/"/>
-    <id>http://sohunjug.com/2016/08/18/PacketSender/</id>
+    <link href="https://sohunjug.com/2016/08/18/PacketSender/"/>
+    <id>https://sohunjug.com/2016/08/18/PacketSender/</id>
     <published>2016-08-18T14:33:12.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -137,25 +137,25 @@
     
     </summary>
     
-      <category term="Objective-C" scheme="http://sohunjug.com/categories/Objective-C/"/>
+      <category term="Objective-C" scheme="https://sohunjug.com/categories/Objective-C/"/>
     
-      <category term="Swift" scheme="http://sohunjug.com/categories/Objective-C/Swift/"/>
+      <category term="Swift" scheme="https://sohunjug.com/categories/Objective-C/Swift/"/>
     
     
-      <category term="Objective-C" scheme="http://sohunjug.com/tags/Objective-C/"/>
+      <category term="Objective-C" scheme="https://sohunjug.com/tags/Objective-C/"/>
     
-      <category term="Swift" scheme="http://sohunjug.com/tags/Swift/"/>
+      <category term="Swift" scheme="https://sohunjug.com/tags/Swift/"/>
     
-      <category term="TCP" scheme="http://sohunjug.com/tags/TCP/"/>
+      <category term="TCP" scheme="https://sohunjug.com/tags/TCP/"/>
     
-      <category term="UDP" scheme="http://sohunjug.com/tags/UDP/"/>
+      <category term="UDP" scheme="https://sohunjug.com/tags/UDP/"/>
     
   </entry>
   
   <entry>
     <title>自动登录ssh或telnet脚本</title>
-    <link href="http://sohunjug.com/2016/08/08/ssh-telnet/"/>
-    <id>http://sohunjug.com/2016/08/08/ssh-telnet/</id>
+    <link href="https://sohunjug.com/2016/08/08/ssh-telnet/"/>
+    <id>https://sohunjug.com/2016/08/08/ssh-telnet/</id>
     <published>2016-08-08T09:31:53.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -170,19 +170,19 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://sohunjug.com/categories/Linux/"/>
+      <category term="Linux" scheme="https://sohunjug.com/categories/Linux/"/>
     
     
-      <category term="ssh" scheme="http://sohunjug.com/tags/ssh/"/>
+      <category term="ssh" scheme="https://sohunjug.com/tags/ssh/"/>
     
-      <category term="telnet" scheme="http://sohunjug.com/tags/telnet/"/>
+      <category term="telnet" scheme="https://sohunjug.com/tags/telnet/"/>
     
   </entry>
   
   <entry>
     <title>Kafka、RocketMQ调研</title>
-    <link href="http://sohunjug.com/2016/08/08/kafka-rocketmq/"/>
-    <id>http://sohunjug.com/2016/08/08/kafka-rocketmq/</id>
+    <link href="https://sohunjug.com/2016/08/08/kafka-rocketmq/"/>
+    <id>https://sohunjug.com/2016/08/08/kafka-rocketmq/</id>
     <published>2016-08-08T01:10:28.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -199,19 +199,19 @@
     
     </summary>
     
-      <category term="Java" scheme="http://sohunjug.com/categories/Java/"/>
+      <category term="Java" scheme="https://sohunjug.com/categories/Java/"/>
     
     
-      <category term="Kafka" scheme="http://sohunjug.com/tags/Kafka/"/>
+      <category term="Kafka" scheme="https://sohunjug.com/tags/Kafka/"/>
     
-      <category term="RocketMQ" scheme="http://sohunjug.com/tags/RocketMQ/"/>
+      <category term="RocketMQ" scheme="https://sohunjug.com/tags/RocketMQ/"/>
     
   </entry>
   
   <entry>
     <title>C/C++中宏定义的用法</title>
-    <link href="http://sohunjug.com/2015/01/13/c-define/"/>
-    <id>http://sohunjug.com/2015/01/13/c-define/</id>
+    <link href="https://sohunjug.com/2015/01/13/c-define/"/>
+    <id>https://sohunjug.com/2015/01/13/c-define/</id>
     <published>2015-01-13T07:59:59.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -225,19 +225,19 @@
     
     </summary>
     
-      <category term="C/C++" scheme="http://sohunjug.com/categories/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/categories/C-C/"/>
     
     
-      <category term="Define" scheme="http://sohunjug.com/tags/Define/"/>
+      <category term="Define" scheme="https://sohunjug.com/tags/Define/"/>
     
-      <category term="C/C++" scheme="http://sohunjug.com/tags/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/tags/C-C/"/>
     
   </entry>
   
   <entry>
     <title>个人搭建git服务器与webmail服务器</title>
-    <link href="http://sohunjug.com/2014/06/24/git-webmail/"/>
-    <id>http://sohunjug.com/2014/06/24/git-webmail/</id>
+    <link href="https://sohunjug.com/2014/06/24/git-webmail/"/>
+    <id>https://sohunjug.com/2014/06/24/git-webmail/</id>
     <published>2014-06-24T12:15:57.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -250,19 +250,19 @@
     
     </summary>
     
-      <category term="Git" scheme="http://sohunjug.com/categories/Git/"/>
+      <category term="Git" scheme="https://sohunjug.com/categories/Git/"/>
     
     
-      <category term="Webmail" scheme="http://sohunjug.com/tags/Webmail/"/>
+      <category term="Webmail" scheme="https://sohunjug.com/tags/Webmail/"/>
     
-      <category term="Git" scheme="http://sohunjug.com/tags/Git/"/>
+      <category term="Git" scheme="https://sohunjug.com/tags/Git/"/>
     
   </entry>
   
   <entry>
     <title>终于从wordpress转移到了octopress</title>
-    <link href="http://sohunjug.com/2014/04/19/octopress/"/>
-    <id>http://sohunjug.com/2014/04/19/octopress/</id>
+    <link href="https://sohunjug.com/2014/04/19/octopress/"/>
+    <id>https://sohunjug.com/2014/04/19/octopress/</id>
     <published>2014-04-19T08:20:27.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -276,19 +276,19 @@
     
     </summary>
     
-      <category term="wordpress" scheme="http://sohunjug.com/categories/wordpress/"/>
+      <category term="wordpress" scheme="https://sohunjug.com/categories/wordpress/"/>
     
-      <category term="octopress" scheme="http://sohunjug.com/categories/wordpress/octopress/"/>
+      <category term="octopress" scheme="https://sohunjug.com/categories/wordpress/octopress/"/>
     
     
-      <category term="octopress" scheme="http://sohunjug.com/tags/octopress/"/>
+      <category term="octopress" scheme="https://sohunjug.com/tags/octopress/"/>
     
   </entry>
   
   <entry>
     <title>Mac应用开发-启程</title>
-    <link href="http://sohunjug.com/2014/02/27/parld/"/>
-    <id>http://sohunjug.com/2014/02/27/parld/</id>
+    <link href="https://sohunjug.com/2014/02/27/parld/"/>
+    <id>https://sohunjug.com/2014/02/27/parld/</id>
     <published>2014-02-26T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -301,19 +301,19 @@
     
     </summary>
     
-      <category term="Objective-C" scheme="http://sohunjug.com/categories/Objective-C/"/>
+      <category term="Objective-C" scheme="https://sohunjug.com/categories/Objective-C/"/>
     
     
-      <category term="Objective-C" scheme="http://sohunjug.com/tags/Objective-C/"/>
+      <category term="Objective-C" scheme="https://sohunjug.com/tags/Objective-C/"/>
     
-      <category term="Mac" scheme="http://sohunjug.com/tags/Mac/"/>
+      <category term="Mac" scheme="https://sohunjug.com/tags/Mac/"/>
     
   </entry>
   
   <entry>
     <title>基于类成员函数回调的线程池-连接池-任务队列</title>
-    <link href="http://sohunjug.com/2013/11/28/task-with-thread/"/>
-    <id>http://sohunjug.com/2013/11/28/task-with-thread/</id>
+    <link href="https://sohunjug.com/2013/11/28/task-with-thread/"/>
+    <id>https://sohunjug.com/2013/11/28/task-with-thread/</id>
     <published>2013-11-27T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -331,23 +331,23 @@
     
     </summary>
     
-      <category term="C/C++" scheme="http://sohunjug.com/categories/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/categories/C-C/"/>
     
     
-      <category term="C/C++" scheme="http://sohunjug.com/tags/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/tags/C-C/"/>
     
-      <category term="Thread" scheme="http://sohunjug.com/tags/Thread/"/>
+      <category term="Thread" scheme="https://sohunjug.com/tags/Thread/"/>
     
-      <category term="Pool" scheme="http://sohunjug.com/tags/Pool/"/>
+      <category term="Pool" scheme="https://sohunjug.com/tags/Pool/"/>
     
-      <category term="Task" scheme="http://sohunjug.com/tags/Task/"/>
+      <category term="Task" scheme="https://sohunjug.com/tags/Task/"/>
     
   </entry>
   
   <entry>
     <title>MongoDB与OracleDB效率测试</title>
-    <link href="http://sohunjug.com/2013/08/26/mongodb-oracle/"/>
-    <id>http://sohunjug.com/2013/08/26/mongodb-oracle/</id>
+    <link href="https://sohunjug.com/2013/08/26/mongodb-oracle/"/>
+    <id>https://sohunjug.com/2013/08/26/mongodb-oracle/</id>
     <published>2013-08-25T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -360,21 +360,21 @@
     
     </summary>
     
-      <category term="MongoDB" scheme="http://sohunjug.com/categories/MongoDB/"/>
+      <category term="MongoDB" scheme="https://sohunjug.com/categories/MongoDB/"/>
     
-      <category term="Oracle" scheme="http://sohunjug.com/categories/MongoDB/Oracle/"/>
+      <category term="Oracle" scheme="https://sohunjug.com/categories/MongoDB/Oracle/"/>
     
     
-      <category term="Oracle" scheme="http://sohunjug.com/tags/Oracle/"/>
+      <category term="Oracle" scheme="https://sohunjug.com/tags/Oracle/"/>
     
-      <category term="MongoDB" scheme="http://sohunjug.com/tags/MongoDB/"/>
+      <category term="MongoDB" scheme="https://sohunjug.com/tags/MongoDB/"/>
     
   </entry>
   
   <entry>
     <title>MacBook Pro – Fan Control</title>
-    <link href="http://sohunjug.com/2013/07/26/mac-fan-control/"/>
-    <id>http://sohunjug.com/2013/07/26/mac-fan-control/</id>
+    <link href="https://sohunjug.com/2013/07/26/mac-fan-control/"/>
+    <id>https://sohunjug.com/2013/07/26/mac-fan-control/</id>
     <published>2013-07-25T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -387,17 +387,17 @@
     
     </summary>
     
-      <category term="Mac" scheme="http://sohunjug.com/categories/Mac/"/>
+      <category term="Mac" scheme="https://sohunjug.com/categories/Mac/"/>
     
     
-      <category term="Mac" scheme="http://sohunjug.com/tags/Mac/"/>
+      <category term="Mac" scheme="https://sohunjug.com/tags/Mac/"/>
     
   </entry>
   
   <entry>
     <title>简单的内存管理类（关于malloc与free）</title>
-    <link href="http://sohunjug.com/2013/06/26/memory/"/>
-    <id>http://sohunjug.com/2013/06/26/memory/</id>
+    <link href="https://sohunjug.com/2013/06/26/memory/"/>
+    <id>https://sohunjug.com/2013/06/26/memory/</id>
     <published>2013-06-25T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -411,19 +411,19 @@
     
     </summary>
     
-      <category term="C/C++" scheme="http://sohunjug.com/categories/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/categories/C-C/"/>
     
     
-      <category term="C/C++" scheme="http://sohunjug.com/tags/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/tags/C-C/"/>
     
-      <category term="Memory" scheme="http://sohunjug.com/tags/Memory/"/>
+      <category term="Memory" scheme="https://sohunjug.com/tags/Memory/"/>
     
   </entry>
   
   <entry>
     <title>关于makefile的通用方案（个人测试推荐方案）</title>
-    <link href="http://sohunjug.com/2013/06/23/makefile/"/>
-    <id>http://sohunjug.com/2013/06/23/makefile/</id>
+    <link href="https://sohunjug.com/2013/06/23/makefile/"/>
+    <id>https://sohunjug.com/2013/06/23/makefile/</id>
     <published>2013-06-22T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -436,19 +436,19 @@
     
     </summary>
     
-      <category term="C/C++" scheme="http://sohunjug.com/categories/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/categories/C-C/"/>
     
     
-      <category term="C/C++" scheme="http://sohunjug.com/tags/C-C/"/>
+      <category term="C/C++" scheme="https://sohunjug.com/tags/C-C/"/>
     
-      <category term="makefile" scheme="http://sohunjug.com/tags/makefile/"/>
+      <category term="makefile" scheme="https://sohunjug.com/tags/makefile/"/>
     
   </entry>
   
   <entry>
     <title>521随笔</title>
-    <link href="http://sohunjug.com/2013/05/21/521/"/>
-    <id>http://sohunjug.com/2013/05/21/521/</id>
+    <link href="https://sohunjug.com/2013/05/21/521/"/>
+    <id>https://sohunjug.com/2013/05/21/521/</id>
     <published>2013-05-20T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -465,17 +465,17 @@
     
     </summary>
     
-      <category term="随笔" scheme="http://sohunjug.com/categories/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="https://sohunjug.com/categories/%E9%9A%8F%E7%AC%94/"/>
     
     
-      <category term="随笔" scheme="http://sohunjug.com/tags/%E9%9A%8F%E7%AC%94/"/>
+      <category term="随笔" scheme="https://sohunjug.com/tags/%E9%9A%8F%E7%AC%94/"/>
     
   </entry>
   
   <entry>
     <title>关于脏数据、脏数据块的正确定义，commit的内部机制</title>
-    <link href="http://sohunjug.com/2012/12/24/oracle-dirty/"/>
-    <id>http://sohunjug.com/2012/12/24/oracle-dirty/</id>
+    <link href="https://sohunjug.com/2012/12/24/oracle-dirty/"/>
+    <id>https://sohunjug.com/2012/12/24/oracle-dirty/</id>
     <published>2012-12-23T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -489,17 +489,39 @@
     
     </summary>
     
-      <category term="Oracle" scheme="http://sohunjug.com/categories/Oracle/"/>
+      <category term="Oracle" scheme="https://sohunjug.com/categories/Oracle/"/>
     
     
-      <category term="Oracle" scheme="http://sohunjug.com/tags/Oracle/"/>
+      <category term="Oracle" scheme="https://sohunjug.com/tags/Oracle/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</title>
+    <link href="https://sohunjug.com/2012/12/23/oracle-commit/"/>
+    <id>https://sohunjug.com/2012/12/23/oracle-commit/</id>
+    <published>2012-12-22T16:00:00.000Z</published>
+    <updated>2019-08-19T06:10:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。<br><a id="more"></a></p><h1 id="关于脏读"><a href="#关于脏读" class="headerlink" title="关于脏读"></a>关于脏读</h1><p>“修改的数据没有进行commit，可以被其它用户查到”，这种场景即为“脏读(dirty read)”。</p><p>脏读存在的意义是为了实现非阻塞读(高并发无等待)，但是Oracle可以完全得到脏读的所有好处（即无阻塞），而不会带来任何不正确的结果，所以oracle不支持脏读，但是sqlserver等一些数据库是支持脏读的。</p><p>oracle是怎么实现这种机制的？当一条数据被修改而未进行commit时，当有其它用户查询这条数据时，oracle会绕过已修改的原数据，而是从undo段获得数据。因此可以返回一致而且正确的答案，而无需等待事务提交。</p><h1 id="关于隔离级别"><a href="#关于隔离级别" class="headerlink" title="关于隔离级别"></a>关于隔离级别</h1><p>标准sql的隔离级别如下</p><p><img src="/img/blog/oracle.png" alt="级别"></p><p>oracle提供了SQL92标准中的read committed和serializable，同时提供了非SQL92标准的read-only。由于oracle不支持read uncommited，所以oracle不支持脏读。oracle默认的的事务隔离级别为read commited。</p><p><strong>read uncommited的隔离级别最低， serializable的隔离级别最高。</strong></p><p>较低的隔离级别可以增强许多用户同时访问数据的能力，但也增加了用户可能遇到的并发副作用（例如脏读或丢失更新）的数量。相反，较高的隔离级别减少了用户可能遇到的并发副作用的类型，但需要更多的系统资源，并增加了一个事务阻塞其他事务的可能性。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Oracle" scheme="https://sohunjug.com/categories/Oracle/"/>
+    
+    
+      <category term="Oracle" scheme="https://sohunjug.com/tags/Oracle/"/>
     
   </entry>
   
   <entry>
     <title>Linux脚本</title>
-    <link href="http://sohunjug.com/2012/12/23/linux-shell/"/>
-    <id>http://sohunjug.com/2012/12/23/linux-shell/</id>
+    <link href="https://sohunjug.com/2012/12/23/linux-shell/"/>
+    <id>https://sohunjug.com/2012/12/23/linux-shell/</id>
     <published>2012-12-22T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -512,39 +534,17 @@
     
     </summary>
     
-      <category term="Linux" scheme="http://sohunjug.com/categories/Linux/"/>
+      <category term="Linux" scheme="https://sohunjug.com/categories/Linux/"/>
     
     
-      <category term="Linux shell" scheme="http://sohunjug.com/tags/Linux-shell/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</title>
-    <link href="http://sohunjug.com/2012/12/23/oracle-commit/"/>
-    <id>http://sohunjug.com/2012/12/23/oracle-commit/</id>
-    <published>2012-12-22T16:00:00.000Z</published>
-    <updated>2019-08-19T06:10:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。<br><a id="more"></a></p><h1 id="关于脏读"><a href="#关于脏读" class="headerlink" title="关于脏读"></a>关于脏读</h1><p>“修改的数据没有进行commit，可以被其它用户查到”，这种场景即为“脏读(dirty read)”。</p><p>脏读存在的意义是为了实现非阻塞读(高并发无等待)，但是Oracle可以完全得到脏读的所有好处（即无阻塞），而不会带来任何不正确的结果，所以oracle不支持脏读，但是sqlserver等一些数据库是支持脏读的。</p><p>oracle是怎么实现这种机制的？当一条数据被修改而未进行commit时，当有其它用户查询这条数据时，oracle会绕过已修改的原数据，而是从undo段获得数据。因此可以返回一致而且正确的答案，而无需等待事务提交。</p><h1 id="关于隔离级别"><a href="#关于隔离级别" class="headerlink" title="关于隔离级别"></a>关于隔离级别</h1><p>标准sql的隔离级别如下</p><p><img src="/img/blog/oracle.png" alt="级别"></p><p>oracle提供了SQL92标准中的read committed和serializable，同时提供了非SQL92标准的read-only。由于oracle不支持read uncommited，所以oracle不支持脏读。oracle默认的的事务隔离级别为read commited。</p><p><strong>read uncommited的隔离级别最低， serializable的隔离级别最高。</strong></p><p>较低的隔离级别可以增强许多用户同时访问数据的能力，但也增加了用户可能遇到的并发副作用（例如脏读或丢失更新）的数量。相反，较高的隔离级别减少了用户可能遇到的并发副作用的类型，但需要更多的系统资源，并增加了一个事务阻塞其他事务的可能性。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Oracle" scheme="http://sohunjug.com/categories/Oracle/"/>
-    
-    
-      <category term="Oracle" scheme="http://sohunjug.com/tags/Oracle/"/>
+      <category term="Linux shell" scheme="https://sohunjug.com/tags/Linux-shell/"/>
     
   </entry>
   
   <entry>
     <title>我的vim配置</title>
-    <link href="http://sohunjug.com/2012/12/22/vim-profile/"/>
-    <id>http://sohunjug.com/2012/12/22/vim-profile/</id>
+    <link href="https://sohunjug.com/2012/12/22/vim-profile/"/>
+    <id>https://sohunjug.com/2012/12/22/vim-profile/</id>
     <published>2012-12-21T16:00:00.000Z</published>
     <updated>2019-08-19T06:10:04.000Z</updated>
     
@@ -557,10 +557,10 @@
     
     </summary>
     
-      <category term="Vim" scheme="http://sohunjug.com/categories/Vim/"/>
+      <category term="Vim" scheme="https://sohunjug.com/categories/Vim/"/>
     
     
-      <category term="Vim profile" scheme="http://sohunjug.com/tags/Vim-profile/"/>
+      <category term="Vim profile" scheme="https://sohunjug.com/tags/Vim-profile/"/>
     
   </entry>
   
