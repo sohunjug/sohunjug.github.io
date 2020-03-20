@@ -497,28 +497,6 @@
   </entry>
   
   <entry>
-    <title>没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</title>
-    <link href="http://sohunjug.com/2012/12/23/oracle-commit/"/>
-    <id>http://sohunjug.com/2012/12/23/oracle-commit/</id>
-    <published>2012-12-22T16:00:00.000Z</published>
-    <updated>2019-08-19T06:10:04.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。<br><a id="more"></a></p><h1 id="关于脏读"><a href="#关于脏读" class="headerlink" title="关于脏读"></a>关于脏读</h1><p>“修改的数据没有进行commit，可以被其它用户查到”，这种场景即为“脏读(dirty read)”。</p><p>脏读存在的意义是为了实现非阻塞读(高并发无等待)，但是Oracle可以完全得到脏读的所有好处（即无阻塞），而不会带来任何不正确的结果，所以oracle不支持脏读，但是sqlserver等一些数据库是支持脏读的。</p><p>oracle是怎么实现这种机制的？当一条数据被修改而未进行commit时，当有其它用户查询这条数据时，oracle会绕过已修改的原数据，而是从undo段获得数据。因此可以返回一致而且正确的答案，而无需等待事务提交。</p><h1 id="关于隔离级别"><a href="#关于隔离级别" class="headerlink" title="关于隔离级别"></a>关于隔离级别</h1><p>标准sql的隔离级别如下</p><p><img src="/img/blog/oracle.png" alt="级别"></p><p>oracle提供了SQL92标准中的read committed和serializable，同时提供了非SQL92标准的read-only。由于oracle不支持read uncommited，所以oracle不支持脏读。oracle默认的的事务隔离级别为read commited。</p><p><strong>read uncommited的隔离级别最低， serializable的隔离级别最高。</strong></p><p>较低的隔离级别可以增强许多用户同时访问数据的能力，但也增加了用户可能遇到的并发副作用（例如脏读或丢失更新）的数量。相反，较高的隔离级别减少了用户可能遇到的并发副作用的类型，但需要更多的系统资源，并增加了一个事务阻塞其他事务的可能性。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。&lt;br&gt;
-    
-    </summary>
-    
-      <category term="Oracle" scheme="http://sohunjug.com/categories/Oracle/"/>
-    
-    
-      <category term="Oracle" scheme="http://sohunjug.com/tags/Oracle/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Linux脚本</title>
     <link href="http://sohunjug.com/2012/12/23/linux-shell/"/>
     <id>http://sohunjug.com/2012/12/23/linux-shell/</id>
@@ -538,6 +516,28 @@
     
     
       <category term="Linux shell" scheme="http://sohunjug.com/tags/Linux-shell/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</title>
+    <link href="http://sohunjug.com/2012/12/23/oracle-commit/"/>
+    <id>http://sohunjug.com/2012/12/23/oracle-commit/</id>
+    <published>2012-12-22T16:00:00.000Z</published>
+    <updated>2019-08-19T06:10:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。<br><a id="more"></a></p><h1 id="关于脏读"><a href="#关于脏读" class="headerlink" title="关于脏读"></a>关于脏读</h1><p>“修改的数据没有进行commit，可以被其它用户查到”，这种场景即为“脏读(dirty read)”。</p><p>脏读存在的意义是为了实现非阻塞读(高并发无等待)，但是Oracle可以完全得到脏读的所有好处（即无阻塞），而不会带来任何不正确的结果，所以oracle不支持脏读，但是sqlserver等一些数据库是支持脏读的。</p><p>oracle是怎么实现这种机制的？当一条数据被修改而未进行commit时，当有其它用户查询这条数据时，oracle会绕过已修改的原数据，而是从undo段获得数据。因此可以返回一致而且正确的答案，而无需等待事务提交。</p><h1 id="关于隔离级别"><a href="#关于隔离级别" class="headerlink" title="关于隔离级别"></a>关于隔离级别</h1><p>标准sql的隔离级别如下</p><p><img src="/img/blog/oracle.png" alt="级别"></p><p>oracle提供了SQL92标准中的read committed和serializable，同时提供了非SQL92标准的read-only。由于oracle不支持read uncommited，所以oracle不支持脏读。oracle默认的的事务隔离级别为read commited。</p><p><strong>read uncommited的隔离级别最低， serializable的隔离级别最高。</strong></p><p>较低的隔离级别可以增强许多用户同时访问数据的能力，但也增加了用户可能遇到的并发副作用（例如脏读或丢失更新）的数量。相反，较高的隔离级别减少了用户可能遇到的并发副作用的类型，但需要更多的系统资源，并增加了一个事务阻塞其他事务的可能性。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。&lt;br&gt;
+    
+    </summary>
+    
+      <category term="Oracle" scheme="http://sohunjug.com/categories/Oracle/"/>
+    
+    
+      <category term="Oracle" scheme="http://sohunjug.com/tags/Oracle/"/>
     
   </entry>
   
