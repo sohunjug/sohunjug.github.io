@@ -4,7 +4,7 @@
   <url>
     <loc>https://sohunjug.com/resume/index.html</loc>
     
-    <lastmod>2020-03-20T07:53:06.709Z</lastmod>
+    <lastmod>2020-03-24T03:21:05.013Z</lastmod>
     
   </url>
   
@@ -23,7 +23,7 @@
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2012/12/23/oracle-commit/</loc>
+    <loc>https://sohunjug.com/2012/12/24/oracle-dirty/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -37,14 +37,7 @@
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2013/05/21/521/</loc>
-    
-    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://sohunjug.com/2016/08/18/PacketSender/</loc>
+    <loc>https://sohunjug.com/2016/08/08/kafka-rocketmq/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -72,14 +65,14 @@
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2016/08/08/kafka-rocketmq/</loc>
+    <loc>https://sohunjug.com/2013/06/26/memory/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2013/06/26/memory/</loc>
+    <loc>https://sohunjug.com/2015/01/13/c-define/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -100,21 +93,14 @@
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2015/01/13/c-define/</loc>
+    <loc>https://sohunjug.com/2012/12/23/oracle-commit/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2012/12/24/oracle-dirty/</loc>
-    
-    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://sohunjug.com/2014/02/27/parld/</loc>
+    <loc>https://sohunjug.com/2016/08/18/PacketSender/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -128,6 +114,20 @@
   </url>
   
   <url>
+    <loc>https://sohunjug.com/2014/02/27/parld/</loc>
+    
+    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://sohunjug.com/2013/05/21/521/</loc>
+    
+    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://sohunjug.com/2012/12/21/vim-xml/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
@@ -135,14 +135,14 @@
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2012/12/19/custom-wordpress-menu/</loc>
+    <loc>https://sohunjug.com/2013/08/26/mongodb-oracle/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2013/08/26/mongodb-oracle/</loc>
+    <loc>https://sohunjug.com/2014/06/24/git-webmail/</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
@@ -163,13 +163,6 @@
   </url>
   
   <url>
-    <loc>https://sohunjug.com//404.html</loc>
-    
-    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://sohunjug.com/about/index.html</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
@@ -177,14 +170,21 @@
   </url>
   
   <url>
-    <loc>https://sohunjug.com/message/index.html</loc>
+    <loc>https://sohunjug.com//404.html</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>https://sohunjug.com/2014/06/24/git-webmail/</loc>
+    <loc>https://sohunjug.com/2012/12/19/custom-wordpress-menu/</loc>
+    
+    <lastmod>2019-08-19T06:10:04.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://sohunjug.com/message/index.html</loc>
     
     <lastmod>2019-08-19T06:10:04.000Z</lastmod>
     

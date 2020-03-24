@@ -696,9 +696,9 @@
         
         <tags>
             
-            <tag> Define </tag>
-            
             <tag> C/C++ </tag>
+            
+            <tag> Define </tag>
             
         </tags>
         
@@ -1036,9 +1036,9 @@
         
         <tags>
             
-            <tag> C/C++ </tag>
-            
             <tag> makefile </tag>
+            
+            <tag> C/C++ </tag>
             
         </tags>
         
@@ -1097,6 +1097,28 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Linux脚本]]></title>
+      <url>https://sohunjug.com/2012/12/23/linux-shell/</url>
+      <content type="html"><![CDATA[<p>Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。</p>
+<p>首先需要安装插件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ubuntu       apt-get install expect</span><br><span class="line">fedora       yum install expect.x86_64</span><br><span class="line">opensuse     zypper install expect</span><br></pre></td></tr></table></figure><br>之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。<br><a id="more"></a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/expect -f</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> user [lindex <span class="variable">$argv</span> 1]</span><br><span class="line"><span class="built_in">set</span> host [lindex <span class="variable">$argv</span> 0]</span><br><span class="line"><span class="built_in">set</span> password [lindex <span class="variable">$argv</span> 2]</span><br><span class="line"><span class="built_in">set</span> lang [lindex <span class="variable">$argv</span> 3]</span><br><span class="line"><span class="built_in">set</span> timeout -1</span><br><span class="line"></span><br><span class="line">spawn ssh <span class="variable">$user</span>@<span class="variable">$host</span></span><br><span class="line"></span><br><span class="line">expect &#123;</span><br><span class="line"><span class="string">"*yes/no*"</span> &#123; send <span class="string">"yes\r"</span>;exp_continue &#125;</span><br><span class="line"></span><br><span class="line"><span class="string">"*assword:*"</span> &#123; send <span class="string">"<span class="variable">$password</span>\r"</span> &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">sleep 1</span><br><span class="line"><span class="comment">#send "export LANG=$lang &amp;&amp; export LC_ALL=$lang \r" </span></span><br><span class="line"></span><br><span class="line">interact</span><br></pre></td></tr></table></figure><br>而登录的时候可以将密码等信息存入文件中，然后自动读取。如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="variable">$HOME</span>/Documents/ssh/conn.profile ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">source</span> <span class="variable">$HOME</span>/Documents/ssh/conn.profile</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ip=<span class="variable">$1</span></span><br><span class="line">CONIP=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNIP<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line">CONUSER=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNUSER<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line">CONPASS=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNPASS<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line">CONLANG=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNLANG<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="variable">$&#123;CONIP&#125;</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> error:  没有那个IP</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONIP&#125;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONUSER&#125;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONPASS&#125;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONLANG&#125;</span></span><br><span class="line">	<span class="built_in">export</span> LANG=<span class="variable">$&#123;CONLANG&#125;</span> &amp;&amp; <span class="built_in">export</span> LC_ALL=<span class="variable">$&#123;CONLANG&#125;</span></span><br><span class="line">	<span class="variable">$HOME</span>/Documents/ssh/sshend.sh <span class="variable">$&#123;CONIP&#125;</span> <span class="variable">$&#123;CONUSER&#125;</span> <span class="variable">$&#123;CONPASS&#125;</span> <span class="variable">$&#123;CONLANG&#125;</span></span><br><span class="line">	\`qdbus org.kde.konsole <span class="variable">$session</span> org.kde.konsole.Session.setCodec UTF-8\`</span><br><span class="line">	<span class="built_in">export</span> LANG=zh_CN.UTF-8</span><br><span class="line">	<span class="built_in">export</span> LC_ALL=zh_CN.UTF-8</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure><br>给这个文件建立一个alias，之后直接登录加上标志，用ssh或者ftp等命令就方便了很多吧～</p>
+]]></content>
+      
+        <categories>
+            
+            <category> Linux </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> Linux shell </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别]]></title>
       <url>https://sohunjug.com/2012/12/23/oracle-commit/</url>
       <content type="html"><![CDATA[<p>以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。<br><a id="more"></a></p>
@@ -1120,28 +1142,6 @@
         <tags>
             
             <tag> Oracle </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Linux脚本]]></title>
-      <url>https://sohunjug.com/2012/12/23/linux-shell/</url>
-      <content type="html"><![CDATA[<p>Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。</p>
-<p>首先需要安装插件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ubuntu       apt-get install expect</span><br><span class="line">fedora       yum install expect.x86_64</span><br><span class="line">opensuse     zypper install expect</span><br></pre></td></tr></table></figure><br>之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。<br><a id="more"></a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/expect -f</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> user [lindex <span class="variable">$argv</span> 1]</span><br><span class="line"><span class="built_in">set</span> host [lindex <span class="variable">$argv</span> 0]</span><br><span class="line"><span class="built_in">set</span> password [lindex <span class="variable">$argv</span> 2]</span><br><span class="line"><span class="built_in">set</span> lang [lindex <span class="variable">$argv</span> 3]</span><br><span class="line"><span class="built_in">set</span> timeout -1</span><br><span class="line"></span><br><span class="line">spawn ssh <span class="variable">$user</span>@<span class="variable">$host</span></span><br><span class="line"></span><br><span class="line">expect &#123;</span><br><span class="line"><span class="string">"*yes/no*"</span> &#123; send <span class="string">"yes\r"</span>;exp_continue &#125;</span><br><span class="line"></span><br><span class="line"><span class="string">"*assword:*"</span> &#123; send <span class="string">"<span class="variable">$password</span>\r"</span> &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">sleep 1</span><br><span class="line"><span class="comment">#send "export LANG=$lang &amp;&amp; export LC_ALL=$lang \r" </span></span><br><span class="line"></span><br><span class="line">interact</span><br></pre></td></tr></table></figure><br>而登录的时候可以将密码等信息存入文件中，然后自动读取。如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -f <span class="variable">$HOME</span>/Documents/ssh/conn.profile ]; <span class="keyword">then</span></span><br><span class="line">	<span class="built_in">source</span> <span class="variable">$HOME</span>/Documents/ssh/conn.profile</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ip=<span class="variable">$1</span></span><br><span class="line">CONIP=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNIP<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line">CONUSER=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNUSER<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line">CONPASS=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNPASS<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line">CONLANG=`cat <span class="variable">$HOME</span>/Documents/ssh/conn.profile | grep CONNLANG<span class="variable">$ip</span> | grep -v grep | awk -F= <span class="string">'&#123;print \$2&#125;'</span>`</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="variable">$&#123;CONIP&#125;</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">	<span class="built_in">echo</span> error:  没有那个IP</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONIP&#125;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONUSER&#125;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONPASS&#125;</span></span><br><span class="line">	<span class="built_in">echo</span> <span class="variable">$&#123;CONLANG&#125;</span></span><br><span class="line">	<span class="built_in">export</span> LANG=<span class="variable">$&#123;CONLANG&#125;</span> &amp;&amp; <span class="built_in">export</span> LC_ALL=<span class="variable">$&#123;CONLANG&#125;</span></span><br><span class="line">	<span class="variable">$HOME</span>/Documents/ssh/sshend.sh <span class="variable">$&#123;CONIP&#125;</span> <span class="variable">$&#123;CONUSER&#125;</span> <span class="variable">$&#123;CONPASS&#125;</span> <span class="variable">$&#123;CONLANG&#125;</span></span><br><span class="line">	\`qdbus org.kde.konsole <span class="variable">$session</span> org.kde.konsole.Session.setCodec UTF-8\`</span><br><span class="line">	<span class="built_in">export</span> LANG=zh_CN.UTF-8</span><br><span class="line">	<span class="built_in">export</span> LC_ALL=zh_CN.UTF-8</span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure><br>给这个文件建立一个alias，之后直接登录加上标志，用ssh或者ftp等命令就方便了很多吧～</p>
-]]></content>
-      
-        <categories>
-            
-            <category> Linux </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> Linux shell </tag>
             
         </tags>
         
@@ -1262,6 +1262,54 @@
   
     
     <entry>
+      <title><![CDATA[关于我]]></title>
+      <url>https://sohunjug.com/about/index.html</url>
+      <content type="html"><![CDATA[<p><style type="text/css"><br>      strong a {<br>          color: #747474;<br>      }<br>    .player {<br>        text-align: center;<br>        margin: .5em auto 0;<br>    }<br>    .player br {<br>        display: none;<br>    }<br>    .sign {<br>        text-align: right;<br>        font-style: italic;<br>    }</p>
+<pre><code>#ds-recent-visitors {
+    padding: 0;
+}
+#ds-recent-visitors div,#ds-recent-visitors div a{
+    display: inline-block;
+}
+#ds-recent-visitors div img {
+    display: inline-block !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+    padding: 2px;
+}
+.article-entry img:first-child {
+    display: block;
+}
+.article-entry span {
+    font-family: Arial;
+}
+</code></pre><p></style><br>　　2012年6月，浑浑噩噩的读完了4年大学，虽然没有找到一份满足的工作，但是仍然不肯放弃这个职业方向<span>——</span>C/C++服务端开发工程师。终归是学了10多年的方向，心里怎么也不想放下这个职业。<br>　　2014年4月，终于来到了一线城市<span>——</span>深圳，想着如何能打拼出一片自己的小天地，可是最终还是被现实击败，无法做自己喜欢的方向，私人开发也利益优先，好羡慕那些开源工作者，期待着自己也有那么自由的一天。</p>
+<p style="text-align: right;"><span>——</span>  2015年5月21日</p>
+
+<h3 id="失去的曾经"><a href="#失去的曾经" class="headerlink" title="失去的曾经"></a>失去的曾经</h3><blockquote>
+<p>这个博客，域名已经持有了好多年，从最开始的wordpress，到之前的octopress，又到现在的hexo。换了一个又一个。可是博客内容也没有好好的做，现在应该激励下自己了，从博客开始，一步步为了自己的自由努力。</p>
+</blockquote>
+<h3 id="私人简历"><a href="#私人简历" class="headerlink" title="私人简历"></a>私人简历</h3><h4 id="自我评价"><a href="#自我评价" class="headerlink" title="自我评价"></a>自我评价</h4><blockquote>
+<p>比较喜欢计算机，喜欢数学，非常享受编程带来的乐趣。特别是对于c++编程当中，可以带来我很多喜欢的事。从初中开始就接触c++编程，一直到如今坚持c++。但私下里也使用python、lua、shell写一些自动化脚本，比较喜欢研究技术，空闲时间看代码比较多，平时和工作喜欢使用Linux系统或Mac系统，所以三个平台下的开发都比较熟悉。最喜欢的编辑器vim，常用的编辑器sublime,understand沟通力强，喜欢讨论，对于代码喜欢精益求精，如果有需要可以私下里合作。</p>
+</blockquote>
+<h4 id="非工作经历"><a href="#非工作经历" class="headerlink" title="非工作经历"></a>非工作经历</h4><h5 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h5><blockquote>
+<p><strong>二次开发翻墙工具</strong><br>二次开发shadowsocks，增加用户名密码验证，流量记录，多线程单进程处理，增加http、https协议。基于libuv开发三平台客户端内核，mac端gui。<br>二次开发ocserv(anyconnect)开源服务端，增加shell形式用户密码验证</p>
+</blockquote>
+<h5 id="typescript"><a href="#typescript" class="headerlink" title="typescript"></a>typescript</h5><blockquote>
+<p>RESTful API，Gulp自动化配置<a href="https://github.com/sohunjug/TypeScript-RESTful-sample.git" target="_blank" rel="noopener">TypeScript-RESTful-sample</a><br>Ionic2 APP开发。<br>Angular2 学习。</p>
+</blockquote>
+<h5 id="objective-c-业余爱好"><a href="#objective-c-业余爱好" class="headerlink" title="objective-c(业余爱好)"></a>objective-c(业余爱好)</h5><blockquote>
+<p><strong>parld-mac客户端(Mac)</strong><br>开发悬浮窗时在线音乐客户端，支持简单动画特效等(与朋友间爱好，目前已下架)，现开源代码<a href="http://git.oschina.net/sohunjug/Parld-macOS" target="_blank" rel="noopener">Git-oschina</a>，<a href="https://github.com/sohunjug/Parld-macOS.git" target="_blank" rel="noopener">GitHub</a>，<a href="https://git.coding.net/sohunjug/Parld-macOS.git" target="_blank" rel="noopener">Coding</a><br>还有两个上架小工具<a href="https://itunes.apple.com/us/app/jsonxmlformater/id909976737?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">JsonXmlFormater</a>、<a href="https://itunes.apple.com/us/app/encrypttools/id1134593405?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">EncryptTools</a>、<a href="https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">PacketSender</a> 因使用ObjC重写了，现开源swift旧版本<a href="https://gitlab.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitLab</a>、<a href="https://github.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitHub</a></p>
+</blockquote>
+<h5 id="python-业余爱好"><a href="#python-业余爱好" class="headerlink" title="python(业余爱好)"></a>python(业余爱好)</h5><blockquote>
+<p><strong>数据实时转发服务器</strong><br>基于zmq通信，redis与mysql规则和数据存储，实现消息根据规则实时处理转发。因python开发周期短，个人项目开发。</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[404 Not Found：该页无法显示]]></title>
       <url>https://sohunjug.com//404.html</url>
       <content type="html"><![CDATA[<style type="text/css">
@@ -1328,61 +1376,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[关于我]]></title>
-      <url>https://sohunjug.com/about/index.html</url>
-      <content type="html"><![CDATA[<p><style type="text/css"><br>      strong a {<br>          color: #747474;<br>      }<br>    .player {<br>        text-align: center;<br>        margin: .5em auto 0;<br>    }<br>    .player br {<br>        display: none;<br>    }<br>    .sign {<br>        text-align: right;<br>        font-style: italic;<br>    }</p>
-<pre><code>#ds-recent-visitors {
-    padding: 0;
-}
-#ds-recent-visitors div,#ds-recent-visitors div a{
-    display: inline-block;
-}
-#ds-recent-visitors div img {
-    display: inline-block !important;
-    width: 56px !important;
-    height: 56px !important;
-    border-radius: 50%;
-    border: 1px solid #ddd;
-    padding: 2px;
-}
-.article-entry img:first-child {
-    display: block;
-}
-.article-entry span {
-    font-family: Arial;
-}
-</code></pre><p></style><br>　　2012年6月，浑浑噩噩的读完了4年大学，虽然没有找到一份满足的工作，但是仍然不肯放弃这个职业方向<span>——</span>C/C++服务端开发工程师。终归是学了10多年的方向，心里怎么也不想放下这个职业。<br>　　2014年4月，终于来到了一线城市<span>——</span>深圳，想着如何能打拼出一片自己的小天地，可是最终还是被现实击败，无法做自己喜欢的方向，私人开发也利益优先，好羡慕那些开源工作者，期待着自己也有那么自由的一天。</p>
-<p style="text-align: right;"><span>——</span>  2015年5月21日</p>
-
-<h3 id="失去的曾经"><a href="#失去的曾经" class="headerlink" title="失去的曾经"></a>失去的曾经</h3><blockquote>
-<p>这个博客，域名已经持有了好多年，从最开始的wordpress，到之前的octopress，又到现在的hexo。换了一个又一个。可是博客内容也没有好好的做，现在应该激励下自己了，从博客开始，一步步为了自己的自由努力。</p>
-</blockquote>
-<h3 id="私人简历"><a href="#私人简历" class="headerlink" title="私人简历"></a>私人简历</h3><h4 id="自我评价"><a href="#自我评价" class="headerlink" title="自我评价"></a>自我评价</h4><blockquote>
-<p>比较喜欢计算机，喜欢数学，非常享受编程带来的乐趣。特别是对于c++编程当中，可以带来我很多喜欢的事。从初中开始就接触c++编程，一直到如今坚持c++。但私下里也使用python、lua、shell写一些自动化脚本，比较喜欢研究技术，空闲时间看代码比较多，平时和工作喜欢使用Linux系统或Mac系统，所以三个平台下的开发都比较熟悉。最喜欢的编辑器vim，常用的编辑器sublime,understand沟通力强，喜欢讨论，对于代码喜欢精益求精，如果有需要可以私下里合作。</p>
-</blockquote>
-<h4 id="非工作经历"><a href="#非工作经历" class="headerlink" title="非工作经历"></a>非工作经历</h4><h5 id="c-c"><a href="#c-c" class="headerlink" title="c/c++"></a>c/c++</h5><blockquote>
-<p><strong>二次开发翻墙工具</strong><br>二次开发shadowsocks，增加用户名密码验证，流量记录，多线程单进程处理，增加http、https协议。基于libuv开发三平台客户端内核，mac端gui。<br>二次开发ocserv(anyconnect)开源服务端，增加shell形式用户密码验证</p>
-</blockquote>
-<h5 id="typescript"><a href="#typescript" class="headerlink" title="typescript"></a>typescript</h5><blockquote>
-<p>RESTful API，Gulp自动化配置<a href="https://github.com/sohunjug/TypeScript-RESTful-sample.git" target="_blank" rel="noopener">TypeScript-RESTful-sample</a><br>Ionic2 APP开发。<br>Angular2 学习。</p>
-</blockquote>
-<h5 id="objective-c-业余爱好"><a href="#objective-c-业余爱好" class="headerlink" title="objective-c(业余爱好)"></a>objective-c(业余爱好)</h5><blockquote>
-<p><strong>parld-mac客户端(Mac)</strong><br>开发悬浮窗时在线音乐客户端，支持简单动画特效等(与朋友间爱好，目前已下架)，现开源代码<a href="http://git.oschina.net/sohunjug/Parld-macOS" target="_blank" rel="noopener">Git-oschina</a>，<a href="https://github.com/sohunjug/Parld-macOS.git" target="_blank" rel="noopener">GitHub</a>，<a href="https://git.coding.net/sohunjug/Parld-macOS.git" target="_blank" rel="noopener">Coding</a><br>还有两个上架小工具<a href="https://itunes.apple.com/us/app/jsonxmlformater/id909976737?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">JsonXmlFormater</a>、<a href="https://itunes.apple.com/us/app/encrypttools/id1134593405?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">EncryptTools</a>、<a href="https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">PacketSender</a> 因使用ObjC重写了，现开源swift旧版本<a href="https://gitlab.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitLab</a>、<a href="https://github.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitHub</a></p>
-</blockquote>
-<h5 id="python-业余爱好"><a href="#python-业余爱好" class="headerlink" title="python(业余爱好)"></a>python(业余爱好)</h5><blockquote>
-<p><strong>数据实时转发服务器</strong><br>基于zmq通信，redis与mysql规则和数据存储，实现消息根据规则实时处理转发。因python开发周期短，个人项目开发。</p>
-</blockquote>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[留言板]]></title>
-      <url>https://sohunjug.com/message/index.html</url>
-      <content type="html"><![CDATA[<p>　　如果对本人或此博客有什么意见或建议，欢迎留言！</p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[人个简历]]></title>
       <url>https://sohunjug.com/resume/index.html</url>
       <content type="html"><![CDATA[<h1 id="聼"><a href="#聼" class="headerlink" title="聼"></a>聼</h1><h1 id="个人信息"><a href="#个人信息" class="headerlink" title="个人信息"></a>个人信息</h1><ul>
@@ -1400,7 +1393,7 @@
 <li>期望职业：高级软件工程师、软件研发工程师、系统架构设计师</li>
 <li>期望行业：计算机软件、网络游戏、互联网、区块链</li>
 <li>工作地区：仅深圳(一年出差时间不超过两周)</li>
-<li>期望年薪：面议, 50-60w 年薪</li>
+<li>期望年薪：面议</li>
 <li>目前状况：我对现有工作还算满意，如有更好的工作机会，我也可以考虑。（到岗时间另议）</li>
 </ul>
 <h1 id="自我评价"><a href="#自我评价" class="headerlink" title="自我评价"></a>自我评价</h1><p>比较喜欢计算机，喜欢数学，非常享受编程带来的乐趣。从初中开始就接触 c++编程，一直到如今坚持 c++。但私下里也使用 python、lua、nodejs、shell 写一些自动化脚本，比较喜欢研究技术，空闲时间看代码比较多，平时和工作喜欢使用 Linux 系统或 Mac 系统。最喜欢的编辑器 vim，常用的编辑器 vscode 沟通力强，喜欢讨论，对于代码喜欢精益求精，能够很快融入团队，与团队成员合作融洽。</p>
@@ -1424,6 +1417,13 @@
 <h1 id="教育经历"><a href="#教育经历" class="headerlink" title="教育经历"></a>教育经历</h1><h3 id="2008-09-–-2012-06"><a href="#2008-09-–-2012-06" class="headerlink" title="2008/09 – 2012/06"></a>2008/09 – 2012/06</h3><p>东北石油大学|计算机科学与技术|本科<br>在校学习情况<br>曾获 院校级 三等奖 奖学金<br>大学学委<br>东北石油大学编程大赛一等奖<br>2011/05 黑龙江省 ACM 编程大赛三等奖 省区级<br>东北区 ACM 大赛优秀奖<br>2010/04 工信部国信蓝点杯黑龙江省优秀奖 省区级<br>2011/04 工信部国信蓝点杯黑龙江省一等奖 省区级<br>全国工信部优秀奖<br>在校实践经验<br>2010/12 – 2012/01<br>跟老师做项目<br>关于大庆油公司内部网站系统, C#.NET 语言编写<br>精品课网站</p>
 <h3 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h3><p>2004/03<br>全国计算机等级一级<br>2011/05<br>ACM 东北区优秀奖</p>
 <h3 id="专业技能"><a href="#专业技能" class="headerlink" title="专业技能"></a>专业技能</h3><p>C/C++|熟练|<br>obj-C|一般|<br>python|良好|<br>javascript|一般|</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[留言板]]></title>
+      <url>https://sohunjug.com/message/index.html</url>
+      <content type="html"><![CDATA[<p>　　如果对本人或此博客有什么意见或建议，欢迎留言！</p>
 ]]></content>
     </entry>
     
