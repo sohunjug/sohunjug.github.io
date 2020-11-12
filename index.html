@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="author" content="聽">
+
+
+    
+    
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="聽">
+<meta property="og:url" content="https://sohunjug.com/index.html">
+<meta property="og:site_name" content="聽">
+<meta property="og:locale" content="zh-Hans">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="聽">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="聽" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <style> .article { opacity: 0;} </style>
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <!--prettify代码高亮主题css引入-->
+  <link href="/plugins/prettify/themes/atelier-cave-light.css" rel="stylesheet">
+
+
+
+<title>聽</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: true,
+        isPost: false,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57a8843ce7c63ecd"></script>
+
+
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/author.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">聽</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">Opportunity favors only the prepared mind. And everything change with time.</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/tags/随笔">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/message/">留言板</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:sohunjug@gmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="http://weibo.com/sohunjug" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="http://github.com/sohunjug" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="http://v2ex.com/member/sohunjug" title="V2EX"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa Google" href="https://plus.google.com/u/0/109689650361403547561" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="https://twitter.com/sohunjug" title="Twitter"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com/users/3881470/sohunjug" title="StackOverflow"></a>
+                            
+                                <a class="fa QQ" href="tencent://message/?uin=52642241&Site=sohunjug.com&Menu=yes" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Define/">Define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kafka/">Kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux-shell/">Linux shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Memory/">Memory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MongoDB/">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-JS/">Node.JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oracle/">Oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pool/">Pool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Task/">Task</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-profile/">Vim profile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-xml/">Vim xml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webmail/">Webmail</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k3s/">k3s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/makefile/">makefile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/micro/">micro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/octopress/">octopress</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/">ssh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/telnet/">telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress-custom/">wordpress custom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress-menu/">wordpress menu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://stdrc.cc/">Richard Chien</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://shaoyuan1943.github.io/">shaoyuan1943</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我是一个vimer。专注于服务端，精通c/c++，熟悉python，lua，objective-c，swift，shell, rust, nodejs, 以及运维docker, k8s。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">聽</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/author.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">聽</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">Opportunity favors only the prepared mind. And everything change with time.</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/tags/随笔">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/message/">留言板</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:sohunjug@gmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="http://weibo.com/sohunjug" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="http://github.com/sohunjug" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="http://v2ex.com/member/sohunjug" title="V2EX"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa Google" target="_blank" href="https://plus.google.com/u/0/109689650361403547561" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="https://twitter.com/sohunjug" title="Twitter"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/users/3881470/sohunjug" title="StackOverflow"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="tencent://message/?uin=52642241&Site=sohunjug.com&Menu=yes" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-k3s-introduce" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/10/22/k3s-introduce/" class="article-date">
+      <time datetime="2019-10-22T05:44:11.000Z" itemprop="datePublished">2019-10-22</time>
+</a>
+
+ 
+    <a href="/2019/10/22/k3s-introduce/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2019/10/22/k3s-introduce/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/10/22/k3s-introduce/">k3s 指引</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h2 id="k3s-简介"><a href="#k3s-简介" class="headerlink" title="k3s 简介"></a>k3s 简介</h2><p>2019 年 2 月 26 日，业界领先的容器管理软件提供商 Rancher Labs(以下简称 Rancher)宣布推出轻量级 Kubernetes 发行版 k3s，这款产品专为在资源有限的环境中运行 Kubernetes 的研发和运维人员设计。</p>
+<h3 id="介绍与由来"><a href="#介绍与由来" class="headerlink" title="介绍与由来"></a>介绍与由来</h3><h4 id="什么是-k3s？"><a href="#什么是-k3s？" class="headerlink" title="什么是 k3s？"></a>什么是 k3s？</h4>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/k3s/">k3s</a><a class="article-category-link" href="/categories/k3s/k8s/">k8s</a><a class="article-category-link" href="/categories/k3s/k8s/kubernetes/">kubernetes</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k3s/">k3s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2019/10/22/k3s-introduce/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-microservice" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/21/microservice/" class="article-date">
+      <time datetime="2017-10-21T09:46:45.000Z" itemprop="datePublished">2017-10-21</time>
+</a>
+
+ 
+    <a href="/2017/10/21/microservice/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2017/10/21/microservice/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/21/microservice/">微服务概念</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>多年以来, 开发者们受够了大而全的系统, 代码越积越多, 层次越做越深, 逻辑复杂, 结构混乱, 牵一发而动全身, 说好的高内聚, 松耦合几乎做不到.</p>
+<p>相比大而全, 人们更喜欢小而美, 微服务 Microservice 就此应运而生.</p>
+<p>微服务就是微小紧凑的服务, 提供统一简捷的 API 供外部访问, 实现一组独立的功能.</p>
+<p>在讲微服务之前, 先让我们回顾一下服务 Service 和面向服务的架构 SOA</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/micro/">micro</a><a class="article-category-link" href="/categories/micro/微服务/">微服务</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/micro/">micro</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微服务/">微服务</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/10/21/microservice/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-nodejs-restful-gulp" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/13/nodejs-restful-gulp/" class="article-date">
+      <time datetime="2016-09-13T07:58:43.000Z" itemprop="datePublished">2016-09-13</time>
+</a>
+
+ 
+    <a href="/2016/09/13/nodejs-restful-gulp/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2016/09/13/nodejs-restful-gulp/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/13/nodejs-restful-gulp/">TypeScript: (Node.JS + gulp + express) 写RESTful API 做后端</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C++功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。</p>
+</blockquote>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Node-JS/">Node.JS</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-JS/">Node.JS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RESTful/">RESTful</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TypeScript/">TypeScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/express/">express</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2016/09/13/nodejs-restful-gulp/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-PacketSender" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/18/PacketSender/" class="article-date">
+      <time datetime="2016-08-18T14:33:12.000Z" itemprop="datePublished">2016-08-18</time>
+</a>
+
+ 
+    <a href="/2016/08/18/PacketSender/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2016/08/18/PacketSender/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/18/PacketSender/">PacketSender 发送接收socket macOS App</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><blockquote>
+<p>问题原因可能为macOS 10.12 beta系统问题，新更新为10.12 beta 6问题解决。</p>
+</blockquote>
+<blockquote>
+<p>目前版本已更新为1.4.3，支持多窗口。</p>
+</blockquote>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><blockquote>
+<p>最近工作发现有时候需要测试发送TCP包，而目前Mac上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。<a href="https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">PacketSender</a><br>因后来实用ObjC重写了的原因，所以开源旧版本的Swift版本吧。<a href="https://gitlab.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitLab</a>、<a href="https://github.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitHub</a></p>
+</blockquote>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Objective-C/">Objective-C</a><a class="article-category-link" href="/categories/Objective-C/Swift/">Swift</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Objective-C/">Objective-C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP/">TCP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UDP/">UDP</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2016/08/18/PacketSender/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-ssh-telnet" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/08/ssh-telnet/" class="article-date">
+      <time datetime="2016-08-08T09:31:53.000Z" itemprop="datePublished">2016-08-08</time>
+</a>
+
+ 
+    <a href="/2016/08/08/ssh-telnet/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2016/08/08/ssh-telnet/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/08/ssh-telnet/">自动登录ssh或telnet脚本</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <blockquote>
+<p>闲来无事，正好更新下以前写的脚本，自动登录ssh或telnet。<br>而且也方便记录密码。<a href="http://git.oschina.net/sohunjug/connect.sh" target="_blank" rel="noopener">Git-oschina</a>、<a href="https://github.com/sohunjug/connect.sh" target="_blank" rel="noopener">GitHub</a></p>
+</blockquote>
+<h2 id="使用connect-sh自动连接ssh或者telnet"><a href="#使用connect-sh自动连接ssh或者telnet" class="headerlink" title="使用connect.sh自动连接ssh或者telnet"></a>使用connect.sh自动连接ssh或者telnet</h2>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ssh/">ssh</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/telnet/">telnet</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2016/08/08/ssh-telnet/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-kafka-rocketmq" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/08/kafka-rocketmq/" class="article-date">
+      <time datetime="2016-08-08T01:10:28.000Z" itemprop="datePublished">2016-08-08</time>
+</a>
+
+ 
+    <a href="/2016/08/08/kafka-rocketmq/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2016/08/08/kafka-rocketmq/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/08/kafka-rocketmq/">Kafka、RocketMQ调研</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <h3 id="Kafka是Linkin开源的消息中间件"><a href="#Kafka是Linkin开源的消息中间件" class="headerlink" title="Kafka是Linkin开源的消息中间件"></a>Kafka是Linkin开源的消息中间件</h3><h4 id="Kafka的设计目标是："><a href="#Kafka的设计目标是：" class="headerlink" title="Kafka的设计目标是："></a>Kafka的设计目标是：</h4><blockquote>
+<p>（1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。<br>（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。<br>（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。<br>（4）同时支持离线数据处理和实时数据处理。<br>（5）Scale out：支持在线水平扩展。</p>
+</blockquote>
+<h3 id="RocketMQ是阿里开源的消息中间件"><a href="#RocketMQ是阿里开源的消息中间件" class="headerlink" title="RocketMQ是阿里开源的消息中间件"></a>RocketMQ是阿里开源的消息中间件</h3><blockquote>
+<p>其最初也是基于Kafka发展而来。</p>
+</blockquote>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Java/">Java</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Kafka/">Kafka</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2016/08/08/kafka-rocketmq/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-c-define" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/01/13/c-define/" class="article-date">
+      <time datetime="2015-01-13T07:59:59.000Z" itemprop="datePublished">2015-01-13</time>
+</a>
+
+ 
+    <a href="/2015/01/13/c-define/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2015/01/13/c-define/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/13/c-define/">C/C++中宏定义的用法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>无论是在网络上还是项目中，define的用法非常广泛，define是由预处理程序自动完成的，被成为宏定义。</p>
+<p>宏定义的作用范围仅限于当前文件(头文件除外，包含该头文件的源文件中都可使用)，一般define分为有参数和无参数两种。</p>
+<h1 id="宏定义优点"><a href="#宏定义优点" class="headerlink" title="宏定义优点"></a>宏定义优点</h1>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/C-C/">C/C++</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Define/">Define</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2015/01/13/c-define/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-git-webmail" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/06/24/git-webmail/" class="article-date">
+      <time datetime="2014-06-24T12:15:57.000Z" itemprop="datePublished">2014-06-24</time>
+</a>
+
+ 
+    <a href="/2014/06/24/git-webmail/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2014/06/24/git-webmail/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/06/24/git-webmail/">个人搭建git服务器与webmail服务器</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>最近看到一句令人很有感觉的一句话，”The best is yet to come…”，而我本人也很相信这句话。</p>
+<p>在这个一天天各种新技术出生的年代，大家都想什么技术都熟悉一点，不至于让人说out了，而本人又是处女座的，有那么点强迫症，非常喜欢使用自己的东西，所以索性就搭建了自己的git服务器。而Apple新出的OSX10.10 DP2又依然没有解决邮件客户端的问题，感觉又很不爽，正好看到过一个RainLoop的帖子，所以也把WebMail捅咕上了。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Git/">Git</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/">Git</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Webmail/">Webmail</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2014/06/24/git-webmail/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-octopress" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/04/19/octopress/" class="article-date">
+      <time datetime="2014-04-19T08:20:27.000Z" itemprop="datePublished">2014-04-19</time>
+</a>
+
+ 
+    <a href="/2014/04/19/octopress/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2014/04/19/octopress/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/04/19/octopress/">终于从wordpress转移到了octopress</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>从大学开始就折腾过wordpress，工作后也确实一直用着wordpress。步入社会发现大学里面的都算不上皮毛，不懂的东西实在太多了，如饥似渴的小小学习2年，终于换了份工作。</p>
+<p>当日子一步步的步上正轨，我的学习热情也慢慢回升了。记得是半年前吧，突然听说了octopress这个博客，只看介绍(A blogging framework for hackers.)就给人一种高大上的感觉哈。当时就想折腾下，可惜因为工作也忙，也想换工作，一直拖到了现在。</p>
+<p>新工作依然还是程序员，比较热爱这个职业吧。当做出一个作品时那种快感，没做过的人是体验不到的。平时上班因为刚入职，还不忙，正好下班就可以捅咕自己的东西了。可能因为处女座的原因，尤其喜欢把这些东西搞到自己的服务器上。没事看看vps，发现阿里云现在很便宜嘛，一个月才55，而且还可以申请试用5天，想到就办，申请个试用的，搭建环境测试，满意之后买vps。<br>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/wordpress/">wordpress</a><a class="article-category-link" href="/categories/wordpress/octopress/">octopress</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/octopress/">octopress</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2014/04/19/octopress/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-parld" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2014/02/27/parld/" class="article-date">
+      <time datetime="2014-02-26T16:00:00.000Z" itemprop="datePublished">2014-02-27</time>
+</a>
+
+ 
+    <a href="/2014/02/27/parld/#comments" title="查看评论">
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        <span class="count-comment"></span>
+        
+        
+            <span class="disqus-comment-count" data-disqus-identifier="2014/02/27/parld/"></span>
+        
+    </a>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2014/02/27/parld/">Mac应用开发-启程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是<a href="http://www.parld.com" target="_blank" rel="noopener">parld音乐聚汇</a>(推广下哈)。其中Mac客户端<a href="http://www.parld.com/api?act=download&amp;type=mac" target="_blank" rel="noopener">下载地址</a></p>
+<p>目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家<br>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Objective-C/">Objective-C</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Objective-C/">Objective-C</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2014/02/27/parld/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        <i class="fa fa-copyright"></i>
+        2013-2020 聽 |
+        <a href="http://beian.miit.gov.cn/" target="_blank"
+          >粤ICP备14034266号</a
+        >
+      </div>
+      <div class="footer-right">
+        <a
+          href="http://hexo.io/"
+          target="_blank"
+          title="快速、简洁且高效的博客框架"
+          >Hexo</a
+        >
+        Theme
+        <a
+          href="https://github.com/MOxFIVE/hexo-theme-yelee"
+          target="_blank"
+          title="简而不减 Hexo 双栏博客主题  v3.5"
+          >Yelee</a
+        >
+        by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+      </div>
+    </div>
+    
+    <div class="visit">
+      
+      <span id="busuanzi_container_site_pv" style="display:none">
+        <span id="site-visit" title="本站到访数"
+          ><i class="fa fa-user" aria-hidden="true"></i
+          ><span id="busuanzi_value_site_uv"></span>
+        </span>
+      </span>
+       
+      <span>| </span>
+       
+      <span id="busuanzi_container_page_pv" style="display:none">
+        <span id="page-visit" title="本页阅读量"
+          ><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i
+          ><span id="busuanzi_value_page_pv"></span>
+        </span>
+      </span>
+      
+    </div>
+    
+  </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 24;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+    
+
+    
+        <script id="dsq-count-scr" src="//sohunjug.disqus.com/count.js" async></script>
+        <script>
+            if ($(".left-col").is(":visible")) {
+                var $disqusCount = $(".disqus-comment-count");
+                $disqusCount.bind("DOMNodeInserted", function(e) {
+                    var num = $(this).text().replace(/[^0-9]/ig,"");
+                    if (num > 0) {
+                        $(this).siblings(".count-comment").text(num);
+                    }
+                    $(this).remove();
+                })
+            } else {
+                $(".disqus-comment-count").remove();
+            }
+        </script>
+     
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-50147602-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+<!--prettify代码高亮脚本引入-->
+<script src="/plugins/prettify/prettify.js"></script>
+<script type="text/javascript">
+$(window).load(function(){
+$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+ prettyPrint();
+})
+</script>
+
+
+  </div>
+</body>
+</html>

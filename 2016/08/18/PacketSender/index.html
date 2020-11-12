@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="author" content="聽">
+
+
+
+<meta name="description" content="更新 问题原因可能为macOS 10.12 beta系统问题，新更新为10.12 beta 6问题解决。   目前版本已更新为1.4.3，支持多窗口。  起因 最近工作发现有时候需要测试发送TCP包，而目前Mac上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。PacketSender因后来实用ObjC重写了的原因，所以开源旧版本的Swift版本吧。GitLab、GitHub">
+<meta name="keywords" content="Objective-C,Swift,TCP,UDP">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PacketSender 发送接收socket macOS App">
+<meta property="og:url" content="https://sohunjug.com/2016/08/18/PacketSender/index.html">
+<meta property="og:site_name" content="聽">
+<meta property="og:description" content="更新 问题原因可能为macOS 10.12 beta系统问题，新更新为10.12 beta 6问题解决。   目前版本已更新为1.4.3，支持多窗口。  起因 最近工作发现有时候需要测试发送TCP包，而目前Mac上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。PacketSender因后来实用ObjC重写了的原因，所以开源旧版本的Swift版本吧。GitLab、GitHub">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oalatibtx.bkt.clouddn.com/147153152589540.jpg?imageView2/0/format/jpg">
+<meta property="og:image" content="http://7xp1l3.com1.z0.glb.clouddn.com/FgduG45k5rNkevyXERV1CEMobDaW">
+<meta property="og:image" content="http://oalatibtx.bkt.clouddn.com/802423.png">
+<meta property="og:image" content="http://oalatibtx.bkt.clouddn.com/289304.png">
+<meta property="og:updated_time" content="2019-08-19T06:10:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PacketSender 发送接收socket macOS App">
+<meta name="twitter:description" content="更新 问题原因可能为macOS 10.12 beta系统问题，新更新为10.12 beta 6问题解决。   目前版本已更新为1.4.3，支持多窗口。  起因 最近工作发现有时候需要测试发送TCP包，而目前Mac上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。PacketSender因后来实用ObjC重写了的原因，所以开源旧版本的Swift版本吧。GitLab、GitHub">
+<meta name="twitter:image" content="http://oalatibtx.bkt.clouddn.com/147153152589540.jpg?imageView2/0/format/jpg">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="聽" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+  <!--prettify代码高亮主题css引入-->
+  <link href="/plugins/prettify/themes/atelier-cave-light.css" rel="stylesheet">
+
+
+
+<title>PacketSender 发送接收socket macOS App | 聽</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-57a8843ce7c63ecd"></script>
+
+
+
+
+</head>
+</html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/author.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">聽</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">Opportunity favors only the prepared mind. And everything change with time.</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/tags/随笔">随笔</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/message/">留言板</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:sohunjug@gmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" href="http://weibo.com/sohunjug" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" href="http://github.com/sohunjug" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" href="http://v2ex.com/member/sohunjug" title="V2EX"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa Google" href="https://plus.google.com/u/0/109689650361403547561" title="Google"></a>
+                            
+                                <a class="fa Twitter" href="https://twitter.com/sohunjug" title="Twitter"></a>
+                            
+                                <a class="fa StackOverflow" href="http://stackoverflow.com/users/3881470/sohunjug" title="StackOverflow"></a>
+                            
+                                <a class="fa QQ" href="tencent://message/?uin=52642241&Site=sohunjug.com&Menu=yes" title="QQ"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C-C/">C/C++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Define/">Define</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kafka/">Kafka</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux-shell/">Linux shell</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Memory/">Memory</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MongoDB/">MongoDB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Node-JS/">Node.JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Oracle/">Oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Pool/">Pool</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RESTful/">RESTful</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RocketMQ/">RocketMQ</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TCP/">TCP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Task/">Task</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Thread/">Thread</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TypeScript/">TypeScript</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UDP/">UDP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-profile/">Vim profile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Vim-xml/">Vim xml</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Webmail/">Webmail</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/express/">express</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gulp/">gulp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k3s/">k3s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/k8s/">k8s</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/makefile/">makefile</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/micro/">micro</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/octopress/">octopress</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ssh/">ssh</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/telnet/">telnet</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress-custom/">wordpress custom</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/wordpress-menu/">wordpress menu</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微服务/">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://stdrc.cc/">Richard Chien</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://shaoyuan1943.github.io/">shaoyuan1943</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">我是一个vimer。专注于服务端，精通c/c++，熟悉python，lua，objective-c，swift，shell, rust, nodejs, 以及运维docker, k8s。</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">聽</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/author.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">聽</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">Opportunity favors only the prepared mind. And everything change with time.</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/tags/随笔">随笔</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/message/">留言板</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:sohunjug@gmail.com" title="Email"></a>
+                            
+                                <a class="fa 新浪微博" target="_blank" href="http://weibo.com/sohunjug" title="新浪微博"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="http://github.com/sohunjug" title="GitHub"></a>
+                            
+                                <a class="fa V2EX" target="_blank" href="http://v2ex.com/member/sohunjug" title="V2EX"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                                <a class="fa Google" target="_blank" href="https://plus.google.com/u/0/109689650361403547561" title="Google"></a>
+                            
+                                <a class="fa Twitter" target="_blank" href="https://twitter.com/sohunjug" title="Twitter"></a>
+                            
+                                <a class="fa StackOverflow" target="_blank" href="http://stackoverflow.com/users/3881470/sohunjug" title="StackOverflow"></a>
+                            
+                                <a class="fa QQ" target="_blank" href="tencent://message/?uin=52642241&Site=sohunjug.com&Menu=yes" title="QQ"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-PacketSender" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/18/PacketSender/" class="article-date">
+      <time datetime="2016-08-18T14:33:12.000Z" itemprop="datePublished">2016-08-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      PacketSender 发送接收socket macOS App
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Objective-C/">Objective-C</a><a class="article-category-link" href="/categories/Objective-C/Swift/">Swift</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Objective-C/">Objective-C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TCP/">TCP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UDP/">UDP</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><blockquote>
+<p>问题原因可能为macOS 10.12 beta系统问题，新更新为10.12 beta 6问题解决。</p>
+</blockquote>
+<blockquote>
+<p>目前版本已更新为1.4.3，支持多窗口。</p>
+</blockquote>
+<h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><blockquote>
+<p>最近工作发现有时候需要测试发送TCP包，而目前Mac上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。<a href="https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">PacketSender</a><br>因后来实用ObjC重写了的原因，所以开源旧版本的Swift版本吧。<a href="https://gitlab.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitLab</a>、<a href="https://github.com/sohunjug/PacketSender-Swift.git" target="_blank" rel="noopener">GitHub</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="所使用库"><a href="#所使用库" class="headerlink" title="所使用库"></a>所使用库</h2><blockquote>
+<p>两个版本都使用的<a href="https://github.com/robbiehanson/CocoaAsyncSocket" target="_blank" rel="noopener">CocoaAsyncSocket</a>开源库来实现socket连接。<br>在objc或swift中，主界面是在主线程中执行，所以相关socket操作等，尽量需要效率且非阻塞，让等待函数在后台线程执行，这个库正好满足。</p>
+</blockquote>
+<h2 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h2><h3 id="Version-1-0"><a href="#Version-1-0" class="headerlink" title="Version 1.0"></a>Version 1.0</h3><ul>
+<li>满足单一发送功能</li>
+</ul>
+<p><img src="http://oalatibtx.bkt.clouddn.com/147153152589540.jpg?imageView2/0/format/jpg" alt="1.0"></p>
+<h3 id="Version-1-2"><a href="#Version-1-2" class="headerlink" title="Version 1.2"></a>Version 1.2</h3><ul>
+<li>增加了发送历史记录功能 </li>
+<li>增加了消息背景</li>
+</ul>
+<p><img src="http://7xp1l3.com1.z0.glb.clouddn.com/FgduG45k5rNkevyXERV1CEMobDaW" alt="1.2.1"></p>
+<p><img src="http://oalatibtx.bkt.clouddn.com/802423.png" alt="1.2.2"></p>
+<h3 id="Version-1-3"><a href="#Version-1-3" class="headerlink" title="Version 1.3"></a>Version 1.3</h3><ul>
+<li>增加了行数</li>
+<li>修改了Server状态显示</li>
+<li>增加了发收包数量复制</li>
+</ul>
+<p><img src="http://oalatibtx.bkt.clouddn.com/289304.png" alt="1.3"></p>
+<blockquote>
+<p>在此版本之前，一直未发现之前版本在Mac OS X 10.11.6 版本，根本无法使用，NSTextView无法选中，无法输入，也无法显示。<br>期初我以为是Swift在 macOS 10.12 beta 4版本使用Xcode 7.3.1编译，造成不兼容问题，所以使用了ObjC重写了Version 1.2.2。<br>但是结果显示问题依旧。虽然现在更新了1.3版本。但是此版本是使用朋友的机器，在Mac OS X 10.11.6环境下编译。</p>
+</blockquote>
+<p><br></p>
+<blockquote>
+<p>本人还有一个<a href="https://itunes.apple.com/us/app/jsonxmlformater/id909976737?l=zh&amp;ls=1&amp;mt=12" target="_blank" rel="noopener">JsonXmlFormater</a>，也是在beta环境编译的，但是这里面的NSTextView就没有问题。</p>
+</blockquote>
+<h2 id="待解决问题"><a href="#待解决问题" class="headerlink" title="待解决问题"></a>待解决问题</h2><blockquote>
+<p>希望以后如果有某位朋友找到解决办法，能沟通下，谢谢。</p>
+</blockquote>
+<p><br></p>
+<blockquote>
+<p>欢迎关于macOS开发的朋友，来跟我一起交流技术。</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/08/18/PacketSender/">PacketSender 发送接收socket macOS App</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">聽</a></p>
+        <p><span>发布时间:</span>2016-08-18, 22:33:12</p>
+        <p><span>最后更新:</span>2019-08-19, 14:10:04</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/08/18/PacketSender/" title="PacketSender 发送接收socket macOS App">https://sohunjug.com/2016/08/18/PacketSender/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://sohunjug.com/2016/08/18/PacketSender/　　作者: 聽" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/09/13/nodejs-restful-gulp/">
+                    TypeScript: (Node.JS + gulp + express) 写RESTful API 做后端
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/08/ssh-telnet/">
+                    自动登录ssh或telnet脚本
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#更新"><span class="toc-text">更新</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#起因"><span class="toc-text">起因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#所使用库"><span class="toc-text">所使用库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#版本"><span class="toc-text">版本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Version-1-0"><span class="toc-text">Version 1.0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Version-1-2"><span class="toc-text">Version 1.2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Version-1-3"><span class="toc-text">Version 1.3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#待解决问题"><span class="toc-text">待解决问题</span></a>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+
+    
+        <div class="addthis_sharing_toolbox"></div>
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section id="comments">
+    <style> aside.comment-bar { margin: auto 30px; }</style>
+    <div id="disqus_thread"></div>
+    <script>
+        var disqus_config = function(){
+            this.page.url = 'https://sohunjug.com/2016/08/18/PacketSender/';
+            this.page.identifier = '2016/08/18/PacketSender/';
+        };
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = '//sohunjug.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+</section>
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/09/13/nodejs-restful-gulp/" title="上一篇: TypeScript: (Node.JS + gulp + express) 写RESTful API 做后端">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/08/ssh-telnet/" title="下一篇: 自动登录ssh或telnet脚本">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/10/22/k3s-introduce/">k3s 指引</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/10/21/microservice/">微服务概念</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/13/nodejs-restful-gulp/">TypeScript: (Node.JS + gulp + express) 写RESTful API 做后端</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/18/PacketSender/">PacketSender 发送接收socket macOS App</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/ssh-telnet/">自动登录ssh或telnet脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/08/kafka-rocketmq/">Kafka、RocketMQ调研</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/01/13/c-define/">C/C++中宏定义的用法</a></li><li class="post-list-item"><a class="post-list-link" href="/2014/06/24/git-webmail/">个人搭建git服务器与webmail服务器</a></li><li class="post-list-item"><a class="post-list-link" href="/2014/04/19/octopress/">终于从wordpress转移到了octopress</a></li><li class="post-list-item"><a class="post-list-link" href="/2014/02/27/parld/">Mac应用开发-启程</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/11/28/task-with-thread/">基于类成员函数回调的线程池-连接池-任务队列</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/08/26/mongodb-oracle/">MongoDB与OracleDB效率测试</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/07/26/mac-fan-control/">MacBook Pro – Fan Control</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/06/26/memory/">简单的内存管理类（关于malloc与free）</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/06/23/makefile/">关于makefile的通用方案（个人测试推荐方案）</a></li><li class="post-list-item"><a class="post-list-link" href="/2013/05/21/521/">521随笔</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/24/oracle-dirty/">关于脏数据、脏数据块的正确定义，commit的内部机制</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/23/oracle-commit/">没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/23/linux-shell/">Linux脚本</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/22/vim-profile/">我的vim配置</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/21/vim-xml/">Vim的xml排版</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/21/diary/">末日杂记</a></li><li class="post-list-item"><a class="post-list-link" href="/2012/12/19/custom-wordpress-menu/">让wordpress支持自定义菜单</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+      <div class="footer-left">
+        <i class="fa fa-copyright"></i>
+        2013-2020 聽 |
+        <a href="http://beian.miit.gov.cn/" target="_blank"
+          >粤ICP备14034266号</a
+        >
+      </div>
+      <div class="footer-right">
+        <a
+          href="http://hexo.io/"
+          target="_blank"
+          title="快速、简洁且高效的博客框架"
+          >Hexo</a
+        >
+        Theme
+        <a
+          href="https://github.com/MOxFIVE/hexo-theme-yelee"
+          target="_blank"
+          title="简而不减 Hexo 双栏博客主题  v3.5"
+          >Yelee</a
+        >
+        by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+      </div>
+    </div>
+    
+    <div class="visit">
+      
+      <span id="busuanzi_container_site_pv" style="display:none">
+        <span id="site-visit" title="本站到访数"
+          ><i class="fa fa-user" aria-hidden="true"></i
+          ><span id="busuanzi_value_site_uv"></span>
+        </span>
+      </span>
+       
+      <span>| </span>
+       
+      <span id="busuanzi_container_page_pv" style="display:none">
+        <span id="page-visit" title="本页阅读量"
+          ><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i
+          ><span id="busuanzi_value_page_pv"></span>
+        </span>
+      </span>
+      
+    </div>
+    
+  </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 24;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-50147602-1', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+
+<!--prettify代码高亮脚本引入-->
+<script src="/plugins/prettify/prettify.js"></script>
+<script type="text/javascript">
+$(window).load(function(){
+$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+ prettyPrint();
+})
+</script>
+
+
+  </div>
+</body>
+</html>
