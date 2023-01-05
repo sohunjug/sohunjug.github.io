@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Define on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/define/</link>
+    <description>Recent content in Define on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 13 Jan 2015 15:59:59 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/define/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C/C&#43;&#43;中宏定义的用法</title>
+      <link>https://sohunjug.com/posts/c-define/</link>
+      <pubDate>Tue, 13 Jan 2015 15:59:59 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/c-define/</guid>
+      <description>&lt;p&gt;无论是在网络上还是项目中，define的用法非常广泛，define是由预处理程序自动完成的，被成为宏定义。&lt;/p&gt;
+&lt;p&gt;宏定义的作用范围仅限于当前文件(头文件除外，包含该头文件的源文件中都可使用)，一般define分为有参数和无参数两种。&lt;/p&gt;
+&lt;h1 id=&#34;宏定义优点&#34;&gt;宏定义优点&lt;/h1&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux shell on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/linux-shell/</link>
+    <description>Recent content in Linux shell on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 23 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/linux-shell/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux脚本</title>
+      <link>https://sohunjug.com/posts/linux-shell/</link>
+      <pubDate>Sun, 23 Dec 2012 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/linux-shell/</guid>
+      <description>&lt;p&gt;Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。&lt;/p&gt;
+&lt;p&gt;首先需要安装插件
+{% codeblock lang:bash %}
+ubuntu       apt-get install expect
+fedora       yum install expect.x86_64
+opensuse     zypper install expect
+{% endcodeblock %}
+之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

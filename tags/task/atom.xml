@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Task on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/task/</link>
+    <description>Recent content in Task on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 28 Nov 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/task/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>基于类成员函数回调的线程池-连接池-任务队列</title>
+      <link>https://sohunjug.com/posts/task-with-thread/</link>
+      <pubDate>Thu, 28 Nov 2013 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/task-with-thread/</guid>
+      <description>&lt;p&gt;在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。&lt;/p&gt;
+&lt;p&gt;其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。
+因为使用模板来构造，所以目前只支持类成员函数的回调。
+与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。&lt;/p&gt;
+&lt;p&gt;此基于成员函数回调的线程池需要同优先级队列共同使用，原理是初始化一个初始为5个线程的线程池，并将自己的控制线程添加到最高优先级启动。控制线程的目的是当任务队列比较多时增加线程来增加效率，当任务队列少时减速线程来节约资源（目前未实现）&lt;/p&gt;
+&lt;p&gt;连接池，需要同线程池与任务队列共同使用，同样为先初始化一定数量的连接，供多线程调度使用，其中包含一个控制线程，来控制连接池中的连接数量，当取出一个连接来用时，会给取出的连接加锁，所以使用完后需要调用返回函数，来归还使用完的连接。&lt;/p&gt;
+&lt;p&gt;连接池的作用就是不必每次都创建连接使用完成后断开连接，而使用模板来构造扩展性更强，所以需要自己额外来写创建连接，与断开连接函数。&lt;/p&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;需要注意连接池需要在线程之前析构。&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;任务队列文件代码：&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>wordpress menu on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/wordpress-menu/</link>
+    <description>Recent content in wordpress menu on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 19 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/wordpress-menu/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>让wordpress支持自定义菜单</title>
+      <link>https://sohunjug.com/posts/custom-wordpress-menu/</link>
+      <pubDate>Wed, 19 Dec 2012 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/custom-wordpress-menu/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;WORDPRESS博客有些主题不支持自定义菜单，只能够选择页面和所有的分页目录作为菜单，所以为了解决这一问题，找了一些资料&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

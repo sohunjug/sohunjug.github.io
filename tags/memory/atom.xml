@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Memory on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/memory/</link>
+    <description>Recent content in Memory on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 26 Jun 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/memory/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>简单的内存管理类（关于malloc与free）</title>
+      <link>https://sohunjug.com/posts/memory/</link>
+      <pubDate>Wed, 26 Jun 2013 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/memory/</guid>
+      <description>&lt;p&gt;大家在写代码的时候是否有忘记free指针的时候呢？&lt;/p&gt;
+&lt;p&gt;如果是大型项目肯定会用一些比较稳定的开源库一类的来解决。而如果是私人的小项目，或者是测试一类的代码遇到这类问题还需要各种检查，是否很浪费时间呢？&lt;/p&gt;
+&lt;p&gt;给大家分享一个我个人使用的内存管理类哈~可以使用Create一块空间，之后可以不需要去管这块空间最后是否free掉，因为类析构时候会自动帮助free掉，而如果想要手动free也支持，直接传入申请空间时候取得的ID就可以指定析构了。这个还是比较适合私人用用哈~&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

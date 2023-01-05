@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kafka on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/kafka/</link>
+    <description>Recent content in Kafka on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 08 Aug 2016 09:10:28 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/kafka/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kafka、RocketMQ调研</title>
+      <link>https://sohunjug.com/posts/kafka-rocketmq/</link>
+      <pubDate>Mon, 08 Aug 2016 09:10:28 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/kafka-rocketmq/</guid>
+      <description>&lt;h3 id=&#34;kafka是linkin开源的消息中间件&#34;&gt;Kafka是Linkin开源的消息中间件&lt;/h3&gt;
+&lt;h4 id=&#34;kafka的设计目标是&#34;&gt;Kafka的设计目标是：&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;（1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。
+（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。
+（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。
+（4）同时支持离线数据处理和实时数据处理。
+（5）Scale out：支持在线水平扩展。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;rocketmq是阿里开源的消息中间件&#34;&gt;RocketMQ是阿里开源的消息中间件&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;其最初也是基于Kafka发展而来。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

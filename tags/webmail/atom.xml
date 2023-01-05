@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Webmail on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/webmail/</link>
+    <description>Recent content in Webmail on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 24 Jun 2014 20:15:57 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/webmail/atom.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>个人搭建git服务器与webmail服务器</title>
+      <link>https://sohunjug.com/posts/git-webmail/</link>
+      <pubDate>Tue, 24 Jun 2014 20:15:57 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/git-webmail/</guid>
+      <description>&lt;p&gt;最近看到一句令人很有感觉的一句话，&amp;ldquo;The best is yet to come&amp;hellip;&amp;quot;，而我本人也很相信这句话。&lt;/p&gt;
+&lt;p&gt;在这个一天天各种新技术出生的年代，大家都想什么技术都熟悉一点，不至于让人说out了，而本人又是处女座的，有那么点强迫症，非常喜欢使用自己的东西，所以索性就搭建了自己的git服务器。而Apple新出的OSX10.10 DP2又依然没有解决邮件客户端的问题，感觉又很不爽，正好看到过一个RainLoop的帖子，所以也把WebMail捅咕上了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
