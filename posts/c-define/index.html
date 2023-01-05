@@ -198,7 +198,7 @@
 do {                                                       <br>
 if (_std)                                              <br>
 fprintf(_std, _format, ##<strong>VA_ARGS</strong>);             <br>
-else 			    	                               <br>
+else																					 <br>
 fprintf(stdout, _format, ##<strong>VA_ARGS</strong>);           <br>
 } while(0)
 {% endcodeblock %}
@@ -208,7 +208,7 @@ fprintf(stdout, _format, ##<strong>VA_ARGS</strong>);           <br>
 #define <em>log</em>(_std, _format, &hellip;)                              <br>
 if (_std)                                              <br>
 fprintf(_std, _format, ##<strong>VA_ARGS</strong>);             <br>
-else 					                              <br>
+else																				<br>
 fprintf(stdout, _format, ##<strong>VA_ARGS</strong>);
 {% endcodeblock %}
 可能大家认为这个也可以，但是如果用法是这样呢?
@@ -222,7 +222,7 @@ else {}
 if (…)
 if (_std)                                                         <br>
 fprintf(_std, _format,…); <br>
-else 					      <br>
+else									
 fprintf(stdout, _format,…);;
 else {}
 {% endcodeblock %}
@@ -232,7 +232,7 @@ else {}
 if (…) {
 if (_std)                                                         <br>
 fprintf(_std, _format,…); <br>
-else 					      <br>
+else									
 fprintf(stdout, _format,…);
 };
 else {}
