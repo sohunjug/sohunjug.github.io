@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>我的vim配置 - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="Vim profile" />
+    
+    <meta property="og:title" content="我的vim配置" />
+<meta property="og:description" content="我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+{% codeblock %}
+vim-X11.x86_64
+vim-common.x86_64
+vim-enhanced.x86_64
+vim-filesystem.x86_64
+vim-halibut.noarch
+vim-minimal.x86_64
+vim-perl-support.noarch
+cscope.x86_64
+ctags.x86_64
+{% endcodeblock %}
+之后配置$HOME目录下的.vimrc" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/vim-profile/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2012-12-22T00:00:00+08:00" />
+<meta property="article:modified_time" content="2012-12-22T00:00:00+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="我的vim配置"/>
+<meta name="twitter:description" content="我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+{% codeblock %}
+vim-X11.x86_64
+vim-common.x86_64
+vim-enhanced.x86_64
+vim-filesystem.x86_64
+vim-halibut.noarch
+vim-minimal.x86_64
+vim-perl-support.noarch
+cscope.x86_64
+ctags.x86_64
+{% endcodeblock %}
+之后配置$HOME目录下的.vimrc"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2012-12-22 00:00:00 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2012-12-22</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/vim-profile">Vim profile</a>  </span> 
+        </div>
+        <h1 class="post-title">我的vim配置</h1>
+    </header>
+    <section class="post">
+        <p>我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。</p>
+<p>其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+{% codeblock %}
+vim-X11.x86_64
+vim-common.x86_64
+vim-enhanced.x86_64
+vim-filesystem.x86_64
+vim-halibut.noarch
+vim-minimal.x86_64
+vim-perl-support.noarch
+cscope.x86_64
+ctags.x86_64
+{% endcodeblock %}
+之后配置$HOME目录下的.vimrc</p>
+<p>{% codeblock lang:vim %}
+if has(&ldquo;cscope&rdquo;)
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+set csto=0
+set cst
+set csverb
+endif</p>
+<p>&ldquo;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+&ldquo;获取当前路径的上一级的路径
+function! GET_UP_PATH(dir)
+let pos=strlen(a:dir)-1
+while pos&gt;0
+if (a:dir[pos]==&rdquo;/&rdquo; )
+return  strpart(a:dir,0,pos)
+endif
+let pos=pos-1
+endwhile
+return  &quot;&quot;
+endfunction</p>
+<p>&ldquo;设置相关tags
+function! s:SET_TAGS()
+let dir = getcwd() &ldquo;获得源文件路径
+&ldquo;在路径上递归向上查找tags文件
+while dir!=&rdquo;&rdquo;
+if findfile(&ldquo;tags&rdquo;,dir ) !=&rdquo;&quot;
+&ldquo;找到了就加入到tags
+exec &ldquo;set tags+=&quot;.dir.&quot;/tags&rdquo;
+return
+endif
+&ldquo;得到上级路径
+let dir=GET_UP_PATH(dir)
+endwhile
+endfunction</p>
+<p>&ldquo;设置php cscope.out
+function! SET_CSPHP()
+if(executable(&lsquo;cscope&rsquo;) &amp;&amp; has(&ldquo;cscope&rdquo;) )
+silent! execute &ldquo;!find . -name &lsquo;<em>.php&rsquo;  -o -name &lsquo;</em>.inc&rsquo; -o -name &lsquo;*.module&rsquo; &gt; cscope.files&rdquo;
+silent! execute &ldquo;!cscope -bkq -i cscope.files&rdquo;
+if filereadable(&ldquo;cscope.out&rdquo;)
+silent! execute &ldquo;cs add cscope.out&rdquo;
+endif
+silent! execute &ldquo;!ctags -R &ndash;langmap=php:.engine.inc.module.theme.php  &ndash;php-kinds=cdf  &ndash;languages=php &quot;
+endif
+endfunction</p>
+<p>&ldquo;设置c cscope.out
+function! SET_CSAD()
+if(executable(&lsquo;cscope&rsquo;) &amp;&amp; has(&ldquo;cscope&rdquo;) )
+silent! execute &ldquo;!find . -name &lsquo;<em>.h&rsquo; -o -name &lsquo;</em>.c&rsquo; -o -name &lsquo;*.cpp&rsquo; &gt; cscope.files&rdquo;
+silent! execute &ldquo;!cscope -bkq -i cscope.files&rdquo;
+if filereadable(&ldquo;cscope.out&rdquo;)
+silent! execute &ldquo;cs add cscope.out&rdquo;
+endif
+silent! execute &ldquo;!ctags -R &ndash;c-kinds=+p &ndash;c++-kinds=+p &ndash;fields=+iaS &ndash;extra=+q .&rdquo;
+endif
+endfunction</p>
+<p>function! s:SET_CSC()
+let dir = expand(&rdquo;%:p:h&rdquo;) &ldquo;获得源文件路径
+&ldquo;在路径上递归向上查找tags文件
+while dir!=&rdquo;&rdquo;
+if findfile(&ldquo;cscope.out&rdquo;,dir ) !=&rdquo;&rdquo;
+&ldquo;找到了就加入到tags
+if 0 == cscope_connection(1, &ldquo;cscope.out&rdquo;, dir)
+execute &ldquo;cs add &ldquo;.dir.&quot;/cscope.out &ldquo;.dir
+endif
+return
+endif
+&ldquo;得到上级路径
+let dir=GET_UP_PATH(dir)
+endwhile
+endfunction</p>
+<p>autocmd BufEnter * call s:SET_CSC()
+autocmd BufEnter * call s:SET_TAGS()
+&ldquo;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+set laststatus=2            &quot; 显示状态栏 (默认值为 1, 无法显示状态栏)</p>
+<p>nmap <!-- raw HTML omitted --> :bnext<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted --> :bprevious<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted --> :w!<!-- raw HTML omitted --></p>
+<p>nmap <!-- raw HTML omitted -->1 :set filetype=xhtml<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->2 :set filetype=css<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->3 :set filetype=javascript<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->4 :set filetype=php<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->5 :set filetype=default<!-- raw HTML omitted --></p>
+<p>nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hl <!-- raw HTML omitted -->MarkSet
+nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hh <!-- raw HTML omitted -->MarkClear
+nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hr <!-- raw HTML omitted -->MarkRegex
+vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hl <!-- raw HTML omitted -->MarkSet
+vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hh <!-- raw HTML omitted -->MarkClear
+vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hr <!-- raw HTML omitted -->MarkRegex</p>
+<p>let g:miniBufExplMapWindowNavVim = 1<br>
+let g:miniBufExplMapWindowNavArrows = 1<br>
+let g:miniBufExplMapCTabSwitchBufs = 1<br>
+let g:miniBufExplModSelTarget = 1<br>
+let g:miniBufExplMoreThanOne=0</p>
+<p>set mouse=a</p>
+<p>set noswf</p>
+<p>let g:winManagerWindowLayout=&ldquo;FileExplorer|TagList&rdquo;</p>
+<p>let Tlist_File_Fold_Auto_Close=1</p>
+<p>&ldquo;当文件在外部被修改，自动更新该文件
+set autoread</p>
+<p>&ldquo;设置历史记录步数
+set history=400</p>
+<p>&ldquo;快速退出（保存）为,<!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :set mouse=v<!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :set mouse=a<!-- raw HTML omitted --></p>
+<p>&ldquo;开启语法
+syntax enable
+syntax on</p>
+<p>&ldquo;头文件与实现文件转换
+map <!-- raw HTML omitted --> :A <!-- raw HTML omitted --></p>
+<p>&ldquo;设置字体</p>
+<p>&ldquo;设置配色
+colorscheme candycode</p>
+<p>set completeopt=menu</p>
+<p>set t_Co=256</p>
+<p>&ldquo;高亮显示当前行
+set cursorline
+hi cursorline guibg=#222222
+hi CursorColumn guibg=#333333</p>
+<p>&ldquo;tag
+set tags=tags;</p>
+<p>&quot;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
+&quot; =&gt; 缩进
+&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
+&ldquo;自动缩进
+set ai</p>
+<p>&ldquo;智能缩进
+set si</p>
+<p>&ldquo;设置缩进的空格数为4
+set autoindent</p>
+<p>&ldquo;设置自动缩进:即每行的缩进值与上一行相等；使用 noautoindent 取消设置
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4</p>
+<p>&ldquo;设置使用 C/C++ 语言的自动缩进方式
+set cin
+set cindent</p>
+<p>&ldquo;显示标尺
+set ruler</p>
+<p>&ldquo;设置命令行的高度
+set cmdheight=1</p>
+<p>&ldquo;显示行数
+set number</p>
+<p>&ldquo;显示匹配的括号([{和}])
+set showmatch</p>
+<p>&ldquo;高亮显示搜索的内容
+set hlsearch</p>
+<p>&ldquo;taglist
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1</p>
+<p>&quot;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
+&quot; =&gt; 编码设置
+&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</p>
+<p>&ldquo;Vim 内部使用的字符编码方式，包括 Vim 的 buffer (缓冲区)、菜单文本、
+&ldquo;消息文本等。用户手册上建议只在 .vimrc 中改变它的值，
+&ldquo;事实上似乎也只有在 .vimrc 中改变它的值才有意义。
+set encoding=utf-8</p>
+<p>&ldquo;Vim 启动时会按照它所列出的字符编码方式逐一探测即将打开的文件的
+&ldquo;字符编码方式，并且将 fileencoding 设置为最终探测到的字符编码方式。
+&ldquo;因此最好将 Unicode 编码方式放到这个列表的最前面。
+&ldquo;set fileencodings=Unicode,utf-8,gb2312,gbk,gb18030,latin-1
+&ldquo;set fencs=utf-8,Unicode,gb2312,gbk,gb18030,latin-1,cp936
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,latin-1,prc
+&ldquo;set fileencodings=ucs-bom,utf8,prc</p>
+<p>&ldquo;Vim 中当前编辑的文件的字符编码方式，
+&ldquo;Vim 保存文件时也会将文件保存为这种字符编码方式。
+set fileencoding=utf-8
+&ldquo;set fileencoding=prc</p>
+<p>&quot; termencoding: Vim 所工作的终端 (或者 Windows 的 Console 窗口)
+&quot; 的字符编码方式。这个选项对 GUI 模式的 gVim 无效，
+&quot; 而对 Console 模式的 Vim 而言就是Windows 控制台的代码页
+&quot; (对于 Windows 而言)，并且通常我们不需要改变它。
+&quot; 下面这句只影响普通模式 (非图形界面) 下的 Vim。
+&ldquo;set termencoding=prc
+let &amp;termencoding=&amp;encoding</p>
+<p>&quot; &ldquo;代码折叠, 命令 za
+set foldmethod=syntax
+set foldlevel=100  &ldquo;启动vim时不要自动折叠代码</p>
+<p>&quot; &ldquo;自动换行
+if (has(&ldquo;gui_running&rdquo;)) &ldquo;图形界面下的设置
+&quot; &quot;
+&quot; &ldquo;指定不折行。如果一行太长，超过屏幕宽度，则向右边延伸到屏幕外面
+set nowrap
+&quot;
+&ldquo;添加水平滚动条。如果你指定了不折行，那为窗口添加一个水平滚动条就非常有必要
+&quot; 了
+set guioptions+=b
+&quot;
+else
+&ldquo;字符界面下的设置
+set nowrap
+endif</p>
+<p>&quot; &ldquo;<!-- raw HTML omitted -->code_complete.vim插件：函数自动完成
+map <!-- raw HTML omitted --> :silent %!xmllint -format %<!-- raw HTML omitted -->
+if !exists(&ldquo;g:completekey&rdquo;)
+let g:completekey = &ldquo;<!-- raw HTML omitted -->&rdquo;   &ldquo;hotkey
+endif</p>
+<p>map <!-- raw HTML omitted --> gu
+map <!-- raw HTML omitted --> gU</p>
+<p>map <!-- raw HTML omitted --> :cp <!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :cn <!-- raw HTML omitted --></p>
+<p>&quot; &ldquo;当前目录生成tags语法文件，用于自动完成，函数提示：code_complete.vim
+&ldquo;OmniCppComplete.vim &hellip;
+&ldquo;map <!-- raw HTML omitted --> :call SET_CSAD() <!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;函数和变量列表
+map <!-- raw HTML omitted --> :TlistToggle<!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;文件浏览器
+&ldquo;map <!-- raw HTML omitted --> :WMToggle<!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;文件树状列表
+nmap <!-- raw HTML omitted --> <!-- raw HTML omitted --> :execute &lsquo;NERDTreeToggle &lsquo;. expand(&rdquo;%:p:h&rdquo;)<!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;映射复制、粘贴、剪贴ctrl+c ctrl+v ctrl+x
+&quot; map <!-- raw HTML omitted --> &ldquo;+pa<!-- raw HTML omitted -->
+&quot; map! <!-- raw HTML omitted --> <!-- raw HTML omitted -->&quot;+pa
+map <!-- raw HTML omitted --> &ldquo;+y
+map <!-- raw HTML omitted --> &ldquo;+x
+&quot;
+&quot; &quot; 映射全选 ctrl+a
+map <!-- raw HTML omitted --> ggVG
+map! <!-- raw HTML omitted --> <!-- raw HTML omitted -->ggVG
+&quot;
+&quot; &quot; 多行缩进
+map <!-- raw HTML omitted --> &gt;
+map <!-- raw HTML omitted --> &lt;</p>
+<p>&ldquo;设置自动补齐
+&ldquo;filetype plugin indent on
+&ldquo;set completeopt=longest,menu</p>
+<p>&ldquo;if has(&ldquo;autocmd&rdquo;) &amp;&amp; exists(&quot;+omnifunc&rdquo;)
+&quot;     autocmd Filetype *
+&quot;   \ if &amp;omnifunc == &quot;&rdquo; |
+&quot;   \   setlocal omnifunc=syntaxcomplete#Complete |
+&quot;   \ endif
+&ldquo;endif</p>
+<p>&ldquo;let g:SuperTabDefaultCompletionType=&quot;<!-- raw HTML omitted -->&lt;C-]&gt;&rdquo;</p>
+<p>&ldquo;let g:SuperTabRetainCompletionType=0
+&quot; 0 - 不记录上次的补全方式
+&quot; 1 - 记住上次的补全方式,直到用其他的补全命令改变它
+&quot; 2 - 记住上次的补全方式,直到按ESC退出插入模式为止</p>
+<p>map <!-- raw HTML omitted --> :call TitleDet()&rsquo;s <!-- raw HTML omitted --></p>
+<p>map <!-- raw HTML omitted --> :call SET_CSAD()&rsquo;s <!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :call SET_CSPHP()&rsquo;s <!-- raw HTML omitted --></p>
+<p>function AddTitle()
+call append(0,&rdquo;/*******************************************************************************&rdquo;)
+&ldquo;call append(1,&rdquo;#&rdquo;)
+call append(1,&rdquo; * Author : RKhuwq&rdquo;)
+&ldquo;call append(3,&rdquo;#&rdquo;)
+call append(2,&rdquo; * Email : <a href="mailto:huwq@neusoft.com">huwq@neusoft.com</a>&rdquo;)
+&ldquo;call append(5,&rdquo;#&rdquo;)
+call append(3,&rdquo; * Last modified : &ldquo;.strftime(&quot;%Y-%m-%d %H:%M&rdquo;))
+&ldquo;call append(7,&rdquo;#&rdquo;)
+call append(4,&rdquo; * Filename : &ldquo;.expand(&rdquo;%&rdquo;))
+&ldquo;call append(9,&rdquo;#&rdquo;)
+call append(5,&rdquo; * Description : &ldquo;)
+&ldquo;call append(11,&rdquo;#&rdquo;)
+call append(6,&rdquo; * *****************************************************************************/&rdquo;)
+echohl WarningMsg | echo &ldquo;Successful in adding the copyright.&rdquo; | echohl None
+endfunction</p>
+<p>&ldquo;更新最近修改时间和文件名
+function UpdateTitle()
+normal m&rsquo;
+execute &rsquo; * Last modified : /s@:.<em>$@=strftime(&rdquo;:\t%Y-%m-%d %H:%M&rdquo;)@&rsquo;
+normal &quot;
+normal mk
+execute &rsquo; * Filename : /s@:.</em>$@=&rdquo;:\t\t&rdquo;.expand(&rdquo;%:t&rdquo;)@&rsquo;
+execute &ldquo;noh&rdquo;
+normal &lsquo;k
+echohl WarningMsg | echo &ldquo;Successful in updating the copy right.&quot;| echohl None
+endfunction</p>
+<p>autocmd BufEnter :/ * Last modified : /s@:.*$@=strftime(&rdquo; : %Y-%m-%d %H:%M&rdquo;)@</p>
+<p>&ldquo;判断第四行行代码里面，是否有Last modified这个单词，
+&ldquo;如果没有的话，代表没有添加过作者信息，需要新添加；
+&ldquo;如果有的话，那么只需要更新即可
+function TitleDet()
+let line = getline(4)
+if line =~ &lsquo;\s*\sLast\smodified\s:\s\S*&rsquo;
+:/ * Last modified : /s@:.*$@=strftime(&rdquo;: %Y-%m-%d %H:%M&rdquo;)@
+return
+endif
+call AddTitle()
+endfunction</p>
+<p>&ldquo;自动补全
+set completeopt=menu,menuone
+let OmniCpp_MayCompleteDot = 1 &quot; autocomplete with .
+let OmniCpp_MayCompleteArrow = 1 &quot; autocomplete with -&gt;
+let OmniCpp_MayCompleteScope = 1 &quot; autocomplete with ::
+let OmniCpp_SelectFirstItem = 2 &quot; select first item (but don&rsquo;t insert)
+let OmniCpp_NamespaceSearch = 2 &quot; search namespaces in this and included files
+let OmniCpp_ShowPrototypeInAbbr = 1 &quot; show function prototype  in popup window
+let OmniCpp_GlobalScopeSearch=1
+let OmniCpp_DisplayMode=1
+let OmniCpp_DefaultNamespaces=[&ldquo;std&rdquo;]</p>
+<p>&quot; ~/.vimrc (configuration file for vim only)
+&quot; skeletons
+&ldquo;autocmd BufNewFile	*.spec	call SKEL_spec()
+&quot; filetypes
+filetype plugin on
+filetype indent on
+&quot; ~/.vimrc ends here
+{% endcodeblock %}
+其中F2为xml排版，F3为cscope搜索上一条，F4下一条，F6当前文件函数列表，F7目录列表，F8启用鼠标，F9不使用鼠标，F12 C语言中头文件与代码文件转换</p>
+<p>Ctrl+E注释，Ctrl+F5生成C语言ctags与cscope，Ctrl+F6生成php语言ctags与cscope</p>
+<p>之后下载本文的配置。复制到$HOME目录的.vim目录中。</p>
+<p><a href="/files/vim.zip">下载地址</a></p>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/oracle-commit/" title="link to 没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别">没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</a></h2>
+        <p class="excerpt"><p>以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2012-12-22 00:00:00 &#43;0800" class="post-list__meta--date date">2012-12-23</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/oracle">Oracle</a>  </span> 
+            <a class="btn-border-small" href="/posts/oracle-commit/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/vim-xml/" title="link to Vim的xml排版">Vim的xml排版</a></h2>
+        <p class="excerpt"><p>如果你手中有一个xml，而这个xml显示的排版非常混乱，大家看的时候可能会很为难，其实vim也可以实现xml的排版。</p>
+<p>比如你的xml是这样：</p>
+<p><img src="/img/blog/xml-11.jpeg" alt="未排版的xml"></p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2012-12-22 00:00:00 &#43;0800" class="post-list__meta--date date">2012-12-21</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/vim-xml">Vim xml</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/vim-xml/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/vim-profile\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/vim-profile\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

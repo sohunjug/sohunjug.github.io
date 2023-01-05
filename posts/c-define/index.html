@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>C/C&#43;&#43;中宏定义的用法 - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="Define, C/C&#43;&#43;" />
+    
+    <meta property="og:title" content="C/C&#43;&#43;中宏定义的用法" />
+<meta property="og:description" content="无论是在网络上还是项目中，define的用法非常广泛，define是由预处理程序自动完成的，被成为宏定义。
+宏定义的作用范围仅限于当前文件(头文件除外，包含该头文件的源文件中都可使用)，一般define分为有参数和无参数两种。
+宏定义优点" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/c-define/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2015-01-13T15:59:59+08:00" />
+<meta property="article:modified_time" content="2015-01-13T15:59:59+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="C/C&#43;&#43;中宏定义的用法"/>
+<meta name="twitter:description" content="无论是在网络上还是项目中，define的用法非常广泛，define是由预处理程序自动完成的，被成为宏定义。
+宏定义的作用范围仅限于当前文件(头文件除外，包含该头文件的源文件中都可使用)，一般define分为有参数和无参数两种。
+宏定义优点"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2015-01-13 15:59:59 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2015-01-13</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/define">Define</a>   • <a href="https://sohunjug.com/tags/c/c&#43;&#43;">C/C&#43;&#43;</a>  </span> 
+        </div>
+        <h1 class="post-title">C/C&#43;&#43;中宏定义的用法</h1>
+    </header>
+    <section class="post">
+        <p>无论是在网络上还是项目中，define的用法非常广泛，define是由预处理程序自动完成的，被成为宏定义。</p>
+<p>宏定义的作用范围仅限于当前文件(头文件除外，包含该头文件的源文件中都可使用)，一般define分为有参数和无参数两种。</p>
+<h1 id="宏定义优点">宏定义优点</h1>
+<h2 id="1-方便程序的修改">(1) 方便程序的修改</h2>
+<p>使用简单宏定义可用宏代替一个在程序中经常使用的常量，这样在将该常量改变时，不用对整个程序进行修改，只修改宏定义的字符串即可，而且当常量比较长时， 我们可以用较短的有意义的标识符来写程序，这样更方便一些。我们所说的常量改变不是在程序运行期间改变，而是在编程期间的修改，举一个大家比较熟悉的例 子，圆周率π是在数学上常用的一个值，有时我们会用3.14来表示，有时也会用3.1415926等，这要看计算所需要的精度，如果我们编制的一个程序中 要多次使用它，那么需要确定一个数值，在本次运行中不改变，但也许后来发现程序所表现的精度有变化，需要改变它的值， 这就需要修改程序中所有的相关数值，这会给我们带来一定的不便，但如果使用宏定义，使用一个标识符来代替，则在修改时只修改宏定义即可，还可以减少输入 3.1415926这样长的数值多次的情况，我们可以如此定义 #define pi 3.1415926，既减少了输入又便于修改，何乐而不为呢？</p>
+<h2 id="2-提高程序的运行效率">(2) 提高程序的运行效率</h2>
+<p>使用带参数的宏定义可完成函数调用的功能，又能减少系统开销，提高运行效率。正如C语言中所讲，函数的使用可以使程序更加模块化，便于组织，而且可重复利用，但在发生函数调用时，需要保留调用函数的现场，以便子函数执行结束后能返回继续执行，同样在子函数执行完后要恢复调用函数的现场，这都需要一定的时间，如果子函数执行的操作比较多，这种转换时间开销可以忽略，但如果子函数完成的功能比较少，甚至于只完成一点操作，如一个乘法语句的操作，则这部分转换开销就相对较大了，但使用带参数的宏定义就不会出现这个问 题，因为它是在预处理阶段即进行了宏展开，在执行时不需要转换，即在当地执行。宏定义可完成简单的操作，但复杂的操作还是要由函数调用来完成，而且宏定义所占用的目标代码空间相对较大。所以在使用时要依据具体情况来决定是否使用宏定义。</p>
+<h1 id="宏定义的高级用法">宏定义的高级用法</h1>
+<p>在网上经常会看到一些人在宏定义中使用#号的例子</p>
+<h2 id="1单个符号">(1)#单个#符号</h2>
+<p>单个#号是将当前参数变为字符串.如:
+{% codeblock lang:cpp %}
+#define TOSTR(X) #X
+{% endcodeblock %}</p>
+<h2 id="2双符号">(2)##双#符号</h2>
+<p>##则用来连接前后两个参数，把它们变成一个字符串。如:
+{% codeblock lang:cpp %}
+#define STRCAT(X, Y) X##Y
+{% endcodeblock %}</p>
+<p><strong>宏定义推荐写法</strong></p>
+<p>在有些使用宏定义中会看到一些不一样的写法</p>
+<p>如:
+{% codeblock lang:cpp %}
+#define <em>log</em>(_std, _format, &hellip;)                              <br>
+do {                                                       <br>
+if (_std)                                              <br>
+fprintf(_std, _format, ##<strong>VA_ARGS</strong>);             <br>
+else 			    	                               <br>
+fprintf(stdout, _format, ##<strong>VA_ARGS</strong>);           <br>
+} while(0)
+{% endcodeblock %}
+有些人可能会有疑问为什么会要加一个do{}while(0)?
+如果没有就会变成
+{% codeblock lang:cpp %}
+#define <em>log</em>(_std, _format, &hellip;)                              <br>
+if (_std)                                              <br>
+fprintf(_std, _format, ##<strong>VA_ARGS</strong>);             <br>
+else 					                              <br>
+fprintf(stdout, _format, ##<strong>VA_ARGS</strong>);
+{% endcodeblock %}
+可能大家认为这个也可以，但是如果用法是这样呢?
+{% codeblock lang:cpp %}
+if (…)
+<em>log</em>(…);
+else {}
+{% endcodeblock %}
+展开就会变成
+{% codeblock lang:cpp %}
+if (…)
+if (_std)                                                         <br>
+fprintf(_std, _format,…); <br>
+else 					      <br>
+fprintf(stdout, _format,…);;
+else {}
+{% endcodeblock %}
+这样明显就会出现两个else了，语法错误，而有些人喜欢使用{}来替换do{}while(0)，</p>
+<p>让我们来想想一下展开会是什么结果呢？
+{% codeblock lang:cpp %}
+if (…) {
+if (_std)                                                         <br>
+fprintf(_std, _format,…); <br>
+else 					      <br>
+fprintf(stdout, _format,…);
+};
+else {}
+{% endcodeblock %}
+还是错误的else前面多了一个;
+而do{}while(0)这种写法完全避免了类似的问题，另外, 现代编译器的优化模块能够足够聪明地注意到这个循环只会执行一次而将其优化掉.
+综上所述, do { } while(0) 这个技术就是为了类似的宏可以在任何时候使用.</p>
+<h1 id="宏定义的其他用途">宏定义的其他用途</h1>
+<p>而宏定义在项目中最好用的地方，就是完成跨平台支持，众所周知想linux，windows，mac，android等这些系统，在一些底层函数，编译参数等等都有不同，所以在项目中，完全可以使用#ifdefine 等宏定义来区分当前的系统环境，更可以细化到系统版本的分别，来完成针对化编译。这样完美的支持各种不同的环境。</p>
+<p>在linux，mac等环境可以查看一些系统已经定义好的环境变量来帮助我们区分，可以使用命令来查看
+{% codeblock lang:bash %}
+gcc -E -dM - &lt; /dev/null
+{% endcodeblock %}</p>
+<p>而windows可以登录msdn网站查看</p>
+<p><a href="http://msdn.microsoft.com/zh-cn/library/b0084kay">msdn.microsoft.com</a></p>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/kafka-rocketmq/" title="link to Kafka、RocketMQ调研">Kafka、RocketMQ调研</a></h2>
+        <p class="excerpt"><h3 id="kafka是linkin开源的消息中间件">Kafka是Linkin开源的消息中间件</h3>
+<h4 id="kafka的设计目标是">Kafka的设计目标是：</h4>
+<blockquote>
+<p>（1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。
+（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。
+（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。
+（4）同时支持离线数据处理和实时数据处理。
+（5）Scale out：支持在线水平扩展。</p>
+</blockquote>
+<h3 id="rocketmq是阿里开源的消息中间件">RocketMQ是阿里开源 …</h3>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2015-01-13 15:59:59 &#43;0800" class="post-list__meta--date date">2016-08-08</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/kafka">Kafka</a>   • <a href="https://sohunjug.com/tags/rocketmq">RocketMQ</a>  </span> 
+            <a class="btn-border-small" href="/posts/kafka-rocketmq/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/git-webmail/" title="link to 个人搭建git服务器与webmail服务器">个人搭建git服务器与webmail服务器</a></h2>
+        <p class="excerpt"><p>最近看到一句令人很有感觉的一句话，&ldquo;The best is yet to come&hellip;&quot;，而我本人也很相信这句话。</p>
+<p>在这个一天天各种新技术出生的年代，大家都想什么技术都熟悉一点，不至于让人说out了，而本人又是处女座的，有那么点强迫症，非常喜欢使用自己的东西，所以索性就搭建了自己的git服务器。而Apple新出的OSX10.10 DP2又依然没有解决邮件客户端的问题，感觉又很不爽，正好看到过一个RainLoop的帖子，所以也把WebMail捅咕上了。</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2015-01-13 15:59:59 &#43;0800" class="post-list__meta--date date">2014-06-24</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/webmail">Webmail</a>   • <a href="https://sohunjug.com/tags/git">Git</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/git-webmail/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/c-define\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/c-define\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

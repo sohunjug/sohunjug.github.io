@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>makefile on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/makefile/</link>
+    <description>Recent content in makefile on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 23 Jun 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/makefile/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于makefile的通用方案（个人测试推荐方案）</title>
+      <link>https://sohunjug.com/posts/makefile/</link>
+      <pubDate>Sun, 23 Jun 2013 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/makefile/</guid>
+      <description>&lt;p&gt;在使用linux或者mac时，有时大家会写一些自己测试功能一类的小程序，可是如果只有1个文件时候还可以，直接gcc就OK了。&lt;/p&gt;
+&lt;p&gt;而一旦文件多了以后可能就会很麻烦。这个makefile可以作为一个解决方案。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

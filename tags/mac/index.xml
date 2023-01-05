@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mac on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/mac/</link>
+    <description>Recent content in Mac on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 27 Feb 2014 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Mac应用开发-启程</title>
+      <link>https://sohunjug.com/posts/parld/</link>
+      <pubDate>Thu, 27 Feb 2014 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/parld/</guid>
+      <description>&lt;p&gt;最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是&lt;a href=&#34;http://www.parld.com&#34;&gt;parld音乐聚汇&lt;/a&gt;(推广下哈)。其中Mac客户端&lt;a href=&#34;http://www.parld.com/api?act=download&amp;amp;type=mac&#34;&gt;下载地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>MacBook Pro – Fan Control</title>
+      <link>https://sohunjug.com/posts/mac-fan-control/</link>
+      <pubDate>Fri, 26 Jul 2013 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/mac-fan-control/</guid>
+      <description>&lt;p&gt;这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。&lt;/p&gt;
+&lt;p&gt;目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

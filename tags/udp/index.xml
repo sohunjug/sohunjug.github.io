@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>UDP on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/udp/</link>
+    <description>Recent content in UDP on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 18 Aug 2016 22:33:12 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/udp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PacketSender 发送接收socket macOS App</title>
+      <link>https://sohunjug.com/posts/packetsender/</link>
+      <pubDate>Thu, 18 Aug 2016 22:33:12 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/packetsender/</guid>
+      <description>&lt;h4 id=&#34;更新&#34;&gt;更新&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;问题原因可能为 macOS 10.12 beta 系统问题，新更新为 10.12 beta 6 问题解决。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;目前版本已更新为 1.4.3，支持多窗口。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;起因&#34;&gt;起因&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;最近工作发现有时候需要测试发送 TCP 包，而目前 Mac 上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。&lt;a href=&#34;https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;&gt;PacketSender&lt;/a&gt;
+因后来实用 ObjC 重写了的原因，所以开源旧版本的 Swift 版本吧。&lt;a href=&#34;https://gitlab.com/sohunjug/PacketSender-Swift.git&#34;&gt;GitLab&lt;/a&gt;、&lt;a href=&#34;https://github.com/sohunjug/PacketSender-Swift.git&#34;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>自动登录ssh或telnet脚本 - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="ssh, telnet" />
+    
+    <meta property="og:title" content="自动登录ssh或telnet脚本" />
+<meta property="og:description" content="
+闲来无事，正好更新下以前写的脚本，自动登录ssh或telnet。
+而且也方便记录密码。Git-oschina、GitHub
+
+使用connect.sh自动连接ssh或者telnet" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/ssh-telnet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-08-08T17:31:53+08:00" />
+<meta property="article:modified_time" content="2016-08-08T17:31:53+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="自动登录ssh或telnet脚本"/>
+<meta name="twitter:description" content="
+闲来无事，正好更新下以前写的脚本，自动登录ssh或telnet。
+而且也方便记录密码。Git-oschina、GitHub
+
+使用connect.sh自动连接ssh或者telnet"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2016-08-08 17:31:53 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2016-08-08</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/ssh">ssh</a>   • <a href="https://sohunjug.com/tags/telnet">telnet</a>  </span> 
+        </div>
+        <h1 class="post-title">自动登录ssh或telnet脚本</h1>
+    </header>
+    <section class="post">
+        <blockquote>
+<p>闲来无事，正好更新下以前写的脚本，自动登录ssh或telnet。
+而且也方便记录密码。<a href="http://git.oschina.net/sohunjug/connect.sh">Git-oschina</a>、<a href="https://github.com/sohunjug/connect.sh">GitHub</a></p>
+</blockquote>
+<h2 id="使用connectsh自动连接ssh或者telnet">使用connect.sh自动连接ssh或者telnet</h2>
+<blockquote>
+<p>其中配置文件conn.profile为json格式</p>
+</blockquote>
+<h3 id="配置样例">配置样例：</h3>
+<pre tabindex="0"><code>{
+   &#34;test1&#34;: {
+       &#34;host&#34;: &#34;192.168.0.1&#34;,
+       &#34;port&#34;: 22,
+       &#34;user&#34;: &#34;root&#34;,
+       &#34;pass&#34;: &#34;123456&#34;,
+       &#34;connecttype&#34;: &#34;ssh&#34;,
+       &#34;sshtype&#34;: &#34;pass&#34;,
+       &#34;language&#34;: &#34;None&#34;
+   },
+   &#34;test2&#34;: {
+       &#34;host&#34;: &#34;192.168.0.1&#34;,
+       &#34;port&#34;: 22,
+       &#34;user&#34;: &#34;root&#34;,
+       &#34;pass&#34;: &#34;123456&#34;,
+       &#34;connecttype&#34;: &#34;ssh&#34;,
+       &#34;sshtype&#34;: &#34;~/.ssh/test_rsa&#34;,
+       &#34;language&#34;: &#34;en_US.UTF-8&#34;
+   },
+   &#34;test3&#34;: {
+       &#34;host&#34;: &#34;192.168.0.1&#34;,
+       &#34;port&#34;: 23,
+       &#34;user&#34;: &#34;root&#34;,
+       &#34;pass&#34;: &#34;123456&#34;,
+       &#34;connecttype&#34;: &#34;telnet&#34;,
+       &#34;language&#34;: &#34;en_US.UTF-8&#34;
+   }
+}
+</code></pre><h3 id="可以自定义设置别名">可以自定义设置别名</h3>
+<p>echo &lsquo;aliases=&quot;$HOME/Documents/ssh/connect.sh&quot;&rsquo; &raquo; ~/.bashrc</p>
+<h3 id="之后执行">之后执行</h3>
+<p>connect show test1</p>
+<pre tabindex="0"><code>/test1/host							192.168.0.1
+/test1/port							22
+/test1/user							root
+/test1/pass							123456
+/test1/connecttype			ssh
+/test1/sshtype					pass
+/test1/language					en_US.UTF-8
+</code></pre><p>connect test1</p>
+<pre tabindex="0"><code>Last login: Mon Aug  8 23:48:46 2016 from gateway
+[root@clusterA31 ~]#
+</code></pre><p><strong>附带脚本文件</strong></p>
+<pre tabindex="0"><code>#!/bin/sh
+
+[ -z &#34;$CONNJSON&#34; ] &amp;&amp; _BJSON=$HOME/Documents/ssh/json.sh || _BJSON=$CONNJSON
+[ -z &#34;$CONNCFG&#34; ] &amp;&amp; _C_CFG=$HOME/Documents/ssh/conn.profile || _C_CFG=$CONNCFG
+if [ ! -f $_C_CFG ]; then
+    echo &#34;not fount profile file $_C_CFG&#34;
+    exit 0
+fi
+
+source $_BJSON
+
+function connect() {
+    name=$1
+    config=`json &lt; $_C_CFG | grep $name`
+    row=`json &lt; $_C_CFG | grep $name | wc -l`
+    if [ $row -gt 7 ]; then
+        echo &#34;fount to many configs\n$config\n&#34;
+        exit 0
+    fi
+
+    connhost=`json &lt; $_C_CFG | grep $name | grep &#34;host&#34; | grep -v grep | awk &#39;{print \$3}&#39;`
+    if [ -z $connhost ]; then
+        echo error:  没有那个IP
+        exit 0
+    fi
+    connport=`json &lt; $_C_CFG | grep $name | grep &#34;port&#34; | grep -v grep | awk &#39;{print \$3}&#39;`
+    connuser=`json &lt; $_C_CFG | grep $name | grep &#34;user&#34; | grep -v grep | awk &#39;{print \$3}&#39;`
+    connpass=`json &lt; $_C_CFG | grep $name | grep &#34;pass&#34; | grep -v grep | awk &#39;{print \$3}&#39;`
+    connlang=`json &lt; $_C_CFG | grep $name | grep &#34;lang&#34; | grep -v grep | awk &#39;{print \$3}&#39;`
+    conntype=`json &lt; $_C_CFG | grep $name | grep &#34;conn&#34; | grep -v grep | awk &#39;{print \$3}&#39;`
+    conntssh=`json &lt; $_C_CFG | grep $name | grep &#34;ssht&#34; | grep -v grep | awk &#39;{print \$3}&#39;`
+
+    [ -z &#34;$connport&#34; ] &amp;&amp; connport=22
+    [ -z &#34;$connuser&#34; ] &amp;&amp; connuser=&#39;root&#39;
+    [ -z &#34;$connpass&#34; ] &amp;&amp; connpass=&#39;123456&#39;
+    [ -z &#34;$connlang&#34; ] &amp;&amp; connlang=&#39;None&#39;
+    [ -z &#34;$conntype&#34; ] &amp;&amp; conntype=&#39;ssh&#39;
+    [ -z &#34;$conntssh&#34; ] &amp;&amp; conntssh=&#39;pass&#39;
+
+    if [ &#34;$connlang&#34; != &#34;None&#34; ]; then
+        locallang=$LANG
+        locallcall=$LC_ALL
+        export LANG=$connlang
+        export LC_ALL=$connlang
+    fi
+
+    if [ &#34;$conntype&#34; == &#34;ssh&#34; ]; then
+        connstr=&#34;spawn ssh -p${connport} ${connuser}@${connhost}
+                 expect {
+                        \&#34;*(yes/no)*\&#34; { send \&#34;yes\n\&#34;; exp_continue }
+                    -re \&#34;assword:|assw\&#34; { send \&#34;${connpass}\n\&#34; }
+                 }&#34;
+        if [ &#34;$conntssh&#34; != &#34;pass&#34; ]; then
+            connstr=&#34;spawn ssh -p${connport} ${connuser}@${connhost} -i${conntssh}
+                     expect {
+                            \&#34;*(yes/no)*\&#34; { send \&#34;yes\n\&#34; }
+                        -re \&#34;&gt;|]|$|#\&#34; { send \&#34;\n\&#34; }
+                     }&#34;
+        fi
+        expect -c &#34;
+                set timeout 10000
+                stty -echo
+                ${connstr}
+
+                if { \&#34;${connlang}\&#34; != \&#34;None\&#34; } {
+                    expect {
+                        -re \&#34;&gt;|]|$|#\&#34; { send \&#34;export LANG=${connlang} &amp;&amp; export LC_ALL=${connlang}\n\&#34; }
+                    }
+                }
+                interact 
+                  &#34;
+    elif [ &#34;$conntype&#34; == &#34;telnet&#34; ]; then
+        echo $connlang
+        expect -c &#34;
+                set timeout 10000
+                stty -echo
+                spawn telnet ${connhost} ${connport}
+                expect {
+                        \&#34;*(yes/no)*\&#34; { send \&#34;yes\n\&#34;; exp_continue }
+                        \&#34;*ogin*\&#34; { send \&#34;${connuser}\n\&#34;; exp_continue }
+                    -re \&#34;assword:|assw\&#34; { send \&#34;${connpass}\n\&#34; }
+                }
+
+                if { \&#34;${connlang}\&#34; != \&#34;None\&#34; } {
+                    expect {
+                        -re \&#34;&gt;|]|$|#\&#34; { send \&#34;export LANG=${connlang} &amp;&amp; export LC_ALL=${connlang}\n\&#34; }
+                    }
+                }
+                interact 
+                  &#34;
+    fi
+
+    if [ &#34;$connlang&#34; != &#34;None&#34; ]; then
+        locallang=$LANG
+        locallcall=$LC_ALL
+        export LANG=$locallang
+        export LC_ALL=$locallcall
+    fi
+}
+
+function showconn() {
+    json &lt; $_C_CFG | grep $1 | awk &#39;{printf(&#34;%-25s\t%s\n&#34;, $1, $3)}&#39;
+}
+
+case &#34;$1&#34; in 
+    show)
+        showconn $2
+        ;;
+    help)
+        echo &#34;$0 onename\n$0 show onename&#34; &gt;&amp;2
+        ;;
+    *)
+        connect $1
+        ;;
+esac
+
+exit 0
+</code></pre>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/packetsender/" title="link to PacketSender 发送接收socket macOS App">PacketSender 发送接收socket macOS App</a></h2>
+        <p class="excerpt"><h4 id="更新">更新</h4>
+<blockquote>
+<p>问题原因可能为 macOS 10.12 beta 系统问题，新更新为 10.12 beta 6 问题解决。</p>
+</blockquote>
+<blockquote>
+<p>目前版本已更新为 1.4.3，支持多窗口。</p>
+</blockquote>
+<h2 id="起因">起因</h2>
+<blockquote>
+<p>最近工作发现有时候需要测试发送 TCP 包，而目前 Mac 上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。<a href="https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;ls=1&amp;mt=12">PacketSender</a>
+因后来实用 ObjC 重写了的原因，所以开源旧版本的 Swift 版本吧。<a href="https://gitlab.com/sohunjug/PacketSender-Swift.git">GitLab</a>、<a href="https://github.com/sohunjug/PacketSender-Swift.git">GitHub</a></p>
+</blockquote>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2016-08-08 17:31:53 &#43;0800" class="post-list__meta--date date">2016-08-18</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/objective-c">Objective-C</a>   • <a href="https://sohunjug.com/tags/swift">Swift</a>   • <a href="https://sohunjug.com/tags/tcp">TCP</a>   • <a href="https://sohunjug.com/tags/udp">UDP</a>  </span> 
+            <a class="btn-border-small" href="/posts/packetsender/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/kafka-rocketmq/" title="link to Kafka、RocketMQ调研">Kafka、RocketMQ调研</a></h2>
+        <p class="excerpt"><h3 id="kafka是linkin开源的消息中间件">Kafka是Linkin开源的消息中间件</h3>
+<h4 id="kafka的设计目标是">Kafka的设计目标是：</h4>
+<blockquote>
+<p>（1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。
+（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。
+（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。
+（4）同时支持离线数据处理和实时数据处理。
+（5）Scale out：支持在线水平扩展。</p>
+</blockquote>
+<h3 id="rocketmq是阿里开源的消息中间件">RocketMQ是阿里开源 …</h3>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2016-08-08 17:31:53 &#43;0800" class="post-list__meta--date date">2016-08-08</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/kafka">Kafka</a>   • <a href="https://sohunjug.com/tags/rocketmq">RocketMQ</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/kafka-rocketmq/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/ssh-telnet\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/ssh-telnet\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

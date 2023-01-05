@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim xml on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/vim-xml/</link>
+    <description>Recent content in Vim xml on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 21 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/vim-xml/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Vim的xml排版</title>
+      <link>https://sohunjug.com/posts/vim-xml/</link>
+      <pubDate>Fri, 21 Dec 2012 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/vim-xml/</guid>
+      <description>&lt;p&gt;如果你手中有一个xml，而这个xml显示的排版非常混乱，大家看的时候可能会很为难，其实vim也可以实现xml的排版。&lt;/p&gt;
+&lt;p&gt;比如你的xml是这样：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sohunjug.com/img/blog/xml-11.jpeg&#34; alt=&#34;未排版的xml&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

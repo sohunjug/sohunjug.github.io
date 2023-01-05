@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RESTful on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/restful/</link>
+    <description>Recent content in RESTful on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 13 Sep 2016 15:58:43 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/restful/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端</title>
+      <link>https://sohunjug.com/posts/nodejs-restful-gulp/</link>
+      <pubDate>Tue, 13 Sep 2016 15:58:43 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/nodejs-restful-gulp/</guid>
+      <description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C++功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。&lt;/p&gt;
+&lt;/blockquote&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

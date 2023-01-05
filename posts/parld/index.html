@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>Mac应用开发-启程 - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="Objective-C, Mac" />
+    
+    <meta property="og:title" content="Mac应用开发-启程" />
+<meta property="og:description" content="最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是parld音乐聚汇(推广下哈)。其中Mac客户端下载地址
+目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/parld/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2014-02-27T00:00:00+08:00" />
+<meta property="article:modified_time" content="2014-02-27T00:00:00+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mac应用开发-启程"/>
+<meta name="twitter:description" content="最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是parld音乐聚汇(推广下哈)。其中Mac客户端下载地址
+目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2014-02-27 00:00:00 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2014-02-27</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/objective-c">Objective-C</a>   • <a href="https://sohunjug.com/tags/mac">Mac</a>  </span> 
+        </div>
+        <h1 class="post-title">Mac应用开发-启程</h1>
+    </header>
+    <section class="post">
+        <p>最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是<a href="http://www.parld.com">parld音乐聚汇</a>(推广下哈)。其中Mac客户端<a href="http://www.parld.com/api?act=download&amp;type=mac">下载地址</a></p>
+<p>目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家</p>
+<p>** 2016-08-11 **</p>
+<blockquote>
+<p>由于项目搁浅，现分享下当时的macOS端代码，objective-c代码<a href="http://git.oschina.net/sohunjug/Parld-macOS">Git-oschina</a>，<a href="https://github.com/sohunjug/Parld-macOS.git">GitHub</a>
+代码技术都比较老了，欢迎指教。</p>
+</blockquote>
+<p>首先是音乐播放问题，对于第一次开发来说，我是在网上找了好多的demo来测试，所以选择了AudioStreamer，其次，需要做状态栏应用，所以找了一段代码
+{% codeblock lang:objc %}
+NSMenu		*menu;</p>
+<p>_statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] ;</p>
+<p>[_statusItem setImage:[NSImage imageNamed:@&ldquo;start&rdquo;]];
+[_statusItem setHighlightMode:YES];
+[_statusItem setTitle:@&quot; 音乐汇聚&quot;];</p>
+<p>menu = [[NSMenu alloc] initWithTitle:@&ldquo;音乐汇聚&rdquo;];
+[menu addItemWithTitle:@&ldquo;上一首&rdquo; action:@selector(pre) keyEquivalent:@&quot;&quot;];
+[menu addItemWithTitle:@&ldquo;下一首&rdquo; action:@selector(next) keyEquivalent:@&quot;&quot;];
+[menu addItemWithTitle:@&ldquo;更新音乐池&rdquo; action:@selector(updateMusic) keyEquivalent:@&quot;&quot;];
+[menu addItemWithTitle:@&ldquo;关于&rdquo; action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@&quot;&quot;];
+[menu addItemWithTitle:@&ldquo;退出&rdquo; action:@selector(exit:) keyEquivalent:@&quot;&quot;];
+[menu addObserver:view forKeyPath:@&ldquo;123&rdquo; options:NSKeyValueObservingOptionNew context:nil];
+[_statusItem setMenu:menu];
+{% endcodeblock %}
+之后需要做的就是逻辑了，获取歌单，播放歌单。
+后期的版本又添加了Mac笔记本的媒体播放键功能，同样是找了一段代码，封装好的，如果想了解原理也可自行下载。SPMediaKeyTap。
+加入之后需要修改主程序
+添加继承NSApplication的类
+{% codeblock lang:objc %}</p>
+<ul>
+<li>
+<p>(void)sendEvent:(NSEvent *)theEvent
+{
+// If event tap is not installed, handle events that reach the app instead
+BOOL shouldHandleMediaKeyEventLocally = ![SPMediaKeyTap usesGlobalMediaKeyTap];</p>
+<p>if(shouldHandleMediaKeyEventLocally &amp;&amp; [theEvent type] == NSSystemDefined &amp;&amp; [theEvent subtype] == SPSystemDefinedEventMediaKeys) {
+[(id)[self delegate] mediaKeyTap:nil receivedMediaKeyEvent:theEvent];
+}
+[super sendEvent:theEvent];
+}
+{% endcodeblock %}
+${PRODUCT_NAME}-Info.plist文件中Principal class字段修改为重写的NSApplication</p>
+</li>
+</ul>
+<p>并在主AppDelegate添加按键映射
+{% codeblock lang:objc %}
+-(void)mediaKeyTap:(SPMediaKeyTap*)keyTap receivedMediaKeyEvent:(NSEvent*)event;
+{
+NSAssert([event type] == NSSystemDefined &amp;&amp; [event subtype] == SPSystemDefinedEventMediaKeys, @&ldquo;Unexpected NSEvent in mediaKeyTap:receivedMediaKeyEvent:&rdquo;);
+// here be dragons&hellip;
+int keyCode = (([event data1] &amp; 0xFFFF0000) &raquo; 16);
+int keyFlags = ([event data1] &amp; 0x0000FFFF);
+BOOL keyIsPressed = (((keyFlags &amp; 0xFF00) &raquo; 8)) == 0xA;
+int keyRepeat = (keyFlags &amp; 0x1);</p>
+<pre><code>if (keyIsPressed) {
+	NSString *debugString;
+    debugString = [NSString stringWithFormat:@&quot;%@&quot;, keyRepeat?@&quot;, repeated.&quot;:@&quot;.&quot;];
+	switch (keyCode) {
+		case NX_KEYTYPE_PLAY:
+			if (_isPlay) {
+                [self pauseMusic];
+            }
+            else{
+                [self playMusic];
+            }
+			break;
+			
+		case NX_KEYTYPE_FAST:
+			[self nextMusic];
+			break;
+			
+		case NX_KEYTYPE_REWIND:
+			[self lastMusic];
+			break;
+		default:
+            break;
+            // More cases defined in hidsystem/ev_keymap.h
+	}
+}
+</code></pre>
+<p>}
+{% endcodeblock %}
+还要添加一个开机自启动的配置，同样可以使用LaunchAtLoginController，只需要将Check控件的value绑定到LaunchAtLoginController里面的launchAtLogin变量上即可</p>
+<p>以上就是第一个初级版本所用到的技术，比较简单，但是还是蛮实用的。
+而从今天开始，打算重构做第二版本，支持Mac悬浮窗，拖拽文件上传，悬浮窗下拉主窗体，目前基本功能的技术难点已经基本完成，后续会继续发表博客。</p>
+<p>在如今Mac已经越来越多的情况下，Mac开发人员还是比较少的，希望大家都能一起来讨论讨论技术。共同提高</p>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/octopress/" title="link to 终于从wordpress转移到了octopress">终于从wordpress转移到了octopress</a></h2>
+        <p class="excerpt"><p>从大学开始就折腾过wordpress，工作后也确实一直用着wordpress。步入社会发现大学里面的都算不上皮毛，不懂的东西实在太多了，如饥似渴的小小学习2年，终于换了份工作。</p>
+<p>当日子一步步的步上正轨，我的学习热情也慢慢回升了。记得是半年前吧，突然听说了octopress这个博客，只看介绍(A blogging framework for hackers.)就给人一种高大上的感觉哈。当时就想折腾下，可惜因为工作也忙，也想换工作，一直拖到了现在。</p>
+<p>新工作依然还是程序员，比较热爱这个职业吧。当做出一 …</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2014-02-27 00:00:00 &#43;0800" class="post-list__meta--date date">2014-04-19</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/octopress">octopress</a>  </span> 
+            <a class="btn-border-small" href="/posts/octopress/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/task-with-thread/" title="link to 基于类成员函数回调的线程池-连接池-任务队列">基于类成员函数回调的线程池-连接池-任务队列</a></h2>
+        <p class="excerpt"><p>在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。</p>
+<p>其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。
+因为使用模板来构造，所以目前只支持类成员函数的回调。
+与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。</p>
+<p>此基于成员函数回调的线程池需要同优先级队列共同使用，原理是初始化一个初始为5个线程的线程池，并将自己的控制线程添加到最 …</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2014-02-27 00:00:00 &#43;0800" class="post-list__meta--date date">2013-11-28</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/thread">Thread</a>   • <a href="https://sohunjug.com/tags/pool">Pool</a>   • <a href="https://sohunjug.com/tags/task">Task</a>   • <a href="https://sohunjug.com/tags/c/c&#43;&#43;">C/C&#43;&#43;</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/task-with-thread/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/parld\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/parld\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

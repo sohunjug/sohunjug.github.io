@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>关于makefile的通用方案（个人测试推荐方案） - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="makefile, C/C&#43;&#43;" />
+    
+    <meta property="og:title" content="关于makefile的通用方案（个人测试推荐方案）" />
+<meta property="og:description" content="在使用linux或者mac时，有时大家会写一些自己测试功能一类的小程序，可是如果只有1个文件时候还可以，直接gcc就OK了。
+而一旦文件多了以后可能就会很麻烦。这个makefile可以作为一个解决方案。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/makefile/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2013-06-23T00:00:00+08:00" />
+<meta property="article:modified_time" content="2013-06-23T00:00:00+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="关于makefile的通用方案（个人测试推荐方案）"/>
+<meta name="twitter:description" content="在使用linux或者mac时，有时大家会写一些自己测试功能一类的小程序，可是如果只有1个文件时候还可以，直接gcc就OK了。
+而一旦文件多了以后可能就会很麻烦。这个makefile可以作为一个解决方案。"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2013-06-23 00:00:00 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2013-06-23</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/makefile">makefile</a>   • <a href="https://sohunjug.com/tags/c/c&#43;&#43;">C/C&#43;&#43;</a>  </span> 
+        </div>
+        <h1 class="post-title">关于makefile的通用方案（个人测试推荐方案）</h1>
+    </header>
+    <section class="post">
+        <p>在使用linux或者mac时，有时大家会写一些自己测试功能一类的小程序，可是如果只有1个文件时候还可以，直接gcc就OK了。</p>
+<p>而一旦文件多了以后可能就会很麻烦。这个makefile可以作为一个解决方案。</p>
+<p>首先自己修改需要生成的程序文件名的获取脚本，我是测试这类的小程序都在一个文件夹下分不同的子文件夹，所以在子文件夹外加入这个文件FileName.sh，不要忘记执行权限哦。（其中的awk自行更改哦，我的路径是/Users/sohunjug/Documents/sohunjug/）
+{% codeblock lang:bash %}
+FileName=`pwd | awk -Fsohunjug &lsquo;{print $3}&rsquo; | awk -F/ &lsquo;{print $2}&rsquo;`
+echo &ldquo;$FileName&rdquo;
+{% endcodeblock %}</p>
+<p>之后就可以将makefile考入需要的路径，然后执行make，就会生成以子文件夹名来命名的程序了～</p>
+<p>{% codeblock lang:makefile %}</p>
+<h1 id="gcc编译通用的makefile文件">gcc编译通用的Makefile文件</h1>
+<p>#######################################################
+FileName=`../FileName.sh`
+Exe=$(FileName)
+CC = g++
+CFLAGS = -Wall -g</p>
+<p>OBJ_PATH = objs
+LINKFLAGS = -ldl -lpthread</p>
+<p>#Cpp文件夹
+SRCDIR = .</p>
+<p>CPP_SRCDIR = $(SRCDIR)
+CPP_SOURCES = $(foreach d,$(CPP_SRCDIR),$(wildcard $(d)/*.cpp) )
+CPP_OBJS = $(patsubst %.cpp, $(OBJ_PATH)/%.o, $(CPP_SOURCES))</p>
+<p>default: test init compile</p>
+<p>$(C_OBJS):$(OBJ_PATH)/%.o:%.c
+$(CC) -c $(CFLAGS) &lt; -o $@</p>
+<p>$(CPP_OBJS):$(OBJ_PATH)/%.o:%.cpp
+$(CC) -c $(CFLAGS) &lt; -o $@</p>
+<p>test:
+@echo &ldquo;$(FileName)&rdquo;
+@echo &ldquo;CPP_SOURCES: $(CPP_SOURCES)&rdquo;
+@echo &ldquo;CPP_OBJS: $(CPP_OBJS)&rdquo;</p>
+<p>init:
+$(foreach d,$(SRCDIR), mkdir -p $(OBJ_PATH)/$(d);)</p>
+<p>compile:$(C_OBJS) $(CPP_OBJS)
+$(CC)  $^ -o $(Exe)  $(LINKFLAGS) $(LIBS)</p>
+<p>clean:
+rm -rf $(OBJ_PATH)
+rm -f $(Exe)
+########################################################
+{% endcodeblock %}</p>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/memory/" title="link to 简单的内存管理类（关于malloc与free）">简单的内存管理类（关于malloc与free）</a></h2>
+        <p class="excerpt"><p>大家在写代码的时候是否有忘记free指针的时候呢？</p>
+<p>如果是大型项目肯定会用一些比较稳定的开源库一类的来解决。而如果是私人的小项目，或者是测试一类的代码遇到这类问题还需要各种检查，是否很浪费时间呢？</p>
+<p>给大家分享一个我个人使用的内存管理类哈~可以使用Create一块空间，之后可以不需要去管这块空间最后是否free掉，因为类析构时候会自动帮助free掉，而如果想要手动free也支持，直接传入申请空间时候取得的ID就可以指定析构了。这个还是比较适合私人用用哈~</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2013-06-23 00:00:00 &#43;0800" class="post-list__meta--date date">2013-06-26</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/memory">Memory</a>   • <a href="https://sohunjug.com/tags/c/c&#43;&#43;">C/C&#43;&#43;</a>  </span> 
+            <a class="btn-border-small" href="/posts/memory/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/oracle-dirty/" title="link to 关于脏数据、脏数据块的正确定义，commit的内部机制">关于脏数据、脏数据块的正确定义，commit的内部机制</a></h2>
+        <p class="excerpt"><p>有人觉得脏数据是指错误的业务流程在系统中产生的无用异常数据。  产生这种数据的原因可能是因为错误的业务流程或者手动在数据库中制造。</p>
+<p>例如在百度百科中，对脏数据的定义是这样的，“脏数据是指源系统中的数据不在给定的范围内或对于实际业务毫无意义，或是数据格式非法，以及在源系统中存在不规范的编码和含糊的业务逻辑”。</p>
+<p>无论这种定义是否正确，在oracle中脏数据的定义不是这样的。在oracle中，脏数据是指在内存中而未写入硬盘的数据。脏数据块即为在内存中而未写入硬盘的数据块。</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2013-06-23 00:00:00 &#43;0800" class="post-list__meta--date date">2012-12-24</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/oracle">Oracle</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/oracle-dirty/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/makefile\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/makefile\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Vim profile on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/vim-profile/</link>
+    <description>Recent content in Vim profile on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 22 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/vim-profile/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我的vim配置</title>
+      <link>https://sohunjug.com/posts/vim-profile/</link>
+      <pubDate>Sat, 22 Dec 2012 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/vim-profile/</guid>
+      <description>&lt;p&gt;我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。&lt;/p&gt;
+&lt;p&gt;其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+{% codeblock %}
+vim-X11.x86_64
+vim-common.x86_64
+vim-enhanced.x86_64
+vim-filesystem.x86_64
+vim-halibut.noarch
+vim-minimal.x86_64
+vim-perl-support.noarch
+cscope.x86_64
+ctags.x86_64
+{% endcodeblock %}
+之后配置$HOME目录下的.vimrc&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>终于从wordpress转移到了octopress - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="octopress" />
+    
+    <meta property="og:title" content="终于从wordpress转移到了octopress" />
+<meta property="og:description" content="从大学开始就折腾过wordpress，工作后也确实一直用着wordpress。步入社会发现大学里面的都算不上皮毛，不懂的东西实在太多了，如饥似渴的小小学习2年，终于换了份工作。
+当日子一步步的步上正轨，我的学习热情也慢慢回升了。记得是半年前吧，突然听说了octopress这个博客，只看介绍(A blogging framework for hackers.)就给人一种高大上的感觉哈。当时就想折腾下，可惜因为工作也忙，也想换工作，一直拖到了现在。
+新工作依然还是程序员，比较热爱这个职业吧。当做出一个作品时那种快感，没做过的人是体验不到的。平时上班因为刚入职，还不忙，正好下班就可以捅咕自己的东西了。可能因为处女座的原因，尤其喜欢把这些东西搞到自己的服务器上。没事看看vps，发现阿里云现在很便宜嘛，一个月才55，而且还可以申请试用5天，想到就办，申请个试用的，搭建环境测试，满意之后买vps。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/octopress/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2014-04-19T16:20:27+08:00" />
+<meta property="article:modified_time" content="2014-04-19T16:20:27+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="终于从wordpress转移到了octopress"/>
+<meta name="twitter:description" content="从大学开始就折腾过wordpress，工作后也确实一直用着wordpress。步入社会发现大学里面的都算不上皮毛，不懂的东西实在太多了，如饥似渴的小小学习2年，终于换了份工作。
+当日子一步步的步上正轨，我的学习热情也慢慢回升了。记得是半年前吧，突然听说了octopress这个博客，只看介绍(A blogging framework for hackers.)就给人一种高大上的感觉哈。当时就想折腾下，可惜因为工作也忙，也想换工作，一直拖到了现在。
+新工作依然还是程序员，比较热爱这个职业吧。当做出一个作品时那种快感，没做过的人是体验不到的。平时上班因为刚入职，还不忙，正好下班就可以捅咕自己的东西了。可能因为处女座的原因，尤其喜欢把这些东西搞到自己的服务器上。没事看看vps，发现阿里云现在很便宜嘛，一个月才55，而且还可以申请试用5天，想到就办，申请个试用的，搭建环境测试，满意之后买vps。"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2014-04-19 16:20:27 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2014-04-19</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/octopress">octopress</a>  </span> 
+        </div>
+        <h1 class="post-title">终于从wordpress转移到了octopress</h1>
+    </header>
+    <section class="post">
+        <p>从大学开始就折腾过wordpress，工作后也确实一直用着wordpress。步入社会发现大学里面的都算不上皮毛，不懂的东西实在太多了，如饥似渴的小小学习2年，终于换了份工作。</p>
+<p>当日子一步步的步上正轨，我的学习热情也慢慢回升了。记得是半年前吧，突然听说了octopress这个博客，只看介绍(A blogging framework for hackers.)就给人一种高大上的感觉哈。当时就想折腾下，可惜因为工作也忙，也想换工作，一直拖到了现在。</p>
+<p>新工作依然还是程序员，比较热爱这个职业吧。当做出一个作品时那种快感，没做过的人是体验不到的。平时上班因为刚入职，还不忙，正好下班就可以捅咕自己的东西了。可能因为处女座的原因，尤其喜欢把这些东西搞到自己的服务器上。没事看看vps，发现阿里云现在很便宜嘛，一个月才55，而且还可以申请试用5天，想到就办，申请个试用的，搭建环境测试，满意之后买vps。</p>
+<p>首先找到了部署vps的文章才大概明白了一些原理(汗，原来以为还需要架设git服务器)。<a href="http://www.xiaozhou.net/deploy-octopress-to-your-vps-2013-08-13.html">部署Octopress到你的VPS</a></p>
+<p>其实网上很多博客写的都不是很明白，octopress根本没有那么复杂，只需要下载<a href="http://octopress.org">octopress</a>，然后在自己的本机上配置，设置好ssh连接，就会同步到vps主机上，因为octopress是静态网页，只需要同步到服务器的网站目录就OK了。</p>
+<p>当时喜欢上octopress也是因为这个主题，我也找了好久，推荐给大家哈：<a href="http://shashankmehta.in/archive/2012/greyshade.html">链接地址</a></p>
+<p>详细的个性化配置我就不阐述了，网上资料也是可以找得到的。</p>
+<p>博客以后应该会经常更新了，欢迎大家前来指点哦！</p>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/git-webmail/" title="link to 个人搭建git服务器与webmail服务器">个人搭建git服务器与webmail服务器</a></h2>
+        <p class="excerpt"><p>最近看到一句令人很有感觉的一句话，&ldquo;The best is yet to come&hellip;&quot;，而我本人也很相信这句话。</p>
+<p>在这个一天天各种新技术出生的年代，大家都想什么技术都熟悉一点，不至于让人说out了，而本人又是处女座的，有那么点强迫症，非常喜欢使用自己的东西，所以索性就搭建了自己的git服务器。而Apple新出的OSX10.10 DP2又依然没有解决邮件客户端的问题，感觉又很不爽，正好看到过一个RainLoop的帖子，所以也把WebMail捅咕上了。</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2014-04-19 16:20:27 &#43;0800" class="post-list__meta--date date">2014-06-24</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/webmail">Webmail</a>   • <a href="https://sohunjug.com/tags/git">Git</a>  </span> 
+            <a class="btn-border-small" href="/posts/git-webmail/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/parld/" title="link to Mac应用开发-启程">Mac应用开发-启程</a></h2>
+        <p class="excerpt"><p>最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是<a href="http://www.parld.com">parld音乐聚汇</a>(推广下哈)。其中Mac客户端<a href="http://www.parld.com/api?act=download&amp;type=mac">下载地址</a></p>
+<p>目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2014-04-19 16:20:27 &#43;0800" class="post-list__meta--date date">2014-02-27</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/objective-c">Objective-C</a>   • <a href="https://sohunjug.com/tags/mac">Mac</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/parld/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/octopress\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/octopress\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>Linux脚本 - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="Linux shell" />
+    
+    <meta property="og:title" content="Linux脚本" />
+<meta property="og:description" content="Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。
+首先需要安装插件
+{% codeblock lang:bash %}
+ubuntu       apt-get install expect
+fedora       yum install expect.x86_64
+opensuse     zypper install expect
+{% endcodeblock %}
+之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/linux-shell/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2012-12-23T00:00:00+08:00" />
+<meta property="article:modified_time" content="2012-12-23T00:00:00+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Linux脚本"/>
+<meta name="twitter:description" content="Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。
+首先需要安装插件
+{% codeblock lang:bash %}
+ubuntu       apt-get install expect
+fedora       yum install expect.x86_64
+opensuse     zypper install expect
+{% endcodeblock %}
+之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2012-12-23 00:00:00 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2012-12-23</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/linux-shell">Linux shell</a>  </span> 
+        </div>
+        <h1 class="post-title">Linux脚本</h1>
+    </header>
+    <section class="post">
+        <p>Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。</p>
+<p>首先需要安装插件
+{% codeblock lang:bash %}
+ubuntu       apt-get install expect
+fedora       yum install expect.x86_64
+opensuse     zypper install expect
+{% endcodeblock %}
+之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。</p>
+<p>{% codeblock lang:bash%}
+#!/usr/bin/expect -f</p>
+<p>set user [lindex $argv 1]
+set host [lindex $argv 0]
+set password [lindex $argv 2]
+set lang [lindex $argv 3]
+set timeout -1</p>
+<p>spawn ssh $user@$host</p>
+<p>expect {
+&ldquo;<em>yes/no</em>&rdquo; { send &ldquo;yes\r&rdquo;;exp_continue }</p>
+<p>&ldquo;<em>assword:</em>&rdquo; { send &ldquo;$password\r&rdquo; }</p>
+<p>}
+sleep 1
+#send &ldquo;export LANG=$lang &amp;&amp; export LC_ALL=$lang \r&rdquo;</p>
+<p>interact
+{% endcodeblock %}
+而登录的时候可以将密码等信息存入文件中，然后自动读取。如：
+{% codeblock lang:bash %}
+#!/bin/bash</p>
+<p>if [ -f $HOME/Documents/ssh/conn.profile ]; then
+source $HOME/Documents/ssh/conn.profile
+fi</p>
+<p>ip=$1
+CONIP=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNIP$ip | grep -v grep | awk -F= '{print \$2}'</code>
+CONUSER=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNUSER$ip | grep -v grep | awk -F= '{print \$2}'</code>
+CONPASS=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNPASS$ip | grep -v grep | awk -F= '{print \$2}'</code>
+CONLANG=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNLANG$ip | grep -v grep | awk -F= '{print \$2}'</code></p>
+<p>if [ -z ${CONIP} ]
+then
+echo error:  没有那个IP
+else
+echo ${CONIP}
+echo ${CONUSER}
+echo ${CONPASS}
+echo ${CONLANG}
+export LANG=${CONLANG} &amp;&amp; export LC_ALL=${CONLANG}
+$HOME/Documents/ssh/sshend.sh ${CONIP} ${CONUSER} ${CONPASS} ${CONLANG}
+`qdbus org.kde.konsole $session org.kde.konsole.Session.setCodec UTF-8`
+export LANG=zh_CN.UTF-8
+export LC_ALL=zh_CN.UTF-8
+fi
+{% endcodeblock %}
+给这个文件建立一个alias，之后直接登录加上标志，用ssh或者ftp等命令就方便了很多吧～</p>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/oracle-dirty/" title="link to 关于脏数据、脏数据块的正确定义，commit的内部机制">关于脏数据、脏数据块的正确定义，commit的内部机制</a></h2>
+        <p class="excerpt"><p>有人觉得脏数据是指错误的业务流程在系统中产生的无用异常数据。  产生这种数据的原因可能是因为错误的业务流程或者手动在数据库中制造。</p>
+<p>例如在百度百科中，对脏数据的定义是这样的，“脏数据是指源系统中的数据不在给定的范围内或对于实际业务毫无意义，或是数据格式非法，以及在源系统中存在不规范的编码和含糊的业务逻辑”。</p>
+<p>无论这种定义是否正确，在oracle中脏数据的定义不是这样的。在oracle中，脏数据是指在内存中而未写入硬盘的数据。脏数据块即为在内存中而未写入硬盘的数据块。</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2012-12-23 00:00:00 &#43;0800" class="post-list__meta--date date">2012-12-24</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/oracle">Oracle</a>  </span> 
+            <a class="btn-border-small" href="/posts/oracle-dirty/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/oracle-commit/" title="link to 没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别">没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</a></h2>
+        <p class="excerpt"><p>以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2012-12-23 00:00:00 &#43;0800" class="post-list__meta--date date">2012-12-23</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/oracle">Oracle</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/oracle-commit/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/linux-shell\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/linux-shell\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

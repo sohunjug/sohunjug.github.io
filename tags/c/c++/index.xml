@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C/C&#43;&#43; on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/c/c&#43;&#43;/</link>
+    <description>Recent content in C/C&#43;&#43; on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language><atom:link href="https://sohunjug.com/tags/c/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C/C&#43;&#43;中宏定义的用法</title>
+      <link>https://sohunjug.com/posts/c-define/</link>
+      <pubDate>Tue, 13 Jan 2015 15:59:59 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/c-define/</guid>
+      <description>&lt;p&gt;无论是在网络上还是项目中，define的用法非常广泛，define是由预处理程序自动完成的，被成为宏定义。&lt;/p&gt;
+&lt;p&gt;宏定义的作用范围仅限于当前文件(头文件除外，包含该头文件的源文件中都可使用)，一般define分为有参数和无参数两种。&lt;/p&gt;
+&lt;h1 id=&#34;宏定义优点&#34;&gt;宏定义优点&lt;/h1&gt;</description>
+    </item>
+    
+    <item>
+      <title>基于类成员函数回调的线程池-连接池-任务队列</title>
+      <link>https://sohunjug.com/posts/task-with-thread/</link>
+      <pubDate>Thu, 28 Nov 2013 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/task-with-thread/</guid>
+      <description>&lt;p&gt;在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。&lt;/p&gt;
+&lt;p&gt;其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。
+因为使用模板来构造，所以目前只支持类成员函数的回调。
+与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。&lt;/p&gt;
+&lt;p&gt;此基于成员函数回调的线程池需要同优先级队列共同使用，原理是初始化一个初始为5个线程的线程池，并将自己的控制线程添加到最高优先级启动。控制线程的目的是当任务队列比较多时增加线程来增加效率，当任务队列少时减速线程来节约资源（目前未实现）&lt;/p&gt;
+&lt;p&gt;连接池，需要同线程池与任务队列共同使用，同样为先初始化一定数量的连接，供多线程调度使用，其中包含一个控制线程，来控制连接池中的连接数量，当取出一个连接来用时，会给取出的连接加锁，所以使用完后需要调用返回函数，来归还使用完的连接。&lt;/p&gt;
+&lt;p&gt;连接池的作用就是不必每次都创建连接使用完成后断开连接，而使用模板来构造扩展性更强，所以需要自己额外来写创建连接，与断开连接函数。&lt;/p&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;需要注意连接池需要在线程之前析构。&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;任务队列文件代码：&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>简单的内存管理类（关于malloc与free）</title>
+      <link>https://sohunjug.com/posts/memory/</link>
+      <pubDate>Wed, 26 Jun 2013 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/memory/</guid>
+      <description>&lt;p&gt;大家在写代码的时候是否有忘记free指针的时候呢？&lt;/p&gt;
+&lt;p&gt;如果是大型项目肯定会用一些比较稳定的开源库一类的来解决。而如果是私人的小项目，或者是测试一类的代码遇到这类问题还需要各种检查，是否很浪费时间呢？&lt;/p&gt;
+&lt;p&gt;给大家分享一个我个人使用的内存管理类哈~可以使用Create一块空间，之后可以不需要去管这块空间最后是否free掉，因为类析构时候会自动帮助free掉，而如果想要手动free也支持，直接传入申请空间时候取得的ID就可以指定析构了。这个还是比较适合私人用用哈~&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>关于makefile的通用方案（个人测试推荐方案）</title>
+      <link>https://sohunjug.com/posts/makefile/</link>
+      <pubDate>Sun, 23 Jun 2013 00:00:00 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/makefile/</guid>
+      <description>&lt;p&gt;在使用linux或者mac时，有时大家会写一些自己测试功能一类的小程序，可是如果只有1个文件时候还可以，直接gcc就OK了。&lt;/p&gt;
+&lt;p&gt;而一旦文件多了以后可能就会很麻烦。这个makefile可以作为一个解决方案。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

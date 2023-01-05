@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>octopress on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/octopress/</link>
+    <description>Recent content in octopress on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 19 Apr 2014 16:20:27 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/octopress/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>终于从wordpress转移到了octopress</title>
+      <link>https://sohunjug.com/posts/octopress/</link>
+      <pubDate>Sat, 19 Apr 2014 16:20:27 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/octopress/</guid>
+      <description>&lt;p&gt;从大学开始就折腾过wordpress，工作后也确实一直用着wordpress。步入社会发现大学里面的都算不上皮毛，不懂的东西实在太多了，如饥似渴的小小学习2年，终于换了份工作。&lt;/p&gt;
+&lt;p&gt;当日子一步步的步上正轨，我的学习热情也慢慢回升了。记得是半年前吧，突然听说了octopress这个博客，只看介绍(A blogging framework for hackers.)就给人一种高大上的感觉哈。当时就想折腾下，可惜因为工作也忙，也想换工作，一直拖到了现在。&lt;/p&gt;
+&lt;p&gt;新工作依然还是程序员，比较热爱这个职业吧。当做出一个作品时那种快感，没做过的人是体验不到的。平时上班因为刚入职，还不忙，正好下班就可以捅咕自己的东西了。可能因为处女座的原因，尤其喜欢把这些东西搞到自己的服务器上。没事看看vps，发现阿里云现在很便宜嘛，一个月才55，而且还可以申请试用5天，想到就办，申请个试用的，搭建环境测试，满意之后买vps。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

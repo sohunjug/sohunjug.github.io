@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>telnet on 聽sohunjug</title>
+    <link>https://sohunjug.com/tags/telnet/</link>
+    <description>Recent content in telnet on 聽sohunjug</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 08 Aug 2016 17:31:53 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/telnet/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>自动登录ssh或telnet脚本</title>
+      <link>https://sohunjug.com/posts/ssh-telnet/</link>
+      <pubDate>Mon, 08 Aug 2016 17:31:53 +0800</pubDate>
+      
+      <guid>https://sohunjug.com/posts/ssh-telnet/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;闲来无事，正好更新下以前写的脚本，自动登录ssh或telnet。
+而且也方便记录密码。&lt;a href=&#34;http://git.oschina.net/sohunjug/connect.sh&#34;&gt;Git-oschina&lt;/a&gt;、&lt;a href=&#34;https://github.com/sohunjug/connect.sh&#34;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;使用connectsh自动连接ssh或者telnet&#34;&gt;使用connect.sh自动连接ssh或者telnet&lt;/h2&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

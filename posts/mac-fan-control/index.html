@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>MacBook Pro – Fan Control - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="Mac" />
+    
+    <meta property="og:title" content="MacBook Pro – Fan Control" />
+<meta property="og:description" content="这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。
+目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/mac-fan-control/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2013-07-26T00:00:00+08:00" />
+<meta property="article:modified_time" content="2013-07-26T00:00:00+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="MacBook Pro – Fan Control"/>
+<meta name="twitter:description" content="这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。
+目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2013-07-26 00:00:00 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2013-07-26</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/mac">Mac</a>  </span> 
+        </div>
+        <h1 class="post-title">MacBook Pro – Fan Control</h1>
+    </header>
+    <section class="post">
+        <p>这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。</p>
+<p>目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64</p>
+<!-- raw HTML omitted -->
+<hr>
+<p>这个身为MBP原生的，与硬件契合度最高的系统同样存在风扇自动调整的问题，至少在我重置了N次SMC的情况依然还是只能达到90度附近才会提速，于是只能用软件来对付了，我个人觉得效果比较好的是Fan Control。</p>
+<p>名称：Fan Control</p>
+<p>下载：<a href="http://www.lobotomo.com/products/FanControl/">http://www.lobotomo.com/products/FanControl/</a></p>
+<p>安装之后，会在“系统偏好设置”里面增加一个叫“Fan Control”的设置面板。</p>
+<p><img src="/img/blog/1.gif" alt="Mac FanControl"></p>
+<p>进去之后三项设置，</p>
+<p>Base Speed，初始速度，系统默认是2000RPM，系统启动之后会以这个初始速度为基准；</p>
+<p>Lower Threshold，温度下限阀值，这个是配合Base Speed工作的，在这个温度下，转速是Base Speed；</p>
+<p>Upper Threshold，温度上限阀值，这个是值达到时系统将以最高转速跑风扇，我的MBP 13是6200。</p>
+<p>风扇的转速会自动在Lower和Upper之间自动调整。</p>
+<p><em><!-- raw HTML omitted -->Ubuntu 13.04 x64</em></p>
+<hr>
+<p>遇到Linux有个好处，直接修改配置文件就行，可以省掉软件了，但是这个没法进行曲线调速了，所以有的人是直接把速度一步到位直接上到5500RPM，喜欢6000RPM的也行，反正风扇的作用就是处理积热嘛~</p>
+<p>不过我个人只是上班使用linux，所以我设置3800就完全够用了，一点不热，感觉灰常好啊~</p>
+<p>操作如下：</p>
+<p>开启终端（Terminal），输入以下指令，之后需要输入你当前用户的密码，然后回车，
+{% codeblock lang:bash %}
+sudo sh -c &ldquo;echo 5000 &gt; /sys/devices/platform/applesmc.768/fan1_min&rdquo;
+{% endcodeblock %}</p>
+<p>通过修改fan1_min中的数字“1”，可以调整各个不同风扇的转速，因为MBP 13只有一个风扇，所以也只有fan1，像MBP 15这一类的，可以分别调整fan1和fan2的转速等。并且每次开机的话系统都会自动重置，所以如果需要每次开机都保持一个转速的话，可以自行修改rc脚本。</p>
+<p><em><!-- raw HTML omitted -->Windows 7 x64<!-- raw HTML omitted --></em></p>
+<hr>
+<p>在Windows下也是需要依靠第三方软件的，据说是有类似于OSX下Fan Control那样的自动调速软件，不过我个人还是比较喜欢把速度调整到4000左右，基本也就够用了。软件叫“Mac/SMC Fan Control for Windows (+ Temp) ”。</p>
+<p>名称：Mac/SMC Fan Control for Windows (+ Temp)</p>
+<p>平台：32-bit MS Windows (NT/2000/XP/7/8/8.1), 64-bit MS Windows 7/8/8.1, Vista, WinXP.</p>
+<p>下载：<a href="http://sourceforge.net/projects/macfan/">http://sourceforge.net/projects/macfan/</a></p>
+<p>官方没有提到Win7，但是我的Win7-64bit也没有问题的。这是一个基于CLI（CommandLine Interface，命令行界面）的程序，而且同时还需要管理员权限，还要带参数，使用起来稍微有点麻烦，我个人是这么处理的：</p>
+<p>1.首先将解压缩后的文件放在\windows\mf目录；</p>
+<p>2.同时在目录里面增加一个批处理文件mf.cmd，内容如下：
+{% codeblock lang:bat %}
+@echo off
+@echo Input the fan speed (2000-6200):
+set /p speed=
+C:\Windows\mf\MacFanx64.exe %speed%
+{% endcodeblock %}
+3.之后按住Alt键，把mf.cmd拖到桌面上，之后在mf.cmd上右键，选择“属性”，选择“快捷方式”页面，点击“高级”，之后把“以管理员权限运行”勾上。</p>
+<p>4.双击桌面上的“mf.cmd – 快捷方式”，之后输入你想要调整的风扇转速，回车即可。</p>
+<p>因为我的是MBP 13，只有一个风扇，所以只需要提供一个参数，如果有多个风扇的话，请依据自己的需要进行修改，按照<!-- raw HTML omitted --></p>
+<p>基本上，我现在三系统使用的很完美，win7只是下个电影或者游戏下，平时上班linux，下班mac~</p>
+<p><strong>引用参考：</strong></p>
+<p>Fan Control: <a href="http://www.lobotomo.com/products/FanControl/">http://www.lobotomo.com/products/FanControl/</a></p>
+<p>MacFan: <a href="http://sourceforge.net/projects/macfan/">http://sourceforge.net/projects/macfan/</a></p>
+<p>Ubuntu Forum: http://ub<a href="http://ubuntuforums.org/showthread.php?t=1378663">untuforums.org/showthread.php?t=1378663</a></p>
+    </section>
+</article>
+<section class="read-more">
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">最近的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/mongodb-oracle/" title="link to MongoDB与OracleDB效率测试">MongoDB与OracleDB效率测试</a></h2>
+        <p class="excerpt"><p>最近因为任务需要，专门调研了一下MongoDB数据库的效率。与常规的OracleDB做了一下对比。</p>
+<p>MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。
+他支持的数据结构非常松散，是类似json的bjson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。
+Mongodb的存储方式是文 …</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2013-07-26 00:00:00 &#43;0800" class="post-list__meta--date date">2013-08-26</time>
+             <span class="post-list__meta--tags tags">   • <a href="https://sohunjug.com/tags/mongodb">MongoDB</a>   • <a href="https://sohunjug.com/tags/oracle">Oracle</a>  </span> 
+            <a class="btn-border-small" href="/posts/mongodb-oracle/">继续阅读</a>
+        </div>
+    </div>
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/memory/" title="link to 简单的内存管理类（关于malloc与free）">简单的内存管理类（关于malloc与free）</a></h2>
+        <p class="excerpt"><p>大家在写代码的时候是否有忘记free指针的时候呢？</p>
+<p>如果是大型项目肯定会用一些比较稳定的开源库一类的来解决。而如果是私人的小项目，或者是测试一类的代码遇到这类问题还需要各种检查，是否很浪费时间呢？</p>
+<p>给大家分享一个我个人使用的内存管理类哈~可以使用Create一块空间，之后可以不需要去管这块空间最后是否free掉，因为类析构时候会自动帮助free掉，而如果想要手动free也支持，直接传入申请空间时候取得的ID就可以指定析构了。这个还是比较适合私人用用哈~</p>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2013-07-26 00:00:00 &#43;0800" class="post-list__meta--date date">2013-06-26</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/memory">Memory</a>   • <a href="https://sohunjug.com/tags/c/c&#43;&#43;">C/C&#43;&#43;</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/memory/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/mac-fan-control\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/mac-fan-control\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+

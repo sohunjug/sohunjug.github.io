@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<head>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+
+    
+    
+    <title>TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端 - 聽sohunjug</title>
+    
+    
+    <meta name="author" content="sohunjug" /> 
+     
+    
+    
+    <meta name="keywords" content="JavaScript, Node.JS, gulp, TypeScript, express, RESTful" />
+    
+    <meta property="og:title" content="TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端" />
+<meta property="og:description" content="前言
+
+最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C&#43;&#43;功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sohunjug.com/posts/nodejs-restful-gulp/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2016-09-13T15:58:43+08:00" />
+<meta property="article:modified_time" content="2016-09-13T15:58:43+08:00" />
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端"/>
+<meta name="twitter:description" content="前言
+
+最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C&#43;&#43;功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。
+"/>
+
+
+    
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
+    
+    
+
+    
+    
+    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+  
+</head>
+<body>
+  <span class="mobile btn-mobile-menu">
+
+    <i class="fa fa-list btn-mobile-menu__icon"></i>
+    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+
+  </span>
+
+  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
+
+    <div class="panel-main">
+  
+      <div class="panel-main__inner panel-inverted">
+      <div class="panel-main__content">
+  
+          <a href="/#blog" title="Homepage of 聽sohunjug " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽sohunjug logo" class="panel-cover__logo logo" /></a>
+          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽sohunjug" class="blog-button">聽sohunjug</a></h1>
+          
+          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
+          
+          <hr class="panel-cover__divider" />
+          <p class="panel-cover__description"></p>
+          <hr class="panel-cover__divider panel-cover__divider--secondary" />
+          
+          
+          
+          <div class="navigation-wrapper">
+            <div>
+              <nav class="cover-navigation cover-navigation--primary">
+                <ul class="navigation">
+                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
+                  
+                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
+                  
+                </ul>
+              </nav>
+            </div>
+            
+            <div><nav class="cover-navigation navigation--social">
+    <ul class="navigation">
+  
+    
+    
+    <li class="navigation__item">
+      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-weibo'></i>
+        <span class="label">Weibo</span>
+      </a>
+    </li>
+    
+  
+    
+    
+    <li class="navigation__item">
+      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-github'></i>
+        <span class="label">Github</span>
+      </a>
+    </li>
+    
+    
+    
+    
+    <li class="navigation__item">
+      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
+        <i class='social fa fa-twitter'></i>
+        <span class="label">Twitter</span>
+      </a>
+    </li>
+    
+
+    
+  
+    
+  
+    
+    <li class="navigation__item">
+      <a href="/index.xml" rel="author" title="RSS" target="_blank">
+        <i class='social fa fa-rss'></i>
+        <span class="label">RSS</span>
+      </a>
+    </li>
+  
+    
+    
+    <li class="navigation__item">
+      <a href="mailto:sohunjug@gmail.com" title="Contact me">
+        <i class='social fa fa-envelope'></i>
+        <span class="label">Email</span>
+      </a>
+    </li>
+    
+  
+    </ul>
+  </nav>
+  </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      <div class="panel-cover--overlay cover-red"></div>
+      
+    </div>
+  </header>
+  
+
+  <div class="content-wrapper">
+    <div class="content-wrapper__inner">
+
+        
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+    <header class="post-header">
+        <div class="post-meta">
+            <time datetime=" 2016-09-13 15:58:43 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2016-09-13</time>
+             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/javascript">JavaScript</a>   • <a href="https://sohunjug.com/tags/node.js">Node.JS</a>   • <a href="https://sohunjug.com/tags/gulp">gulp</a>   • <a href="https://sohunjug.com/tags/typescript">TypeScript</a>   • <a href="https://sohunjug.com/tags/express">express</a>   • <a href="https://sohunjug.com/tags/restful">RESTful</a>  </span> 
+        </div>
+        <h1 class="post-title">TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端</h1>
+    </header>
+    <section class="post">
+        <h2 id="前言">前言</h2>
+<blockquote>
+<p>最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C++功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。</p>
+</blockquote>
+<h2 id="typescript简介">TypeScript简介</h2>
+<blockquote>
+<p>资料显示，TypeScript之父与C#之父是同一人，所以用法与面向对象应该有相似之处，不过本人对C#不熟，此不做评论。</p>
+</blockquote>
+<blockquote>
+<p>TypeScript类似C++，需要编译为js来执行，也依然可以打断点来调试ts文件。而且TypeScript还有语法检查、变量类型等配置，实在是能提高js的安全性，因此我选择TypeScript来作为主语言。</p>
+</blockquote>
+<h2 id="环境搭建">环境搭建</h2>
+<h3 id="初始化项目">初始化项目</h3>
+<blockquote>
+<p>既然最终是编译成js，环境就是Node.JS了。配置好node与npm后创建一个Project目录:</p>
+</blockquote>
+<pre tabindex="0"><code>mkdir localtest
+cd localtest
+npm init
+</code></pre><blockquote>
+<p>初始化项目会生成package.json文件，此文件为项目依赖库的跟踪文件，当你将项目分享给其他人时，无需全部分享，只需分享项目代码与此文件，对方即可使用npm install来自己创建项目依赖环境</p>
+</blockquote>
+<blockquote>
+<p>package.json 样例:</p>
+</blockquote>
+<pre tabindex="0"><code>cat package.json
+{
+  &#34;name&#34;: &#34;localtest&#34;,
+  &#34;version&#34;: &#34;1.0.0&#34;,
+  &#34;description&#34;: &#34;This is a test.&#34;,
+  &#34;main&#34;: &#34;index.js&#34;,
+  &#34;dependencies&#34;: {},
+  &#34;devDependencies&#34;: {},
+  &#34;scripts&#34;: {
+    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
+  },
+  &#34;author&#34;: &#34;sohunjug&#34;,
+  &#34;license&#34;: &#34;ISC&#34;
+}
+</code></pre><h3 id="依赖库安装">依赖库安装</h3>
+<blockquote>
+<p>下一步开始安装typescript、express、gulp等依赖库。</p>
+</blockquote>
+<pre tabindex="0"><code>npm install -g typescript
+npm install -g typings
+npm install -g tslint
+</code></pre><blockquote>
+<p>国内可能npm速度不是很给力，可以使用阿里出品的cnpm:</p>
+</blockquote>
+<pre tabindex="0"><code>npm install -g cnpm --registry=https://registry.npm.taobao.org
+</code></pre><blockquote>
+<p>之后上边的安装就可以使用新的cnpm，速度提升很大哦:</p>
+</blockquote>
+<pre tabindex="0"><code>cnpm install -g typescript
+cnpm install -g typings
+cnpm install -g tslint
+</code></pre><blockquote>
+<p>这些常用的可以安装为全局及使用-g，也可以在项目中安装取消-g，加上&ndash;save</p>
+</blockquote>
+<pre tabindex="0"><code>cnpm install --save typescript
+cnpm install --save typings
+cnpm install --save tslint
+</code></pre><blockquote>
+<p>下面开始安装express等依赖库:</p>
+</blockquote>
+<pre tabindex="0"><code>cnpm install --save express
+cnpm install --save body-parser
+cnpm install --save jade
+cnpm install --save cookie-parser
+cnpm install --save morgan
+cnpm install --save gulp
+cnpm install --save gulp-tsc
+cnpm install --save run-sequence
+cnpm install --save gulp-util
+cnpm install --save gulp-clean
+cnpm install --save tiny-lr
+cnpm install --save gulp-live-server
+cnpm install --save gulp-tslint
+cnpm install --save debug
+</code></pre><blockquote>
+<p>此时package.json变为:</p>
+</blockquote>
+<pre tabindex="0"><code>cat package.json
+{
+  &#34;name&#34;: &#34;localtest&#34;,
+  &#34;version&#34;: &#34;1.0.0&#34;,
+  &#34;description&#34;: &#34;This is a test.&#34;,
+  &#34;main&#34;: &#34;index.js&#34;,
+  &#34;dependencies&#34;: {
+    &#34;body-parser&#34;: &#34;^1.15.2&#34;,
+    &#34;cookie-parser&#34;: &#34;^1.4.3&#34;,
+    &#34;debug&#34;: &#34;^2.2.0&#34;,
+    &#34;express&#34;: &#34;^4.14.0&#34;,
+    &#34;gulp&#34;: &#34;^3.9.1&#34;,
+    &#34;gulp-clean&#34;: &#34;^0.3.2&#34;,
+    &#34;gulp-live-server&#34;: &#34;^0.0.30&#34;,
+    &#34;gulp-tsc&#34;: &#34;^1.2.3&#34;,
+    &#34;gulp-tslint&#34;: &#34;^6.1.1&#34;,
+    &#34;gulp-util&#34;: &#34;^3.0.7&#34;,
+    &#34;jade&#34;: &#34;^1.11.0&#34;,
+    &#34;morgan&#34;: &#34;^1.7.0&#34;,
+    &#34;run-sequence&#34;: &#34;^1.2.2&#34;,
+    &#34;tiny-lr&#34;: &#34;^0.2.1&#34;
+  },
+  &#34;devDependencies&#34;: {},
+  &#34;scripts&#34;: {
+    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
+  },
+  &#34;author&#34;: &#34;sohunjug&#34;,
+  &#34;license&#34;: &#34;ISC&#34;
+}
+</code></pre><h3 id="typescript中依赖安装">TypeScript中依赖安装</h3>
+<blockquote>
+<p>本人使用typings，据网上资料显示，tsd已经过时了，所以也木有研究，此处不做评论。</p>
+</blockquote>
+<blockquote>
+<p>此处typings，我是使用-g安装的全局:</p>
+</blockquote>
+<pre tabindex="0"><code>typings install --global --save dt~express
+typings install --global --save dt~node 
+typings install --global --save dt~serve-static 
+typings install --global --save dt~express-serve-static-core 
+typings install --global --save dt~mime 
+typings install --global --save dt~body-parser 
+typings install --global --save dt~debug 
+typings install --global --save dt~cookie-parser 
+typings install --global --save dt~morgan
+</code></pre><blockquote>
+<p>使用&ndash;save安装本地则使用:</p>
+</blockquote>
+<pre tabindex="0"><code>node_modules/.bin/typings install --global --save dt~express
+node_modules/.bin/typings install --global --save dt~node 
+node_modules/.bin/typings install --global --save dt~serve-static 
+node_modules/.bin/typings install --global --save dt~express-serve-static-core 
+node_modules/.bin/typings install --global --save dt~mime 
+node_modules/.bin/typings install --global --save dt~body-parser 
+node_modules/.bin/typings install --global --save dt~debug 
+node_modules/.bin/typings install --global --save dt~cookie-parser 
+node_modules/.bin/typings install --global --save dt~morgan
+</code></pre><h3 id="gulp配置">gulp配置</h3>
+<blockquote>
+<p>同样看到网上评论，grunt为基于json配置来管理自动化部署，而gulp基于代码形式，更倾向于程序员使用，而且可以自己制作部署细节。</p>
+</blockquote>
+<blockquote>
+<p>基于网上找到的配置，使用了一下发现对于express的app形式的热更新不支持，所以又找了些资料，终于自己配置出来了，现分享下:</p>
+</blockquote>
+<pre tabindex="0"><code>var gulp = require(&#39;gulp&#39;);
+var tsc = require(&#39;gulp-tsc&#39;);
+var seq = require(&#39;run-sequence&#39;);
+var del = require(&#39;gulp-clean&#39;);
+var gls = require(&#39;gulp-live-server&#39;);
+var chalk = require(&#39;chalk&#39;);
+var gutil = require(&#39;gulp-util&#39;);
+var tslint = require(&#39;gulp-tslint&#39;);
+
+var paths = {
+    ts: {
+        src: [
+            &#39;app/**/*.ts&#39;
+        ],
+        dest: &#39;build&#39;
+    }
+}
+
+gulp.task(&#39;serve&#39;, () =&gt; {
+    seq(&#39;clean&#39;, &#39;build&#39;, &#39;watch&#39;);
+})
+
+gulp.task(&#39;watch&#39;, () =&gt; {
+    var server = gls.new(&#39;build/www.js&#39;);
+    server.start();
+    gulp.watch([&#39;app/**/*.ts&#39;], () =&gt; seq(&#39;tslint&#39;, &#39;clean&#39;, &#39;build&#39;));
+    gulp.watch([&#39;build/**/*.js&#39;, &#39;build/**/*.css&#39;, &#39;build/**/*.html&#39;], file =&gt;
+      server.notify.apply(server, [file])
+    );
+    gulp.watch(&#39;build/www.js&#39;, () =&gt; {
+      setTimeout(() =&gt; gutil.log(&#39;Restart Succeed!&#39;), 500);
+      server.start.bind(server)()
+    });
+});
+
+gulp.task(&#39;build&#39;, () =&gt; {
+    return gulp.src(paths.ts.src)
+        .pipe(tslint({
+            formatter: &#34;verbose&#34;
+        }))
+        .pipe(tsc({
+            module: &#34;CommonJS&#34;,
+            sourcemap: true,
+            emitError: false
+        }))
+        .pipe(gulp.dest(paths.ts.dest));
+});
+
+gulp.task(&#39;clean&#39;, () =&gt; {
+    del(paths.ts.dest);
+});
+
+gulp.task(&#39;rebuild&#39;, file =&gt; {
+    seq(&#39;clean&#39;, &#39;build&#39;);
+});
+
+gulp.task(&#34;tslint&#34;, () =&gt; {
+    return gulp.src(paths.ts.src)
+        .pipe(tslint({
+            formatter: &#34;verbose&#34;
+        }))
+        .pipe(tslint.report());
+});
+
+gulp.task(&#39;default&#39;, [&#39;rebuild&#39;]);
+</code></pre><blockquote>
+<p>此配置可以在当前目录中使用gulp来启动了，默认gulp执行default任务(即重新编译)，还可以手动自己执行不同的task任务，其中gulp serve是自动热更新部署。</p>
+</blockquote>
+<blockquote>
+<p>效果为：</p>
+</blockquote>
+<pre tabindex="0"><code>$ gulp serve
+[15:27:30] Using gulpfile xxxx/localtest/gulpfile.js
+[15:27:30] Starting &#39;serve&#39;...
+[15:27:30] Starting &#39;clean&#39;...
+[15:27:30] Finished &#39;clean&#39; after 1.36 ms
+[15:27:30] Starting &#39;build&#39;...
+[15:27:30] Finished &#39;serve&#39; after 15 ms
+[15:27:30] Compiling TypeScript files using tsc version 1.8.10
+[15:27:32] Finished &#39;build&#39; after 2.6 s
+[15:27:32] Starting &#39;watch&#39;...
+[15:27:32] Finished &#39;watch&#39; after 57 ms
+livereload[tiny-lr] listening on 35729 ...
+[15:27:38] Starting &#39;tslint&#39;...
+[15:27:38] Finished &#39;tslint&#39; after 213 ms
+[15:27:38] Starting &#39;clean&#39;...
+[15:27:38] Finished &#39;clean&#39; after 266 μs
+[15:27:38] Starting &#39;build&#39;...
+[15:27:38] Compiling TypeScript files using tsc version 1.8.10
+[15:27:40] Finished &#39;build&#39; after 2.39 s
+[15:27:41] Restart Succeed!
+</code></pre><blockquote>
+<p>项目样例代码已更新GitHub(<a href="https://github.com/sohunjug/TypeScript-RESTful-sample.git">TypeScript-RESTful-sample</a>)</p>
+</blockquote>
+<blockquote>
+<p>代码中RESTFul样例我开发了一个简单的路由小框架。欢迎star。</p>
+</blockquote>
+<blockquote>
+<p>参考链接：
+<a href="http://brianflove.com/2016/03/29/typescript-express-node-js/">http://brianflove.com/2016/03/29/typescript-express-node-js/</a></p>
+<p><a href="https://www.npmjs.com/package/gulp-live-server">https://www.npmjs.com/package/gulp-live-server</a></p>
+</blockquote>
+    </section>
+</article>
+<section class="read-more">
+    
+
+
+    
+    <div class="read-more-item">
+        <span class="read-more-item-dim">更早的文章</span>
+        <h2 class="post-list__post-title post-title"><a href="/posts/packetsender/" title="link to PacketSender 发送接收socket macOS App">PacketSender 发送接收socket macOS App</a></h2>
+        <p class="excerpt"><h4 id="更新">更新</h4>
+<blockquote>
+<p>问题原因可能为 macOS 10.12 beta 系统问题，新更新为 10.12 beta 6 问题解决。</p>
+</blockquote>
+<blockquote>
+<p>目前版本已更新为 1.4.3，支持多窗口。</p>
+</blockquote>
+<h2 id="起因">起因</h2>
+<blockquote>
+<p>最近工作发现有时候需要测试发送 TCP 包，而目前 Mac 上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。<a href="https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;ls=1&amp;mt=12">PacketSender</a>
+因后来实用 ObjC 重写了的原因，所以开源旧版本的 Swift 版本吧。<a href="https://gitlab.com/sohunjug/PacketSender-Swift.git">GitLab</a>、<a href="https://github.com/sohunjug/PacketSender-Swift.git">GitHub</a></p>
+</blockquote>&hellip;</p>
+        <div class="post-list__meta">
+            <time datetime=" 2016-09-13 15:58:43 &#43;0800" class="post-list__meta--date date">2016-08-18</time>
+             
+            <span class="post-list__meta--tags tags"> 
+                  • <a href="https://sohunjug.com/tags/objective-c">Objective-C</a>   • <a href="https://sohunjug.com/tags/swift">Swift</a>   • <a href="https://sohunjug.com/tags/tcp">TCP</a>   • <a href="https://sohunjug.com/tags/udp">UDP</a>  
+            </span>
+            
+            <a class="btn-border-small" href="/posts/packetsender/">继续阅读</a>
+        </div>
+    </div>
+    
+ </section>
+ 
+<section class="post-comments">
+    
+      <div id="disqus_thread"></div>
+      <script>
+      
+      var disqus_config = function () {
+          this.page.url = "https:\/\/sohunjug.com\/posts\/nodejs-restful-gulp\/";
+          this.page.identifier = "https:\/\/sohunjug.com\/posts\/nodejs-restful-gulp\/";
+      };
+  
+      var disqus_shortname = 'sohunjug';
+      
+      (function() { 
+          var d = document, s = d.createElement('script');
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          s.setAttribute('data-timestamp', +new Date());
+              (d.head || d.body).appendChild(s);
+          })();
+      </script>
+      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
+      
+    
+
+    
+    
+  </section>
+  
+
+        <section class="footer">
+    <footer>
+        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
+        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
+    </footer>
+</section>
+
+    </div>
+  </div>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script><script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'your_ga_id', 'your_host');
+    ga('send', 'pageview');
+</script>
+
+  
+</body>
+
