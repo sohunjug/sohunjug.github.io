@@ -16,10 +16,10 @@
         </item>
         <item>
         <title>关于</title>
-        <link>https://sohunjug.com/%E5%85%B3%E4%BA%8E/</link>
+        <link>https://sohunjug.com/about/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://sohunjug.com/%E5%85%B3%E4%BA%8E/</guid>
+        <guid>https://sohunjug.com/about/</guid>
         <description>&lt;!-- raw HTML omitted --&gt;
 &lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;　　2012年6月，浑浑噩噩的读完了4年大学，虽然没有找到一份满足的工作，但是仍然不肯放弃这个职业方向&lt;!-- raw HTML omitted --&gt;——&lt;!-- raw HTML omitted --&gt;C/C++服务端开发工程师。终归是学了10多年的方向，心里怎么也不想放下这个职业。
@@ -74,10 +74,10 @@ Angular2 学习。&lt;/p&gt;
         </item>
         <item>
         <title>链接</title>
-        <link>https://sohunjug.com/%E9%93%BE%E6%8E%A5/</link>
+        <link>https://sohunjug.com/links/</link>
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
-        <guid>https://sohunjug.com/%E9%93%BE%E6%8E%A5/</guid>
+        <guid>https://sohunjug.com/links/</guid>
         <description>&lt;p&gt;To use this feature, add &lt;code&gt;links&lt;/code&gt; section to frontmatter.&lt;/p&gt;
 &lt;p&gt;This page&amp;rsquo;s frontmatter:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
