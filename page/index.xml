@@ -20,7 +20,56 @@
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>https://sohunjug.com/%E5%85%B3%E4%BA%8E/</guid>
-        <description>&lt;p&gt;This is a test page for i18n support.&lt;/p&gt;
+        <description>&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;　　2012年6月，浑浑噩噩的读完了4年大学，虽然没有找到一份满足的工作，但是仍然不肯放弃这个职业方向&lt;!-- raw HTML omitted --&gt;——&lt;!-- raw HTML omitted --&gt;C/C++服务端开发工程师。终归是学了10多年的方向，心里怎么也不想放下这个职业。
+　　2014年4月，终于来到了一线城市&lt;!-- raw HTML omitted --&gt;——&lt;!-- raw HTML omitted --&gt;深圳，想着如何能打拼出一片自己的小天地，可是最终还是被现实击败，无法做自己喜欢的方向，私人开发也利益优先，好羡慕那些开源工作者，期待着自己也有那么自由的一天。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h3 id=&#34;失去的曾经&#34;&gt;失去的曾经&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这个博客，域名已经持有了好多年，从最开始的wordpress，到之前的octopress，又到现在的hexo。换了一个又一个。可是博客内容也没有好好的做，现在应该激励下自己了，从博客开始，一步步为了自己的自由努力。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;私人简历&#34;&gt;私人简历&lt;/h3&gt;
+&lt;h4 id=&#34;自我评价&#34;&gt;自我评价&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;比较喜欢计算机，喜欢数学，非常享受编程带来的乐趣。特别是对于c++编程当中，可以带来我很多喜欢的事。从初中开始就接触c++编程，一直到如今坚持c++。但私下里也使用python、lua、shell写一些自动化脚本，比
+较喜欢研究技术，空闲时间看代码比较多，平时和工作喜欢使用Linux系统或Mac系统，所以三个平台下的开发都比较熟悉。最喜欢的编辑器vim，常用的编辑器sublime,understand沟通力强，喜欢讨论，对于代码喜欢精益求
+精，如果有需要可以私下里合作。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;非工作经历&#34;&gt;非工作经历&lt;/h4&gt;
+&lt;h5 id=&#34;cc&#34;&gt;c/c++&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;二次开发翻墙工具&lt;/strong&gt;
+二次开发shadowsocks，增加用户名密码验证，流量记录，多线程单进程处理，增加http、https协议。基于libuv开发三平台客户端内核，mac端gui。
+二次开发ocserv(anyconnect)开源服务端，增加shell形式用户密码验证&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;typescript&#34;&gt;typescript&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;RESTful API，Gulp自动化配置&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/TypeScript-RESTful-sample.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TypeScript-RESTful-sample&lt;/a&gt;
+Ionic2 APP开发。
+Angular2 学习。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;objective-c业余爱好&#34;&gt;objective-c(业余爱好)&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;parld-mac客户端(Mac)&lt;/strong&gt;
+开发悬浮窗时在线音乐客户端，支持简单动画特效等(与朋友间爱好，目前已下架)，现开源代码&lt;a class=&#34;link&#34; href=&#34;http://git.oschina.net/sohunjug/Parld-macOS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Git-oschina&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/Parld-macOS.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://git.coding.net/sohunjug/Parld-macOS.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Coding&lt;/a&gt;
+还有两个上架小工具&lt;a class=&#34;link&#34; href=&#34;https://itunes.apple.com/us/app/jsonxmlformater/id909976737?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JsonXmlFormater&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://itunes.apple.com/us/app/encrypttools/id1134593405?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;EncryptTools&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PacketSender&lt;/a&gt; 因使用ObjC重写了，现开源swift旧版本&lt;a class=&#34;link&#34; href=&#34;https://gitlab.com/sohunjug/PacketSender-Swift.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitLab&lt;/a&gt;
+、&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/PacketSender-Swift.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;python业余爱好&#34;&gt;python(业余爱好)&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;数据实时转发服务器&lt;/strong&gt;
+基于zmq通信，redis与mysql规则和数据存储，实现消息根据规则实时处理转发。因python开发周期短，个人项目开发。&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         </item>
         <item>

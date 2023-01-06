@@ -3364,7 +3364,56 @@ array(
         <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
         
         <guid>https://sohunjug.com/%E5%85%B3%E4%BA%8E/</guid>
-        <description>&lt;p&gt;This is a test page for i18n support.&lt;/p&gt;
+        <description>&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;　　2012年6月，浑浑噩噩的读完了4年大学，虽然没有找到一份满足的工作，但是仍然不肯放弃这个职业方向&lt;!-- raw HTML omitted --&gt;——&lt;!-- raw HTML omitted --&gt;C/C++服务端开发工程师。终归是学了10多年的方向，心里怎么也不想放下这个职业。
+　　2014年4月，终于来到了一线城市&lt;!-- raw HTML omitted --&gt;——&lt;!-- raw HTML omitted --&gt;深圳，想着如何能打拼出一片自己的小天地，可是最终还是被现实击败，无法做自己喜欢的方向，私人开发也利益优先，好羡慕那些开源工作者，期待着自己也有那么自由的一天。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h3 id=&#34;失去的曾经&#34;&gt;失去的曾经&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这个博客，域名已经持有了好多年，从最开始的wordpress，到之前的octopress，又到现在的hexo。换了一个又一个。可是博客内容也没有好好的做，现在应该激励下自己了，从博客开始，一步步为了自己的自由努力。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;私人简历&#34;&gt;私人简历&lt;/h3&gt;
+&lt;h4 id=&#34;自我评价&#34;&gt;自我评价&lt;/h4&gt;
+&lt;blockquote&gt;
+&lt;p&gt;比较喜欢计算机，喜欢数学，非常享受编程带来的乐趣。特别是对于c++编程当中，可以带来我很多喜欢的事。从初中开始就接触c++编程，一直到如今坚持c++。但私下里也使用python、lua、shell写一些自动化脚本，比
+较喜欢研究技术，空闲时间看代码比较多，平时和工作喜欢使用Linux系统或Mac系统，所以三个平台下的开发都比较熟悉。最喜欢的编辑器vim，常用的编辑器sublime,understand沟通力强，喜欢讨论，对于代码喜欢精益求
+精，如果有需要可以私下里合作。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4 id=&#34;非工作经历&#34;&gt;非工作经历&lt;/h4&gt;
+&lt;h5 id=&#34;cc&#34;&gt;c/c++&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;二次开发翻墙工具&lt;/strong&gt;
+二次开发shadowsocks，增加用户名密码验证，流量记录，多线程单进程处理，增加http、https协议。基于libuv开发三平台客户端内核，mac端gui。
+二次开发ocserv(anyconnect)开源服务端，增加shell形式用户密码验证&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;typescript&#34;&gt;typescript&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;RESTful API，Gulp自动化配置&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/TypeScript-RESTful-sample.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;TypeScript-RESTful-sample&lt;/a&gt;
+Ionic2 APP开发。
+Angular2 学习。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;objective-c业余爱好&#34;&gt;objective-c(业余爱好)&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;parld-mac客户端(Mac)&lt;/strong&gt;
+开发悬浮窗时在线音乐客户端，支持简单动画特效等(与朋友间爱好，目前已下架)，现开源代码&lt;a class=&#34;link&#34; href=&#34;http://git.oschina.net/sohunjug/Parld-macOS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Git-oschina&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/Parld-macOS.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://git.coding.net/sohunjug/Parld-macOS.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Coding&lt;/a&gt;
+还有两个上架小工具&lt;a class=&#34;link&#34; href=&#34;https://itunes.apple.com/us/app/jsonxmlformater/id909976737?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;JsonXmlFormater&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://itunes.apple.com/us/app/encrypttools/id1134593405?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;EncryptTools&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PacketSender&lt;/a&gt; 因使用ObjC重写了，现开源swift旧版本&lt;a class=&#34;link&#34; href=&#34;https://gitlab.com/sohunjug/PacketSender-Swift.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitLab&lt;/a&gt;
+、&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/PacketSender-Swift.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h5 id=&#34;python业余爱好&#34;&gt;python(业余爱好)&lt;/h5&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;数据实时转发服务器&lt;/strong&gt;
+基于zmq通信，redis与mysql规则和数据存储，实现消息根据规则实时处理转发。因python开发周期短，个人项目开发。&lt;/p&gt;
+&lt;/blockquote&gt;
 </description>
         </item>
         <item>
@@ -3400,6 +3449,163 @@ array(
 &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 &lt;/div&gt;
 &lt;/div&gt;&lt;p&gt;&lt;code&gt;image&lt;/code&gt; field accepts both local and external images.&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>人个简历</title>
+        <link>https://sohunjug.com/resume/</link>
+        <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+        
+        <guid>https://sohunjug.com/resume/</guid>
+        <description>&lt;h1 id=&#34;聼&#34;&gt;聼&lt;/h1&gt;
+&lt;h1 id=&#34;个人信息&#34;&gt;个人信息&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;男&lt;/li&gt;
+&lt;li&gt;已婚&lt;/li&gt;
+&lt;li&gt;1989 年 9 月生&lt;/li&gt;
+&lt;li&gt;户口：深圳&lt;/li&gt;
+&lt;li&gt;现居住于:深圳-南山区&lt;/li&gt;
+&lt;li&gt;8 年工作经验&lt;/li&gt;
+&lt;li&gt;电话 18688989717&lt;/li&gt;
+&lt;li&gt;E-mail：sohunjug@gmail.com&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;求职意向&#34;&gt;求职意向&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;工作性质：全职&lt;/li&gt;
+&lt;li&gt;期望职业：高级软件工程师、软件研发工程师、系统架构设计师&lt;/li&gt;
+&lt;li&gt;期望行业：计算机软件、网络游戏、互联网、区块链&lt;/li&gt;
+&lt;li&gt;工作地区：仅深圳(一年出差时间不超过两周)&lt;/li&gt;
+&lt;li&gt;期望年薪：面议&lt;/li&gt;
+&lt;li&gt;目前状况：我对现有工作还算满意，如有更好的工作机会，我也可以考虑。（到岗时间另议）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;自我评价&#34;&gt;自我评价&lt;/h1&gt;
+&lt;p&gt;比较喜欢计算机，喜欢数学，非常享受编程带来的乐趣。从初中开始就接触 c++编程，一直到如今坚持 c++。但私下里也使用 python、lua、nodejs、shell 写一些自动化脚本，比较喜欢研究技术，空闲时间看代码比较多，平时和工作喜欢使用 Linux 系统或 Mac 系统。最喜欢的编辑器 vim，其他常用的编辑器 vscode， 沟通力强，喜欢讨论，对于代码喜欢精益求精，能够很快融入团队，与团队成员合作融洽。&lt;/p&gt;
+&lt;h1 id=&#34;工作经历&#34;&gt;工作经历&lt;/h1&gt;
+&lt;h2 id=&#34;201404----至今&#34;&gt;2014/04 &amp;ndash; 至今&lt;/h2&gt;
+&lt;p&gt;XXXXXXXXXXXXXXX|高级软件工程师
+行业类别： 银行、传统开发|企业性质：民营|规模：1000-2000 人|职位月薪：30K 元/月
+工作描述：
+主要做基础技术研发，针对公司技术平台新功能研发，以及技术支持，公司新架构设计以及模块研发，基本功能测试。开发全部为独立完成。&lt;/p&gt;
+&lt;h2 id=&#34;201202----201402&#34;&gt;2012/02 &amp;ndash; 2014/02&lt;/h2&gt;
+&lt;p&gt;东软集团（大连）|软件工程师
+行业类别： 互联网/电子商务|企业性质：上市公司|规模：10000 人以上|职位月薪：4001-6000 元/月
+工作描述：
+主要做电信的服务器中间件，tuxedo 服务，账务主机底层环境程序，分布式进程管理，以及一些 c++后台程序编写。&lt;/p&gt;
+&lt;h1 id=&#34;项目及语言经验&#34;&gt;项目及语言经验&lt;/h1&gt;
+&lt;h2 id=&#34;c方向&#34;&gt;c++方向&lt;/h2&gt;
+&lt;h3 id=&#34;201407----至今&#34;&gt;2014/07 &amp;ndash; 至今&lt;/h3&gt;
+&lt;p&gt;增强 XXXXX 平台功能开发与技术支持
+开发环境: linux aix
+责任描述：
+xxxxxx 为基于 tuxedo 底层,lua 来实现业务处理的一个金融开发平台。主要工作为各个银行所提供的不同 api 等来封装 lua 可以调用的 c 库封装，以及其他功能的 client 开发，并且与 xxxxxx 集成。client 主要为功能性质网关或代理等程序
+已上线&lt;/p&gt;
+&lt;h3 id=&#34;201911----202002&#34;&gt;2019/11 &amp;ndash; 2020/02&lt;/h3&gt;
+&lt;p&gt;公司开发环境再次改造
+责任描述:
+独立部署 pve 集群, 独立迁移 ceph 集群数据, 基于 pve 搭建 kvm 虚拟机, 提供多套 k8s 环境与管理
+已上线&lt;/p&gt;
+&lt;h3 id=&#34;201809----201908&#34;&gt;2018/09 &amp;ndash; 2019/08&lt;/h3&gt;
+&lt;p&gt;自动化部署系统二次开发
+责任描述:
+任项目经理, 主要负责操作方式设计, k8s 与 ansible 底层所需接口与调用方式提供, 系统功能添加配置中心, 监控中心等功能设计与实现
+已上线&lt;/p&gt;
+&lt;h3 id=&#34;201906----201908&#34;&gt;2019/06 &amp;ndash; 2019/08&lt;/h3&gt;
+&lt;p&gt;华通银行交易中转服务
+责任描述:
+独立设计开发，基于 libuv 事件驱动模型，支持 socket 与 nanomsg，可自定义配置模式，可做动态配置协议转换。
+已上线&lt;/p&gt;
+&lt;h3 id=&#34;201801----201805&#34;&gt;2018/01 &amp;ndash; 2018/05&lt;/h3&gt;
+&lt;p&gt;公司开发环境二次改造
+责任描述:
+独立设计基于 etcd 做 k8s 内部二次 dns 解析, 提供 vpn 内网模式, 搭建 ceph 分布式存储, 搭建企业管理等各种环境
+已上线&lt;/p&gt;
+&lt;h3 id=&#34;201705----201801&#34;&gt;2017/05 &amp;ndash; 2018/01&lt;/h3&gt;
+&lt;p&gt;自动化部署环境架构设计
+责任描述:
+独立设计基于 ansible 的物理部署与基于 k8s 的镜像部署系统, 独立研究 ansible 与 k8s 使用并设计 Web 端操作模式.
+已上线&lt;/p&gt;
+&lt;h3 id=&#34;201608----201703&#34;&gt;2016/08 &amp;ndash; 2017/03&lt;/h3&gt;
+&lt;p&gt;公司开发环境迁移升级
+责任描述:
+独立改造搭建 k8s 集群, 编写 shell 脚本, 使用 macvlan 映射镜像到办公网络, 自动更新 dns, 将 pod 作为虚拟机形式提供开发环境
+已上线&lt;/p&gt;
+&lt;h3 id=&#34;201505----201511&#34;&gt;2015/05 &amp;ndash; 2015/11&lt;/h3&gt;
+&lt;p&gt;高可配日志解析
+开发环境: linux aix
+责任描述：
+通过正则匹配，实现规则定位的日志文件解析功能，可配置自动匹配请求响应等，支持自定义输出所匹配内容。目前所实现内容满足大部分日志解析场景。功能类似目前简版 filebeat
+已上线投入使用&lt;/p&gt;
+&lt;h3 id=&#34;201410----201504&#34;&gt;2014/10 &amp;ndash; 2015/04&lt;/h3&gt;
+&lt;p&gt;针对微众银行项目技术支持
+开发环境: linux
+责任描述：
+讨论针对微众银行需求，调整 xxxxxx 平台架构。
+以上线投入使用&lt;/p&gt;
+&lt;h3 id=&#34;201404----201405&#34;&gt;2014/04 &amp;ndash; 2014/05&lt;/h3&gt;
+&lt;p&gt;二次开发 lua 内核
+开发环境: linux aix
+责任描述：
+学习 lua 实现，二次开发修改 lua 中 number 实现，增强浮点型小数精度计算。集成第三方 mapm 大数计算库来替换原 number 计算。
+未上线&lt;/p&gt;
+&lt;h3 id=&#34;201401----201402&#34;&gt;2014/01 &amp;ndash; 2014/02&lt;/h3&gt;
+&lt;p&gt;基于数据库配置的验证规则封装
+开发环境: linux aix
+责任描述：
+逻辑设计，代码编写。
+项目简介：
+设计一种验证规则，动态解析 sql 语句，实现可配置的规则验证封装。
+未上线&lt;/p&gt;
+&lt;h3 id=&#34;201307----201309&#34;&gt;2013/07 &amp;ndash; 2013/09&lt;/h3&gt;
+&lt;p&gt;中国电信计费账务主机底层环境框架
+开发环境: linux aix
+责任描述：
+数据库 oci 新版本封装，将数据库中读取出来的数据在封装中处理。 将原来的单主机进程管理，利用 zookeeper，开发成分布式进程管理。涉及进程间通信，共享内存，信号，信号量。期间写过小脚本，批量更改原版本升级。
+项目简介：
+底层公共类库，进程管理，共享内存，Log 日志，以及一些业务逻辑，实现进程启停，暂停，继续，使用中更新变量等控制。
+已上线&lt;/p&gt;
+&lt;h2 id=&#34;objective-c业余爱好&#34;&gt;objective-c(业余爱好)&lt;/h2&gt;
+&lt;h3 id=&#34;parld-mac-客户端mac&#34;&gt;parld-mac 客户端(Mac)&lt;/h3&gt;
+&lt;p&gt;开发环境: mac
+开发悬浮窗时在线音乐客户端，支持简单动画特效等(与朋友间爱好，目前已下架)
+上架小工具 JsonXmlFormater、EncryptTools、PacketSender&lt;/p&gt;
+&lt;h2 id=&#34;python业余爱好&#34;&gt;python(业余爱好)&lt;/h2&gt;
+&lt;h3 id=&#34;数据实时转发服务器个人&#34;&gt;数据实时转发服务器(个人)&lt;/h3&gt;
+&lt;p&gt;开发环境: linux
+基于 zmq 通信，redis 与 mysql 规则和数据存储，实现消息根据规则实时处理转发。因 python 开发周期短，个人项目开发。&lt;/p&gt;
+&lt;h2 id=&#34;c业余爱好&#34;&gt;c(业余爱好)&lt;/h2&gt;
+&lt;h3 id=&#34;二次开发翻墙工具个人&#34;&gt;二次开发翻墙工具(个人)&lt;/h3&gt;
+&lt;p&gt;开发环境: linux, mac,ios
+责任描述：
+业余时间二次开发 shadowsocks，增加用户名密码验证，流量记录，多线程单进程处理，增加 http、https 协议。基于 libuv 开发三平台客户端内核，mac 端 gui。
+二次开发 ocserv(anyconnect)开源服务端，增加 shell 形式用户密码验证
+已上线投入使用&lt;/p&gt;
+&lt;h1 id=&#34;教育经历&#34;&gt;教育经历&lt;/h1&gt;
+&lt;h3 id=&#34;200809----201206&#34;&gt;2008/09 &amp;ndash; 2012/06&lt;/h3&gt;
+&lt;p&gt;东北石油大学|计算机科学与技术|本科
+在校学习情况
+曾获 院校级 三等奖 奖学金
+大学学委
+东北石油大学编程大赛一等奖
+2011/05 黑龙江省 ACM 编程大赛三等奖 省区级
+东北区 ACM 大赛优秀奖
+2010/04 工信部国信蓝点杯黑龙江省优秀奖 省区级
+2011/04 工信部国信蓝点杯黑龙江省一等奖 省区级
+全国工信部优秀奖
+在校实践经验
+2010/12 &amp;ndash; 2012/01
+跟老师做项目
+关于大庆油公司内部网站系统, C#.NET 语言编写
+精品课网站&lt;/p&gt;
+&lt;h3 id=&#34;证书&#34;&gt;证书&lt;/h3&gt;
+&lt;p&gt;2004/03
+全国计算机等级一级
+2011/05
+ACM 东北区优秀奖&lt;/p&gt;
+&lt;h3 id=&#34;专业技能&#34;&gt;专业技能&lt;/h3&gt;
+&lt;p&gt;C/C++|熟练|
+obj-C|一般|
+python|良好|
+javascript|一般|&lt;/p&gt;
 </description>
         </item>
         <item>
