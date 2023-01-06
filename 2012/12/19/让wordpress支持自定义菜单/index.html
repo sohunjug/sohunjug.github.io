@@ -320,45 +320,96 @@
     <p><strong>WORDPRESS博客有些主题不支持自定义菜单，只能够选择页面和所有的分页目录作为菜单，所以为了解决这一问题，找了一些资料</strong></p>
 <p><strong>在这个之前首先对wordpress的wp_nav_menu() 函数应该了解：</strong></p>
 <p><strong>使用方法如下：</strong></p>
-<p>{% codeblock lang:php %}
-wp_nav_menu( <br>
-array( <br>
-&rsquo;theme_location&rsquo;  =&gt; &rsquo;&rsquo; //指定显示的导航名，如果没有设置，则显示第一个 <br>
-&lsquo;menu&rsquo;            =&gt; &lsquo;header-menu&rsquo;, <br>
-&lsquo;container&rsquo;       =&gt; &rsquo;nav&rsquo;, //最外层容器标签名  <br>
-&lsquo;container_class&rsquo; =&gt; &lsquo;primary&rsquo;, //最外层容器class名  <br>
-&lsquo;container_id&rsquo;    =&gt; &lsquo;&rsquo;,//最外层容器id值  <br>
-&lsquo;menu_class&rsquo;      =&gt; &lsquo;sf-menu&rsquo;, //ul标签class <br>
-&lsquo;menu_id&rsquo;         =&gt; &rsquo;topnav&rsquo;,//ul标签id  <br>
-&rsquo;echo&rsquo;            =&gt; true,//是否打印，默认是true，如果想将导航的代码作为赋值使用，可设置为false <br>
-&lsquo;fallback_cb&rsquo;     =&gt; &lsquo;wp_page_menu&rsquo;,//备用的导航菜单函数，用于没有在后台设置导航时调用 <br>
-&lsquo;before&rsquo;          =&gt; &lsquo;&rsquo;,//显示在导航a标签之前 <br>
-&lsquo;after&rsquo;           =&gt; &lsquo;&rsquo;,//显示在导航a标签之后 <br>
-&rsquo;link_before&rsquo;     =&gt; &lsquo;&rsquo;,//显示在导航链接名之后 <br>
-&rsquo;link_after&rsquo;      =&gt; &lsquo;&rsquo;,//显示在导航链接名之前 <br>
-&lsquo;items_wrap&rsquo;      =&gt;<br>
-&lsquo;depth&rsquo;           =&gt; 0,////显示的菜单层数，默认0，0是显示所有层<br>
-&lsquo;walker&rsquo;          =&gt; &lsquo;&rsquo;// //调用一个对象定义显示导航菜单 ));<br>
-{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">wp_nav_menu</span><span class="p">(</span>    
+</span></span><span class="line"><span class="cl"><span class="k">array</span><span class="p">(</span>    
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;theme_location&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span> <span class="c1">//指定显示的导航名，如果没有设置，则显示第一个    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;menu&#39;</span>            <span class="o">=&gt;</span> <span class="s1">&#39;header-menu&#39;</span><span class="p">,</span>    
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;container&#39;</span>       <span class="o">=&gt;</span> <span class="s1">&#39;nav&#39;</span><span class="p">,</span> <span class="c1">//最外层容器标签名     
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;container_class&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;primary&#39;</span><span class="p">,</span> <span class="c1">//最外层容器class名     
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;container_id&#39;</span>    <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="c1">//最外层容器id值     
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;menu_class&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;sf-menu&#39;</span><span class="p">,</span> <span class="c1">//ul标签class    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;menu_id&#39;</span>         <span class="o">=&gt;</span> <span class="s1">&#39;topnav&#39;</span><span class="p">,</span><span class="c1">//ul标签id     
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;echo&#39;</span>            <span class="o">=&gt;</span> <span class="k">true</span><span class="p">,</span><span class="c1">//是否打印，默认是true，如果想将导航的代码作为赋值使用，可设置为false    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;fallback_cb&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;wp_page_menu&#39;</span><span class="p">,</span><span class="c1">//备用的导航菜单函数，用于没有在后台设置导航时调用    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;before&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="c1">//显示在导航a标签之前    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;after&#39;</span>           <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="c1">//显示在导航a标签之后    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;link_before&#39;</span>     <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="c1">//显示在导航链接名之后    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;link_after&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="p">,</span><span class="c1">//显示在导航链接名之前    
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;items_wrap&#39;</span>      <span class="o">=&gt;</span>   
+</span></span><span class="line"><span class="cl"><span class="s1">&#39;depth&#39;</span>           <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span><span class="c1">////显示的菜单层数，默认0，0是显示所有层  
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="s1">&#39;walker&#39;</span>          <span class="o">=&gt;</span> <span class="s1">&#39;&#39;</span><span class="c1">// //调用一个对象定义显示导航菜单 ));  
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 <!-- raw HTML omitted -->
 <p>为了能够使后台支持自定义菜单，我们需要在主题下functions.php下 加入register_nav_menus():</p>
-<p>{% codeblock lang:php %}
-if(function_exists(&lsquo;register_nav_menus&rsquo;)){
-register_nav_menus(
-array(
-&lsquo;header-menu&rsquo; =&gt; <strong>( &lsquo;导航自定义菜单&rsquo; ),
-// 还可以在这里添加一些菜单 显示在其他位置
-//footer-menu=&gt;</strong>( &lsquo;页面底部自定义菜单&rsquo; ),
-)
-);
-}
-{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nx">function_exists</span><span class="p">(</span><span class="s1">&#39;register_nav_menus&#39;</span><span class="p">)){</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">register_nav_menus</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="k">array</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;header-menu&#39;</span> <span class="o">=&gt;</span> <span class="nx">__</span><span class="p">(</span> <span class="s1">&#39;导航自定义菜单&#39;</span> <span class="p">),</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// 还可以在这里添加一些菜单 显示在其他位置
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="c1">//footer-menu=&gt;__( &#39;页面底部自定义菜单&#39; ),
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 <p>在添加之后，你就会发现主题位置已经支持一个菜单了</p>
 <p>然后找到header.php文件, 类似这样添加：</p>
-<p>{% codeblock lang:php %}</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<p>{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl">     <span class="nx">wp_nav_menu</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;theme_location&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;header-menu&#39;</span><span class="p">,</span><span class="c1">//填写需要显示的菜单  这是是header的菜单
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="c1">//还可以做其他设置这里选择默认
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>     <span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 <p>好了, 大家可以自己制作属于自己的自定义菜单了~</p>
 </section>
 

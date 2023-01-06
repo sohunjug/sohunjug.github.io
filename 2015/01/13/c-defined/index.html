@@ -364,14 +364,24 @@
 <p>在网上经常会看到一些人在宏定义中使用#号的例子</p>
 <h2 id="1单个符号">(1)#单个#符号</h2>
 <p>单个#号是将当前参数变为字符串.如:
-{% codeblock lang:cpp %}
-#define TOSTR(X) #X
-{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define TOSTR(X) #X</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
 <h2 id="2双符号">(2)##双#符号</h2>
 <p>##则用来连接前后两个参数，把它们变成一个字符串。如:
-{% codeblock lang:cpp %}
-#define STRCAT(X, Y) X##Y
-{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#define STRCAT(X, Y) X##Y</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
 <p><strong>宏定义推荐写法</strong></p>
 <p>在有些使用宏定义中会看到一些不一样的写法</p>
 <p>如:

@@ -328,79 +328,152 @@
 代码技术都比较老了，欢迎指教。</p>
 </blockquote>
 <p>首先是音乐播放问题，对于第一次开发来说，我是在网上找了好多的demo来测试，所以选择了AudioStreamer，其次，需要做状态栏应用，所以找了一段代码
-{% codeblock lang:objc %}
-NSMenu		*menu;</p>
-<p>_statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] ;</p>
-<p>[_statusItem setImage:[NSImage imageNamed:@&ldquo;start&rdquo;]];
-[_statusItem setHighlightMode:YES];
-[_statusItem setTitle:@&quot; 音乐汇聚&quot;];</p>
-<p>menu = [[NSMenu alloc] initWithTitle:@&ldquo;音乐汇聚&rdquo;];
-[menu addItemWithTitle:@&ldquo;上一首&rdquo; action:@selector(pre) keyEquivalent:@&quot;&quot;];
-[menu addItemWithTitle:@&ldquo;下一首&rdquo; action:@selector(next) keyEquivalent:@&quot;&quot;];
-[menu addItemWithTitle:@&ldquo;更新音乐池&rdquo; action:@selector(updateMusic) keyEquivalent:@&quot;&quot;];
-[menu addItemWithTitle:@&ldquo;关于&rdquo; action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@&quot;&quot;];
-[menu addItemWithTitle:@&ldquo;退出&rdquo; action:@selector(exit:) keyEquivalent:@&quot;&quot;];
-[menu addObserver:view forKeyPath:@&ldquo;123&rdquo; options:NSKeyValueObservingOptionNew context:nil];
-[_statusItem setMenu:menu];
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-objc" data-lang="objc"><span class="line"><span class="cl"><span class="n">NSMenu</span>		<span class="o">*</span><span class="n">menu</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">_statusItem</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSStatusBar</span> <span class="n">systemStatusBar</span><span class="p">]</span> <span class="nl">statusItemWithLength</span><span class="p">:</span><span class="n">NSVariableStatusItemLength</span><span class="p">]</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">_statusItem</span> <span class="nl">setImage</span><span class="p">:[</span><span class="n">NSImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&#34;start&#34;</span><span class="p">]];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">_statusItem</span> <span class="nl">setHighlightMode</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">_statusItem</span> <span class="nl">setTitle</span><span class="p">:</span><span class="s">@&#34; 音乐汇聚&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">menu</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSMenu</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&#34;音乐汇聚&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">menu</span> <span class="nl">addItemWithTitle</span><span class="p">:</span><span class="s">@&#34;上一首&#34;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">pre</span><span class="p">)</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&#34;&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">menu</span> <span class="nl">addItemWithTitle</span><span class="p">:</span><span class="s">@&#34;下一首&#34;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">next</span><span class="p">)</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&#34;&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">menu</span> <span class="nl">addItemWithTitle</span><span class="p">:</span><span class="s">@&#34;更新音乐池&#34;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">updateMusic</span><span class="p">)</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&#34;&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">menu</span> <span class="nl">addItemWithTitle</span><span class="p">:</span><span class="s">@&#34;关于&#34;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">orderFrontStandardAboutPanel</span><span class="p">:)</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&#34;&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">menu</span> <span class="nl">addItemWithTitle</span><span class="p">:</span><span class="s">@&#34;退出&#34;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">exit</span><span class="p">:)</span> <span class="nl">keyEquivalent</span><span class="p">:</span><span class="s">@&#34;&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">menu</span> <span class="nl">addObserver</span><span class="p">:</span><span class="n">view</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&#34;123&#34;</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSKeyValueObservingOptionNew</span> <span class="nl">context</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">_statusItem</span> <span class="nl">setMenu</span><span class="p">:</span><span class="n">menu</span><span class="p">];</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 之后需要做的就是逻辑了，获取歌单，播放歌单。
 后期的版本又添加了Mac笔记本的媒体播放键功能，同样是找了一段代码，封装好的，如果想了解原理也可自行下载。SPMediaKeyTap。
 加入之后需要修改主程序
 添加继承NSApplication的类
-{% codeblock lang:objc %}</p>
-<ul>
-<li>
-<p>(void)sendEvent:(NSEvent *)theEvent
-{
-// If event tap is not installed, handle events that reach the app instead
-BOOL shouldHandleMediaKeyEventLocally = ![SPMediaKeyTap usesGlobalMediaKeyTap];</p>
-<p>if(shouldHandleMediaKeyEventLocally &amp;&amp; [theEvent type] == NSSystemDefined &amp;&amp; [theEvent subtype] == SPSystemDefinedEventMediaKeys) {
-[(id)[self delegate] mediaKeyTap:nil receivedMediaKeyEvent:theEvent];
-}
-[super sendEvent:theEvent];
-}
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-objc" data-lang="objc"><span class="line"><span class="cl"><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">sendEvent:</span><span class="p">(</span><span class="n">NSEvent</span> <span class="o">*</span><span class="p">)</span><span class="nv">theEvent</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// If event tap is not installed, handle events that reach the app instead
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kt">BOOL</span> <span class="n">shouldHandleMediaKeyEventLocally</span> <span class="o">=</span> <span class="o">!</span><span class="p">[</span><span class="n">SPMediaKeyTap</span> <span class="n">usesGlobalMediaKeyTap</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="n">shouldHandleMediaKeyEventLocally</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">theEvent</span> <span class="n">type</span><span class="p">]</span> <span class="o">==</span> <span class="n">NSSystemDefined</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">theEvent</span> <span class="n">subtype</span><span class="p">]</span> <span class="o">==</span> <span class="n">SPSystemDefinedEventMediaKeys</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="p">[(</span><span class="kt">id</span><span class="p">)[</span><span class="nb">self</span> <span class="n">delegate</span><span class="p">]</span> <span class="nl">mediaKeyTap</span><span class="p">:</span><span class="nb">nil</span> <span class="nl">receivedMediaKeyEvent</span><span class="p">:</span><span class="n">theEvent</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">[</span><span class="nb">super</span> <span class="nl">sendEvent</span><span class="p">:</span><span class="n">theEvent</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 ${PRODUCT_NAME}-Info.plist文件中Principal class字段修改为重写的NSApplication</p>
-</li>
-</ul>
 <p>并在主AppDelegate添加按键映射
-{% codeblock lang:objc %}
--(void)mediaKeyTap:(SPMediaKeyTap*)keyTap receivedMediaKeyEvent:(NSEvent*)event;
-{
-NSAssert([event type] == NSSystemDefined &amp;&amp; [event subtype] == SPSystemDefinedEventMediaKeys, @&ldquo;Unexpected NSEvent in mediaKeyTap:receivedMediaKeyEvent:&rdquo;);
-// here be dragons&hellip;
-int keyCode = (([event data1] &amp; 0xFFFF0000) &raquo; 16);
-int keyFlags = ([event data1] &amp; 0x0000FFFF);
-BOOL keyIsPressed = (((keyFlags &amp; 0xFF00) &raquo; 8)) == 0xA;
-int keyRepeat = (keyFlags &amp; 0x1);</p>
-<pre><code>if (keyIsPressed) {
-	NSString *debugString;
-    debugString = [NSString stringWithFormat:@&quot;%@&quot;, keyRepeat?@&quot;, repeated.&quot;:@&quot;.&quot;];
-	switch (keyCode) {
-		case NX_KEYTYPE_PLAY:
-			if (_isPlay) {
-                [self pauseMusic];
-            }
-            else{
-                [self playMusic];
-            }
-			break;
-			
-		case NX_KEYTYPE_FAST:
-			[self nextMusic];
-			break;
-			
-		case NX_KEYTYPE_REWIND:
-			[self lastMusic];
-			break;
-		default:
-            break;
-            // More cases defined in hidsystem/ev_keymap.h
-	}
-}
-</code></pre>
-<p>}
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-objc" data-lang="objc"><span class="line"><span class="cl"><span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mediaKeyTap:</span><span class="p">(</span><span class="n">SPMediaKeyTap</span><span class="o">*</span><span class="p">)</span><span class="nv">keyTap</span> <span class="nf">receivedMediaKeyEvent:</span><span class="p">(</span><span class="n">NSEvent</span><span class="o">*</span><span class="p">)</span><span class="nv">event</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">	<span class="n">NSAssert</span><span class="p">([</span><span class="n">event</span> <span class="n">type</span><span class="p">]</span> <span class="o">==</span> <span class="n">NSSystemDefined</span> <span class="o">&amp;&amp;</span> <span class="p">[</span><span class="n">event</span> <span class="n">subtype</span><span class="p">]</span> <span class="o">==</span> <span class="n">SPSystemDefinedEventMediaKeys</span><span class="p">,</span> <span class="s">@&#34;Unexpected NSEvent in mediaKeyTap:receivedMediaKeyEvent:&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="c1">// here be dragons...
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>	<span class="kt">int</span> <span class="n">keyCode</span> <span class="o">=</span> <span class="p">(([</span><span class="n">event</span> <span class="n">data1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0xFFFF0000</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">keyFlags</span> <span class="o">=</span> <span class="p">([</span><span class="n">event</span> <span class="n">data1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x0000FFFF</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">BOOL</span> <span class="n">keyIsPressed</span> <span class="o">=</span> <span class="p">(((</span><span class="n">keyFlags</span> <span class="o">&amp;</span> <span class="mh">0xFF00</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">))</span> <span class="o">==</span> <span class="mh">0xA</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">	<span class="kt">int</span> <span class="n">keyRepeat</span> <span class="o">=</span> <span class="p">(</span><span class="n">keyFlags</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">	
+</span></span><span class="line"><span class="cl">	<span class="k">if</span> <span class="p">(</span><span class="n">keyIsPressed</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">		<span class="n">NSString</span> <span class="o">*</span><span class="n">debugString</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">debugString</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&#34;%@&#34;</span><span class="p">,</span> <span class="n">keyRepeat</span><span class="o">?</span><span class="s">@&#34;, repeated.&#34;</span><span class="o">:</span><span class="s">@&#34;.&#34;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">		<span class="k">switch</span> <span class="p">(</span><span class="n">keyCode</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="k">case</span> <span class="nl">NX_KEYTYPE_PLAY</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="k">if</span> <span class="p">(</span><span class="n">_isPlay</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">[</span><span class="nb">self</span> <span class="n">pauseMusic</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">[</span><span class="nb">self</span> <span class="n">playMusic</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">				<span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">				
+</span></span><span class="line"><span class="cl">			<span class="k">case</span> <span class="nl">NX_KEYTYPE_FAST</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="p">[</span><span class="nb">self</span> <span class="n">nextMusic</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">				<span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">				
+</span></span><span class="line"><span class="cl">			<span class="k">case</span> <span class="nl">NX_KEYTYPE_REWIND</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">				<span class="p">[</span><span class="nb">self</span> <span class="n">lastMusic</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">				<span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="k">default</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// More cases defined in hidsystem/ev_keymap.h
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>		<span class="p">}</span>
+</span></span><span class="line"><span class="cl">	<span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 还要添加一个开机自启动的配置，同样可以使用LaunchAtLoginController，只需要将Check控件的value绑定到LaunchAtLoginController里面的launchAtLogin变量上即可</p>
 <p>以上就是第一个初级版本所用到的技术，比较简单，但是还是蛮实用的。
 而从今天开始，打算重构做第二版本，支持Mac悬浮窗，拖拽文件上传，悬浮窗下拉主窗体，目前基本功能的技术难点已经基本完成，后续会继续发表博客。</p>

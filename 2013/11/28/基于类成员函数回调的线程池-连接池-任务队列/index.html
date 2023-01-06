@@ -316,7 +316,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 5 分钟
+                    阅读时长: 6 分钟
                 </time>
             </div>
         
@@ -719,554 +719,1117 @@
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p><!-- raw HTML omitted --><!-- raw HTML omitted -->线程池与连接池文件代码：<!-- raw HTML omitted --><!-- raw HTML omitted -->
-{% codeblock lang:cpp %}
-/*******************************************************************************</p>
-<ul>
-<li>Author : RKhuwq</li>
-<li>Email : <a class="link" href="mailto:sohunjug@hotmail.com" >sohunjug@hotmail.com</a></li>
-<li>Last modified : 2013-11-18 16:55</li>
-<li>Filename : Pool.h</li>
-<li>Description :</li>
-<li>*****************************************************************************/</li>
-</ul>
-<p>#ifndef <strong>POOL_H</strong>
-#define <strong>POOL_H</strong></p>
-<p>#include &lt;pthread.h&gt;
-#include <!-- raw HTML omitted -->
-#include &lt;stdio.h&gt;
-#include &ldquo;TaskQueue.h&rdquo;
-#include &lt;signal.h&gt;</p>
-<p>namespace POOL
-{
-enum PoolStatue
-{
-Wait = 1,
-Kill
-};
-class CPoolBase
-{
-protected:
-int m_init;
-int m_iNum;
-int m_iCount;
-pthread_attr_t m_attr;
-virtual void  Create() = 0;
-virtual int   ControlThread(void* argv) = 0;
-public:
-PoolStatue statues;
-pthread_mutex_t m_mutex;
-pthread_mutexattr_t  m_mutexAttr;
-CPoolBase(int num, PoolStatue statue) : m_init(num), m_iNum(5), m_iCount(0), statues(statue)
-{
-pthread_attr_init(&amp;m_attr);
-pthread_attr_setdetachstate(&amp;m_attr,PTHREAD_CREATE_JOINABLE);
-pthread_mutexattr_init(&amp;m_mutexAttr);
-pthread_mutex_init(&amp;m_mutex, &amp;m_mutexAttr);
-}
-virtual ~CPoolBase()
-{
-pthread_mutexattr_destroy(&amp;m_mutexAttr);
-};
-};</p>
-<pre><code>class CThreadPool : public CPoolBase
-{
-    struct pthread_statue
-    {
-        pthread_t pthread_id;
-        int statue;
-        pthread_mutex_t m_threadMutex;
-        pthread_cond_t  m_threadCond;
-    };
-    public:
-    std::map&lt;pthread_t, pthread_statue*&gt; m_mthread;
-    std::map&lt;pthread_t, pthread_statue*&gt;::iterator m_iter;
-    QUEUE::queue_priority&amp; queue;
-
-    private:
-    bool is_clear;
-    pthread_mutex_t m_mutexCount;
-    QUEUE::CTaskQueue&lt;CThreadPool&gt; *owntask;
-    void Create()
-    {
-        pthread_statue *new_pthread = new pthread_statue();
-        pthread_mutex_lock(&amp;m_mutex);
-        if(pthread_create(&amp;new_pthread-&gt;pthread_id, &amp;m_attr, ThreadMain, this)!=0)
-        {
-            return ;
-        }
-        m_mthread.insert(std::pair&lt;pthread_t, pthread_statue*&gt; (new_pthread-&gt;pthread_id, new_pthread));
-        pthread_mutex_unlock(&amp;m_mutex);
-        pthread_mutex_lock(&amp;m_mutexCount);
-        m_iCount++;
-        pthread_mutex_unlock(&amp;m_mutexCount);
-    }
-    int   ControlThread(void* argv)
-    {
-        int in_count_add = 0;
-        int in_count_del = 0;
-        int task_count;
-        bool change;
-        CThreadPool* pclass = (CThreadPool*)argv;
-        pthread_statue *statue_self;
-        std::map&lt;pthread_t, pthread_statue*&gt;::iterator iter;
-        pthread_mutex_lock(&amp;pclass-&gt;m_mutex);
-        statue_self = pclass-&gt;m_mthread.find(pthread_self())-&gt;second;
-        pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
-        statue_self-&gt;statue = 1;
-        while(1)
-        {
-            while (m_iCount &lt; m_init &amp;&amp; m_iCount &lt; m_iNum &amp;&amp; ((statues == Wait &amp;&amp; !queue.empty()) || !is_clear))
-            {
-                Create();
-            }
-            task_count = queue.size();
-            if (task_count)
-            {
-                pthread_mutex_lock(&amp;m_mutex);
-                iter = m_mthread.begin();
-                while (iter != m_mthread.end() &amp;&amp; ((statues == Wait &amp;&amp; !queue.empty()) || !is_clear))
-                {
-                    if (iter-&gt;second-&gt;statue == 2 &amp;&amp; iter-&gt;second-&gt;pthread_id != pthread_self())
-                    {
-                        pthread_cond_signal (&amp;iter-&gt;second-&gt;m_threadCond);
-                        break;
-                    }
-                    iter++;
-                }
-                if (iter == m_mthread.end())
-                    m_iNum ++;
-                pthread_mutex_unlock(&amp;m_mutex);
-                if (task_count &gt; m_iCount)
-                {
-                    in_count_add++;
-                    in_count_del = 0;
-                }
-                else if (task_count &lt; m_iCount)
-                {
-                    //in_count_del++;
-                    in_count_add = 0;
-                }
-                if (in_count_add &gt; 10)
-                {
-                    in_count_add = 0;
-                    m_iNum++;
-                    change = true;
-                }
-                if (in_count_del &gt; 10 &amp;&amp; m_iNum &gt; m_init)
-                {
-                    m_iNum--;
-                    change = true;
-                }
-            }
-            if (task_count == 0)
-                usleep(100);
-
-            if ((statue_self-&gt;statue == 0 || is_clear) &amp;&amp; !(statues == Wait &amp;&amp; !queue.empty()))
-            {
-                pthread_mutex_lock(&amp;m_mutexCount);
-                pclass-&gt;m_iCount--;
-                pthread_mutex_unlock(&amp;m_mutexCount);
-                break;
-            }
-        }
-        return 0;
-    } 
-    public:
-    static void* ThreadMain(void *arg)
-    {
-        pthread_statue* statue_self;
-        CThreadPool* pclass = (CThreadPool*)arg;
-        QUEUE::CTaskBase* task = NULL;
-        pthread_mutex_lock(&amp;pclass-&gt;m_mutex);
-        statue_self = pclass-&gt;m_mthread.find(pthread_self())-&gt;second;
-        pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
-        pthread_mutex_init (&amp;statue_self-&gt;m_threadMutex, &amp;pclass-&gt;m_mutexAttr);
-        pthread_cond_init (&amp;statue_self-&gt;m_threadCond, NULL);
-        statue_self-&gt;statue = 1;
-        //timespec time;
-        statue_self-&gt;pthread_id = pthread_self();
-        while(1)
-        { 
-            if (pclass-&gt;statues != Wait || pclass-&gt;queue.empty())
-            {
-                if (statue_self-&gt;statue == 0)
-                {
-                    pthread_mutex_lock(&amp;pclass-&gt;m_mutexCount);
-                    pclass-&gt;m_iCount--;
-                    pthread_mutex_unlock(&amp;pclass-&gt;m_mutexCount);
-                    break;
-                }
-            }
-            task = NULL;
-
-            pthread_mutex_lock(&amp;pclass-&gt;m_mutex);
-            if(pclass-&gt;queue.empty())
-            {
-                if (pthread_mutex_trylock(&amp;statue_self-&gt;m_threadMutex) != 0)
-                {
-                    pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
-                    continue;
-                }
-                pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
-                statue_self-&gt;statue = 2;
-                pthread_cond_wait(&amp;statue_self-&gt;m_threadCond, &amp;statue_self-&gt;m_threadMutex);
-                pthread_mutex_unlock(&amp;statue_self-&gt;m_threadMutex);
-                continue;
-            }
-
-            task=pclass-&gt;queue.top();
-            pclass-&gt;queue.pop();
-            pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
-
-            if (task)
-            {
-                statue_self-&gt;statue = 1;
-                if (task-&gt;Start() != 0)
-                {
-                }
-                if (!task)
-                    delete task;
-            }
-        }
-        return NULL;
-    }
-    void Stop(pthread_t pthread_id)
-    {
-        pthread_statue *temp;
-        pthread_mutex_lock(&amp;m_mutex);
-        temp = m_mthread.find(pthread_id)-&gt;second;
-        pthread_mutex_unlock(&amp;m_mutex);
-        if (!temp)
-            return;
-        while(pthread_kill(temp-&gt;pthread_id, 0) == 0)
-        {
-            pthread_mutex_lock(&amp;temp-&gt;m_threadMutex);
-            temp-&gt;statue = 0;
-            pthread_mutex_unlock(&amp;temp-&gt;m_threadMutex);
-            pthread_cond_signal(&amp;temp-&gt;m_threadCond);
-            usleep(10000);
-        }
-        pthread_mutex_lock(&amp;m_mutex);
-        temp = m_mthread.find(pthread_id)-&gt;second;
-        m_mthread.erase(pthread_id);
-        pthread_mutex_unlock(&amp;m_mutex);
-        delete temp;
-    }
-    void ClearQueue() 
-    { 
-        while (!queue.empty())
-        {
-            delete queue.top();
-            queue.pop();
-        }
-    }
-    void Clear()
-    {
-        is_clear = true;
-        pthread_mutex_lock(&amp;m_mutex); 
-        std::map&lt;pthread_t, pthread_statue*&gt;::iterator iter = m_mthread.begin();
-        for (; iter != m_mthread.end(); iter = m_mthread.begin())
-        {
-            pthread_mutex_unlock(&amp;m_mutex); 
-            Stop(iter-&gt;first);
-            pthread_mutex_lock(&amp;m_mutex); 
-        }
-        pthread_mutex_unlock(&amp;m_mutex); 
-    }
-
-    public:
-    CThreadPool(int num, QUEUE::queue_priority&amp; queue, PoolStatue Pool = Wait) : CPoolBase(num, Pool), queue(queue), is_clear(false) 
-    { 
-        pthread_mutex_init (&amp;m_mutexCount, NULL);
-        owntask = new QUEUE::CTaskQueue&lt;CThreadPool&gt;;
-        owntask-&gt;SetFunc(QUEUE::Urgent, this, &amp;CThreadPool::ControlThread, this);
-        queue.push(owntask);
-        Create(); 
-    }
-    ~CThreadPool()
-    { 
-        if (statues == Wait)
-            Clear(); 
-        ClearQueue(); 
-        if (statues != Wait)
-            Clear();
-    }
-};
-
-template&lt;typename CConnectionClass&gt;
-    class CConnectPool : public CPoolBase
-{
-    private:
-        std::map&lt;CConnectionClass*, pthread_mutex_t&gt; m_mapConnection;
-        typename std::map&lt;CConnectionClass*, pthread_mutex_t&gt;::iterator m_iter;
-        bool is_clear;
-        typedef bool (CConnectionClass::*Connect)(const char*, const char*, const char*);
-        typedef void (CConnectionClass::*Close)(void);
-        Connect m_fconnect;
-        Close m_fclose;
-        char* m_sConnectParam[3];
-        int m_iUsed;
-        pthread_mutex_t m_mapmutex;
-    public:
-        CConnectPool(int num) : CPoolBase(num, Wait), m_iUsed(0)
-    {
-        is_clear = false;
-        m_mapConnection.clear();
-        m_sConnectParam[0] = NULL;
-        m_sConnectParam[1] = NULL;
-        m_sConnectParam[2] = NULL;
-        pthread_mutex_init(&amp;m_mapmutex, NULL);
-    }
-        ~CConnectPool()
-        {
-            Clear();
-            free(m_sConnectParam[0]);
-            free(m_sConnectParam[1]);
-            free(m_sConnectParam[2]);
-        }
-
-        void Clear()
-        {
-            is_clear = true;
-            m_iter = m_mapConnection.begin();
-            while (m_iter != m_mapConnection.end())
-            {
-                if (pthread_mutex_trylock(&amp;m_iter-&gt;second) == 0)
-                {
-                    (m_iter-&gt;first-&gt;*(m_fclose))();
-                    delete m_iter-&gt;first;
-                    m_mapConnection.erase(m_iter);
-                    m_iter = m_mapConnection.begin();
-                    pthread_mutex_lock(&amp;m_mutex);
-                    m_iCount --;
-                    pthread_mutex_unlock(&amp;m_mutex);
-                }
-                else m_iter++;
-                if (m_iter == m_mapConnection.end())
-                    m_iter = m_mapConnection.begin();
-            }
-            m_mapConnection.clear();
-        }
-
-        void SetFunc(Connect connect, Close close, char* value[])
-        {
-            m_fconnect = connect;
-            m_fclose = close;
-            m_sConnectParam[0] = (char*)malloc(strlen(value[0]) + 1);
-            m_sConnectParam[1] = (char*)malloc(strlen(value[1]) + 1);
-            m_sConnectParam[2] = (char*)malloc(strlen(value[2]) + 1);
-            strcpy(m_sConnectParam[0], value[0]);
-            strcpy(m_sConnectParam[1], value[1]);
-            strcpy(m_sConnectParam[2], value[2]);
-        }
-
-        CConnectionClass* GetConnection()
-        {
-            pthread_mutex_lock(&amp;m_mapmutex);
-            int count = 0;
-            m_iter = m_mapConnection.begin();
-            while (1)
-            {
-                if (m_iter == m_mapConnection.end())
-                {
-                    count ++;
-                    m_iter = m_mapConnection.begin();
-                    if (count &gt; 10)
-                    {
-                        Create();
-                        pthread_mutex_lock(&amp;m_mutex);
-                        m_iNum++;
-                        pthread_mutex_unlock(&amp;m_mutex);
-                        m_iter = m_mapConnection.begin();
-                    }
-                }
-                if (m_iter != m_mapConnection.end())
-                    if (pthread_mutex_trylock(&amp;m_iter-&gt;second) == 0)
-                    {
-                        pthread_mutex_lock(&amp;m_mutex);
-                        m_iUsed++;
-                        pthread_mutex_unlock(&amp;m_mutex);
-                        pthread_mutex_unlock(&amp;m_mapmutex);
-                        return m_iter-&gt;first;
-                    }
-                    else m_iter++;
-            }
-            pthread_mutex_unlock(&amp;m_mapmutex);
-            return NULL;
-        }
-
-        void BackConnection(CConnectionClass* oneConnect)
-        {
-            if (!oneConnect)
-                return;
-            pthread_mutex_lock(&amp;m_mapmutex);
-            pthread_mutex_unlock(&amp;m_mapConnection.find(oneConnect)-&gt;second);
-            pthread_mutex_unlock(&amp;m_mapmutex);
-            pthread_mutex_lock(&amp;m_mutex);
-            m_iUsed--;
-            pthread_mutex_unlock(&amp;m_mutex);
-        }
-
-        void Create()
-        {
-            pthread_mutex_t rwlock;
-            pthread_mutex_init(&amp;rwlock, NULL);
-            pthread_mutex_lock(&amp;m_mutex);
-            CConnectionClass* oneConnect = new CConnectionClass();
-            (oneConnect-&gt;*(m_fconnect))(m_sConnectParam[0], m_sConnectParam[1], m_sConnectParam[2]);
-            m_mapConnection.insert(std::pair&lt;CConnectionClass*, pthread_mutex_t&gt; (oneConnect, rwlock));
-            m_iCount ++;
-            pthread_mutex_unlock(&amp;m_mutex);
-        }
-
-        int  Count()
-        {
-            return m_mapConnection.size();
-        }
-
-        int  ControlThread(void* argv)
-        {
-            int in_count_add = 0;
-            int in_count_del = 0;
-            int task_count;
-            int second = 10000;
-            bool change;
-            while(1)
-            {
-                task_count = this-&gt;Count();
-                if (task_count &lt;= m_iNum)
-                {
-                    pthread_mutex_lock(&amp;m_mapmutex);
-                    Create();
-                    pthread_mutex_unlock(&amp;m_mapmutex);
-                }
-                if (m_iUsed &gt; 0)
-                    if (task_count)
-                    {
-                        if (task_count &gt; m_iUsed)
-                            in_count_del++;
-                        if (in_count_del &gt; 10)
-                            change = true;
-                    }
-                if (task_count != 0)
-                    usleep(second);
-
-                if (is_clear)
-                    break;
-            }
-            return 0;
-        }
-};
-</code></pre>
-<p>};</p>
-<p>#endif
-{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span><span class="lnt">313
+</span><span class="lnt">314
+</span><span class="lnt">315
+</span><span class="lnt">316
+</span><span class="lnt">317
+</span><span class="lnt">318
+</span><span class="lnt">319
+</span><span class="lnt">320
+</span><span class="lnt">321
+</span><span class="lnt">322
+</span><span class="lnt">323
+</span><span class="lnt">324
+</span><span class="lnt">325
+</span><span class="lnt">326
+</span><span class="lnt">327
+</span><span class="lnt">328
+</span><span class="lnt">329
+</span><span class="lnt">330
+</span><span class="lnt">331
+</span><span class="lnt">332
+</span><span class="lnt">333
+</span><span class="lnt">334
+</span><span class="lnt">335
+</span><span class="lnt">336
+</span><span class="lnt">337
+</span><span class="lnt">338
+</span><span class="lnt">339
+</span><span class="lnt">340
+</span><span class="lnt">341
+</span><span class="lnt">342
+</span><span class="lnt">343
+</span><span class="lnt">344
+</span><span class="lnt">345
+</span><span class="lnt">346
+</span><span class="lnt">347
+</span><span class="lnt">348
+</span><span class="lnt">349
+</span><span class="lnt">350
+</span><span class="lnt">351
+</span><span class="lnt">352
+</span><span class="lnt">353
+</span><span class="lnt">354
+</span><span class="lnt">355
+</span><span class="lnt">356
+</span><span class="lnt">357
+</span><span class="lnt">358
+</span><span class="lnt">359
+</span><span class="lnt">360
+</span><span class="lnt">361
+</span><span class="lnt">362
+</span><span class="lnt">363
+</span><span class="lnt">364
+</span><span class="lnt">365
+</span><span class="lnt">366
+</span><span class="lnt">367
+</span><span class="lnt">368
+</span><span class="lnt">369
+</span><span class="lnt">370
+</span><span class="lnt">371
+</span><span class="lnt">372
+</span><span class="lnt">373
+</span><span class="lnt">374
+</span><span class="lnt">375
+</span><span class="lnt">376
+</span><span class="lnt">377
+</span><span class="lnt">378
+</span><span class="lnt">379
+</span><span class="lnt">380
+</span><span class="lnt">381
+</span><span class="lnt">382
+</span><span class="lnt">383
+</span><span class="lnt">384
+</span><span class="lnt">385
+</span><span class="lnt">386
+</span><span class="lnt">387
+</span><span class="lnt">388
+</span><span class="lnt">389
+</span><span class="lnt">390
+</span><span class="lnt">391
+</span><span class="lnt">392
+</span><span class="lnt">393
+</span><span class="lnt">394
+</span><span class="lnt">395
+</span><span class="lnt">396
+</span><span class="lnt">397
+</span><span class="lnt">398
+</span><span class="lnt">399
+</span><span class="lnt">400
+</span><span class="lnt">401
+</span><span class="lnt">402
+</span><span class="lnt">403
+</span><span class="lnt">404
+</span><span class="lnt">405
+</span><span class="lnt">406
+</span><span class="lnt">407
+</span><span class="lnt">408
+</span><span class="lnt">409
+</span><span class="lnt">410
+</span><span class="lnt">411
+</span><span class="lnt">412
+</span><span class="lnt">413
+</span><span class="lnt">414
+</span><span class="lnt">415
+</span><span class="lnt">416
+</span><span class="lnt">417
+</span><span class="lnt">418
+</span><span class="lnt">419
+</span><span class="lnt">420
+</span><span class="lnt">421
+</span><span class="lnt">422
+</span><span class="lnt">423
+</span><span class="lnt">424
+</span><span class="lnt">425
+</span><span class="lnt">426
+</span><span class="lnt">427
+</span><span class="lnt">428
+</span><span class="lnt">429
+</span><span class="lnt">430
+</span><span class="lnt">431
+</span><span class="lnt">432
+</span><span class="lnt">433
+</span><span class="lnt">434
+</span><span class="lnt">435
+</span><span class="lnt">436
+</span><span class="lnt">437
+</span><span class="lnt">438
+</span><span class="lnt">439
+</span><span class="lnt">440
+</span><span class="lnt">441
+</span><span class="lnt">442
+</span><span class="lnt">443
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cm">/*******************************************************************************
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Author : sohunjug
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Email : sohunjug@hotmail.com
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Last modified : 2013-11-18 16:55
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Filename : Pool.h
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Description : 
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * *****************************************************************************/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#ifndef __POOL_H__
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __POOL_H__
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;TaskQueue.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">POOL</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">enum</span> <span class="nc">PoolStatue</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Wait</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Kill</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">CPoolBase</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">m_init</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">m_iNum</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">m_iCount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_attr_t</span> <span class="n">m_attr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">virtual</span> <span class="kt">void</span>  <span class="nf">Create</span><span class="p">()</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">virtual</span> <span class="kt">int</span>   <span class="nf">ControlThread</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">PoolStatue</span> <span class="n">statues</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_t</span> <span class="n">m_mutex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutexattr_t</span>  <span class="n">m_mutexAttr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CPoolBase</span><span class="p">(</span><span class="kt">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">PoolStatue</span> <span class="n">statue</span><span class="p">)</span> <span class="o">:</span> <span class="n">m_init</span><span class="p">(</span><span class="n">num</span><span class="p">),</span> <span class="n">m_iNum</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">m_iCount</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">statues</span><span class="p">(</span><span class="n">statue</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_attr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_attr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_attr_setdetachstate</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_attr</span><span class="p">,</span><span class="n">PTHREAD_CREATE_JOINABLE</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutexattr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutexAttr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_mutexAttr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">virtual</span> <span class="o">~</span><span class="n">CPoolBase</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutexattr_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutexAttr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">CThreadPool</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CPoolBase</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">struct</span> <span class="nc">pthread_statue</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_t</span> <span class="n">pthread_id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">statue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_t</span> <span class="n">m_threadMutex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_cond_t</span>  <span class="n">m_threadCond</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">};</span>
+</span></span><span class="line"><span class="cl">        <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">pthread_t</span><span class="p">,</span> <span class="n">pthread_statue</span><span class="o">*&gt;</span> <span class="n">m_mthread</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">pthread_t</span><span class="p">,</span> <span class="n">pthread_statue</span><span class="o">*&gt;::</span><span class="n">iterator</span> <span class="n">m_iter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">QUEUE</span><span class="o">::</span><span class="n">queue_priority</span><span class="o">&amp;</span> <span class="n">queue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">bool</span> <span class="n">is_clear</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">pthread_mutex_t</span> <span class="n">m_mutexCount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">QUEUE</span><span class="o">::</span><span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">CThreadPool</span><span class="o">&gt;</span> <span class="o">*</span><span class="n">owntask</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">void</span> <span class="nf">Create</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_statue</span> <span class="o">*</span><span class="n">new_pthread</span> <span class="o">=</span> <span class="k">new</span> <span class="n">pthread_statue</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span><span class="p">(</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">new_pthread</span><span class="o">-&gt;</span><span class="n">pthread_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">m_attr</span><span class="p">,</span> <span class="n">ThreadMain</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m_mthread</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">pthread_t</span><span class="p">,</span> <span class="n">pthread_statue</span><span class="o">*&gt;</span> <span class="p">(</span><span class="n">new_pthread</span><span class="o">-&gt;</span><span class="n">pthread_id</span><span class="p">,</span> <span class="n">new_pthread</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutexCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m_iCount</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutexCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span>   <span class="nf">ControlThread</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">in_count_add</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">in_count_del</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">task_count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">bool</span> <span class="n">change</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CThreadPool</span><span class="o">*</span> <span class="n">pclass</span> <span class="o">=</span> <span class="p">(</span><span class="n">CThreadPool</span><span class="o">*</span><span class="p">)</span><span class="n">argv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_statue</span> <span class="o">*</span><span class="n">statue_self</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">pthread_t</span><span class="p">,</span> <span class="n">pthread_statue</span><span class="o">*&gt;::</span><span class="n">iterator</span> <span class="n">iter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">statue_self</span> <span class="o">=</span> <span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mthread</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="p">(</span><span class="n">m_iCount</span> <span class="o">&lt;</span> <span class="n">m_init</span> <span class="o">&amp;&amp;</span> <span class="n">m_iCount</span> <span class="o">&lt;</span> <span class="n">m_iNum</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">statues</span> <span class="o">==</span> <span class="n">Wait</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="o">||</span> <span class="o">!</span><span class="n">is_clear</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">task_count</span> <span class="o">=</span> <span class="n">queue</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">iter</span> <span class="o">=</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">while</span> <span class="p">(</span><span class="n">iter</span> <span class="o">!=</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="p">((</span><span class="n">statues</span> <span class="o">==</span> <span class="n">Wait</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="o">||</span> <span class="o">!</span><span class="n">is_clear</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="p">(</span><span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">==</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">pthread_id</span> <span class="o">!=</span> <span class="n">pthread_self</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pthread_cond_signal</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">iter</span><span class="o">-&gt;</span><span class="n">second</span><span class="o">-&gt;</span><span class="n">m_threadCond</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">iter</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">iter</span> <span class="o">==</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_iNum</span> <span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span> <span class="o">&gt;</span> <span class="n">m_iCount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">in_count_add</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">in_count_del</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span> <span class="o">&lt;</span> <span class="n">m_iCount</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="c1">//in_count_del++;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                        <span class="n">in_count_add</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">in_count_add</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">in_count_add</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_iNum</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">change</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">in_count_del</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">&amp;&amp;</span> <span class="n">m_iNum</span> <span class="o">&gt;</span> <span class="n">m_init</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_iNum</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">change</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">usleep</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">((</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">is_clear</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="p">(</span><span class="n">statues</span> <span class="o">==</span> <span class="n">Wait</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">()))</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutexCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_iCount</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutexCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span> 
+</span></span><span class="line"><span class="cl">        <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">static</span> <span class="kt">void</span><span class="o">*</span> <span class="n">ThreadMain</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_statue</span><span class="o">*</span> <span class="n">statue_self</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CThreadPool</span><span class="o">*</span> <span class="n">pclass</span> <span class="o">=</span> <span class="p">(</span><span class="n">CThreadPool</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">QUEUE</span><span class="o">::</span><span class="n">CTaskBase</span><span class="o">*</span> <span class="n">task</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">statue_self</span> <span class="o">=</span> <span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mthread</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">())</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_init</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">m_threadMutex</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutexAttr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_cond_init</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">m_threadCond</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">//timespec time;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>            <span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">pthread_id</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">statues</span> <span class="o">!=</span> <span class="n">Wait</span> <span class="o">||</span> <span class="n">pclass</span><span class="o">-&gt;</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutexCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_iCount</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutexCount</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">task</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span><span class="p">(</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">pthread_mutex_trylock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">m_threadMutex</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">m_threadCond</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">m_threadMutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">m_threadMutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">continue</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="n">task</span><span class="o">=</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">queue</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pclass</span><span class="o">-&gt;</span><span class="n">queue</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pclass</span><span class="o">-&gt;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">statue_self</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">task</span><span class="o">-&gt;</span><span class="n">Start</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">task</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">delete</span> <span class="n">task</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">void</span> <span class="nf">Stop</span><span class="p">(</span><span class="n">pthread_t</span> <span class="n">pthread_id</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_statue</span> <span class="o">*</span><span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">temp</span> <span class="o">=</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">pthread_id</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">temp</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span><span class="p">(</span><span class="n">pthread_kill</span><span class="p">(</span><span class="n">temp</span><span class="o">-&gt;</span><span class="n">pthread_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">temp</span><span class="o">-&gt;</span><span class="n">m_threadMutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">temp</span><span class="o">-&gt;</span><span class="n">statue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">temp</span><span class="o">-&gt;</span><span class="n">m_threadMutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_cond_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">temp</span><span class="o">-&gt;</span><span class="n">m_threadCond</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">usleep</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">temp</span> <span class="o">=</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">pthread_id</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m_mthread</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">pthread_id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">delete</span> <span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">void</span> <span class="nf">ClearQueue</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">queue</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">delete</span> <span class="n">queue</span><span class="p">.</span><span class="n">top</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">queue</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">void</span> <span class="nf">Clear</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">is_clear</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">pthread_t</span><span class="p">,</span> <span class="n">pthread_statue</span><span class="o">*&gt;::</span><span class="n">iterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(;</span> <span class="n">iter</span> <span class="o">!=</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">m_mthread</span><span class="p">.</span><span class="n">begin</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">                <span class="n">Stop</span><span class="p">(</span><span class="n">iter</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CThreadPool</span><span class="p">(</span><span class="kt">int</span> <span class="n">num</span><span class="p">,</span> <span class="n">QUEUE</span><span class="o">::</span><span class="n">queue_priority</span><span class="o">&amp;</span> <span class="n">queue</span><span class="p">,</span> <span class="n">PoolStatue</span> <span class="n">Pool</span> <span class="o">=</span> <span class="n">Wait</span><span class="p">)</span> <span class="o">:</span> <span class="n">CPoolBase</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">Pool</span><span class="p">),</span> <span class="n">queue</span><span class="p">(</span><span class="n">queue</span><span class="p">),</span> <span class="n">is_clear</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_init</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutexCount</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">owntask</span> <span class="o">=</span> <span class="k">new</span> <span class="n">QUEUE</span><span class="o">::</span><span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">CThreadPool</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">owntask</span><span class="o">-&gt;</span><span class="n">SetFunc</span><span class="p">(</span><span class="n">QUEUE</span><span class="o">::</span><span class="n">Urgent</span><span class="p">,</span> <span class="k">this</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">CThreadPool</span><span class="o">::</span><span class="n">ControlThread</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">queue</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">owntask</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Create</span><span class="p">();</span> 
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">~</span><span class="n">CThreadPool</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">statues</span> <span class="o">==</span> <span class="n">Wait</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Clear</span><span class="p">();</span> 
+</span></span><span class="line"><span class="cl">            <span class="n">ClearQueue</span><span class="p">();</span> 
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="p">(</span><span class="n">statues</span> <span class="o">!=</span> <span class="n">Wait</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">CConnectionClass</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">class</span> <span class="nc">CConnectPool</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CPoolBase</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">CConnectionClass</span><span class="o">*</span><span class="p">,</span> <span class="n">pthread_mutex_t</span><span class="o">&gt;</span> <span class="n">m_mapConnection</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">typename</span> <span class="n">std</span><span class="o">::</span><span class="n">map</span><span class="o">&lt;</span><span class="n">CConnectionClass</span><span class="o">*</span><span class="p">,</span> <span class="n">pthread_mutex_t</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">m_iter</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">bool</span> <span class="n">is_clear</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">typedef</span> <span class="nf">bool</span> <span class="p">(</span><span class="n">CConnectionClass</span><span class="o">::*</span><span class="n">Connect</span><span class="p">)(</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span><span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">typedef</span> <span class="nf">void</span> <span class="p">(</span><span class="n">CConnectionClass</span><span class="o">::*</span><span class="n">Close</span><span class="p">)(</span><span class="kt">void</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Connect</span> <span class="n">m_fconnect</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Close</span> <span class="n">m_fclose</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">char</span><span class="o">*</span> <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">m_iUsed</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_t</span> <span class="n">m_mapmutex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CConnectPool</span><span class="p">(</span><span class="kt">int</span> <span class="n">num</span><span class="p">)</span> <span class="o">:</span> <span class="n">CPoolBase</span><span class="p">(</span><span class="n">num</span><span class="p">,</span> <span class="n">Wait</span><span class="p">),</span> <span class="n">m_iUsed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="n">is_clear</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">~</span><span class="n">CConnectPool</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="n">free</span><span class="p">(</span><span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">free</span><span class="p">(</span><span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">free</span><span class="p">(</span><span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span> <span class="nf">Clear</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">is_clear</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_iter</span> <span class="o">=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="p">(</span><span class="n">m_iter</span> <span class="o">!=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">pthread_mutex_trylock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_iter</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">(</span><span class="n">m_iter</span><span class="o">-&gt;</span><span class="n">first</span><span class="o">-&gt;*</span><span class="p">(</span><span class="n">m_fclose</span><span class="p">))();</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">delete</span> <span class="n">m_iter</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">m_iter</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_iter</span> <span class="o">=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_iCount</span> <span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">else</span> <span class="n">m_iter</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">m_iter</span> <span class="o">==</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_iter</span> <span class="o">=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span> <span class="nf">SetFunc</span><span class="p">(</span><span class="n">Connect</span> <span class="n">connect</span><span class="p">,</span> <span class="n">Close</span> <span class="n">close</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">value</span><span class="p">[])</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_fconnect</span> <span class="o">=</span> <span class="n">connect</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_fclose</span> <span class="o">=</span> <span class="n">close</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">strlen</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">strcpy</span><span class="p">(</span><span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">strcpy</span><span class="p">(</span><span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">strcpy</span><span class="p">(</span><span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">CConnectionClass</span><span class="o">*</span> <span class="nf">GetConnection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_iter</span> <span class="o">=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">m_iter</span> <span class="o">==</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">count</span> <span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">m_iter</span> <span class="o">=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="p">(</span><span class="n">count</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">Create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">m_iNum</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">m_iter</span> <span class="o">=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">m_iter</span> <span class="o">!=</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">end</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="p">(</span><span class="n">pthread_mutex_trylock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_iter</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">m_iUsed</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                            <span class="k">return</span> <span class="n">m_iter</span><span class="o">-&gt;</span><span class="n">first</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">else</span> <span class="n">m_iter</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span> <span class="nf">BackConnection</span><span class="p">(</span><span class="n">CConnectionClass</span><span class="o">*</span> <span class="n">oneConnect</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">oneConnect</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapConnection</span><span class="p">.</span><span class="n">find</span><span class="p">(</span><span class="n">oneConnect</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">second</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_iUsed</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span> <span class="nf">Create</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_t</span> <span class="n">rwlock</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">CConnectionClass</span><span class="o">*</span> <span class="n">oneConnect</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CConnectionClass</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                <span class="p">(</span><span class="n">oneConnect</span><span class="o">-&gt;*</span><span class="p">(</span><span class="n">m_fconnect</span><span class="p">))(</span><span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">m_sConnectParam</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">pair</span><span class="o">&lt;</span><span class="n">CConnectionClass</span><span class="o">*</span><span class="p">,</span> <span class="n">pthread_mutex_t</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">oneConnect</span><span class="p">,</span> <span class="n">rwlock</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">                <span class="n">m_iCount</span> <span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span>  <span class="nf">Count</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">m_mapConnection</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span>  <span class="nf">ControlThread</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">in_count_add</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">in_count_del</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">task_count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="n">second</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">bool</span> <span class="n">change</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">task_count</span> <span class="o">=</span> <span class="k">this</span><span class="o">-&gt;</span><span class="n">Count</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span> <span class="o">&lt;=</span> <span class="n">m_iNum</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">Create</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mapmutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">m_iUsed</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                            <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span> <span class="o">&gt;</span> <span class="n">m_iUsed</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">in_count_del</span><span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                            <span class="k">if</span> <span class="p">(</span><span class="n">in_count_del</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                                <span class="n">change</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                        <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">task_count</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">usleep</span><span class="p">(</span><span class="n">second</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="p">(</span><span class="n">is_clear</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                        <span class="k">break</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#endif</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
 <p><!-- raw HTML omitted --><!-- raw HTML omitted -->测试文件代码：<!-- raw HTML omitted --><!-- raw HTML omitted -->
-{% codeblock lang:cpp %}
-#include &lt;stdio.h&gt;
-#include &ldquo;Pool.h&rdquo;
-#include &ldquo;TaskQueue.h&rdquo;
-#include &ldquo;DBDatabase.h&rdquo;
-#include &ldquo;DBStatement.h&rdquo;</p>
-<p>using namespace POOL;</p>
-<p>using namespace QUEUE;
-class B
-{
-public:
-B(){printf(&ldquo;B\n&rdquo;);}
-virtual int process(void* arg){return 0;};
-virtual ~B(){printf(&ldquo;B\n&rdquo;);}
-};
-class A : public B
-{
-public:
-A(){}
-~A(){}
-int process(void* arg)
-{
-char** argv = (char**)arg;
-for (int iLoop = 0; iLoop &lt; 2; iLoop++)
-{
-printf(&quot;%s &ldquo;, argv[iLoop]);
-}
-printf(&quot;\n&rdquo;);
-return 0;
-}
-};</p>
-<p>int main(int argc, char** argv)
-{
-CThreadPool threadpool(2, task_priority_queue);
-char conn[3][20] = {&ldquo;system&rdquo;, &ldquo;system&rdquo;, &ldquo;tsdc&rdquo;};
-char <em>value[3];
-value[0] = conn[0];
-value[1] = conn[1];
-value[2] = conn[2];
-CConnectPool<!-- raw HTML omitted --> connnectpool(5);
-connnectpool.SetFunc(&amp;CDBDatabase::Connect, &amp;CDBDatabase::Disconnect, value);
-int count = 0;
-A p;
-CTaskQueue&lt;CConnectPool<!-- raw HTML omitted --> &gt;</em> atask = new CTaskQueue&lt;CConnectPool<!-- raw HTML omitted --> &gt;;
-char se[10] = &ldquo;10000000&rdquo;;
-char <em>s[2];
-s[0] = se;
-s[1] = NULL;
-atask-&gt;SetFunc(Highest, &amp;connnectpool, &amp;CConnectPool<!-- raw HTML omitted -->::ControlThread, s);
-task_priority_queue.push(atask);
-CDBDatabase <em>temp = connnectpool.GetConnection();
-CDBDatabase <em>temp2 = connnectpool.GetConnection();
-CDBStatement</em> dbstatement = new CDBStatement(temp);
-CDBStatement</em> dbs = new CDBStatement(temp2);
-dbstatement-&gt;Prepare(&ldquo;select city_code from bb_device_rent_info_t where user_id = 48303537&rdquo;);
-dbs-&gt;Prepare(&ldquo;select user_id from bb_device_rent_info_t where user_id = 48303537&rdquo;);
-dbstatement-&gt;Open();
-dbs-&gt;Open();
-if (dbstatement-&gt;Next() &amp;&amp; dbs-&gt;Next())
-{
-printf(&quot;%s\n&quot;, dbstatement-&gt;Field(0).AsString());
-printf(&quot;%s\n&quot;, dbs-&gt;Field(0).AsString());
-}
-connnectpool.BackConnection(temp);
-connnectpool.BackConnection(temp2);
-while(1)
-{
-char time[2][10];
-char <em>ttt[3];
-sprintf(time[0], &ldquo;time:&rdquo;);
-sprintf(time[1], &ldquo;%d&rdquo;, count++);
-ttt[0] = time[0];
-ttt[1] = time[1];
-ttt[2] = NULL;
-CTaskQueue<!-- raw HTML omitted --></em> task = new CTaskQueue<!-- raw HTML omitted -->;
-task-&gt;SetFunc(Low, &amp;p, &amp;A::process, (void</em>)ttt);
-task_priority_queue.push(task);
-usleep(1000000);
-}</p>
-<pre><code>A a;
-CTaskQueue&lt;A&gt;* task = new CTaskQueue&lt;A&gt;;
-char aaa[2][10] = {&quot;aaa&quot;, &quot;bbb&quot;};
-char *aa[3];
-char *bb[3];
-aa[0] = aaa[0];
-aa[1] = aaa[1];
-aa[2] = NULL;
-task-&gt;SetFunc(Low, &amp;a, &amp;A::process, (void*)aa);
-task_priority_queue.push(task);
-char bbb[2][10] = {&quot;ccc&quot;, &quot;bbb&quot;};
-bb[0] = bbb[0];
-bb[1] = bbb[1];
-bb[2] = NULL;
-task = new CTaskQueue&lt;A&gt;;
-task-&gt;SetFunc(Minimum, &amp;a, &amp;A::process, (void*)bb);
-//task_priority_queue.push(task);
-
-connnectpool.Clear();
-usleep(30000);
-threadpool.Clear();
-
-return 0;
-</code></pre>
-<p>}
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;Pool.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;TaskQueue.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;DBDatabase.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;DBStatement.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">POOL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">using</span> <span class="k">namespace</span> <span class="n">QUEUE</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">B</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">B</span><span class="p">(){</span><span class="n">printf</span><span class="p">(</span><span class="s">&#34;B</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);}</span>
+</span></span><span class="line"><span class="cl">        <span class="k">virtual</span> <span class="kt">int</span> <span class="nf">process</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">){</span><span class="k">return</span> <span class="mi">0</span><span class="p">;};</span>
+</span></span><span class="line"><span class="cl">        <span class="k">virtual</span> <span class="o">~</span><span class="n">B</span><span class="p">(){</span><span class="n">printf</span><span class="p">(</span><span class="s">&#34;B</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">A</span> <span class="o">:</span> <span class="k">public</span> <span class="n">B</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">A</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">        <span class="o">~</span><span class="n">A</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="nf">process</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">arg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span> <span class="o">=</span> <span class="p">(</span><span class="kt">char</span><span class="o">**</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">iLoop</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iLoop</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">;</span> <span class="n">iLoop</span><span class="o">++</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s &#34;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="n">iLoop</span><span class="p">]);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">**</span> <span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CThreadPool</span> <span class="n">threadpool</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">task_priority_queue</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">conn</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">20</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;system&#34;</span><span class="p">,</span> <span class="s">&#34;system&#34;</span><span class="p">,</span> <span class="s">&#34;tsdc&#34;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">value</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">conn</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">conn</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">conn</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CConnectPool</span><span class="o">&lt;</span><span class="n">CDBDatabase</span><span class="o">&gt;</span> <span class="n">connnectpool</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">connnectpool</span><span class="p">.</span><span class="n">SetFunc</span><span class="p">(</span><span class="o">&amp;</span><span class="n">CDBDatabase</span><span class="o">::</span><span class="n">Connect</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">CDBDatabase</span><span class="o">::</span><span class="n">Disconnect</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">A</span> <span class="n">p</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">CConnectPool</span><span class="o">&lt;</span><span class="n">CDBDatabase</span><span class="o">&gt;</span> <span class="o">&gt;*</span> <span class="n">atask</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">CConnectPool</span><span class="o">&lt;</span><span class="n">CDBDatabase</span><span class="o">&gt;</span> <span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">se</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#34;10000000&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">se</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">atask</span><span class="o">-&gt;</span><span class="n">SetFunc</span><span class="p">(</span><span class="n">Highest</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">connnectpool</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">CConnectPool</span><span class="o">&lt;</span><span class="n">CDBDatabase</span><span class="o">&gt;::</span><span class="n">ControlThread</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">task_priority_queue</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">atask</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CDBDatabase</span> <span class="o">*</span><span class="n">temp</span> <span class="o">=</span> <span class="n">connnectpool</span><span class="p">.</span><span class="n">GetConnection</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CDBDatabase</span> <span class="o">*</span><span class="n">temp2</span> <span class="o">=</span> <span class="n">connnectpool</span><span class="p">.</span><span class="n">GetConnection</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CDBStatement</span><span class="o">*</span> <span class="n">dbstatement</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CDBStatement</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CDBStatement</span><span class="o">*</span> <span class="n">dbs</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CDBStatement</span><span class="p">(</span><span class="n">temp2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dbstatement</span><span class="o">-&gt;</span><span class="n">Prepare</span><span class="p">(</span><span class="s">&#34;select city_code from bb_device_rent_info_t where user_id = 48303537&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dbs</span><span class="o">-&gt;</span><span class="n">Prepare</span><span class="p">(</span><span class="s">&#34;select user_id from bb_device_rent_info_t where user_id = 48303537&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dbstatement</span><span class="o">-&gt;</span><span class="n">Open</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dbs</span><span class="o">-&gt;</span><span class="n">Open</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">dbstatement</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="n">dbs</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">dbstatement</span><span class="o">-&gt;</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">AsString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">        <span class="n">printf</span><span class="p">(</span><span class="s">&#34;%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">dbs</span><span class="o">-&gt;</span><span class="n">Field</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">AsString</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">connnectpool</span><span class="p">.</span><span class="n">BackConnection</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">connnectpool</span><span class="p">.</span><span class="n">BackConnection</span><span class="p">(</span><span class="n">temp2</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">time</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">10</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">ttt</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sprintf</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">&#34;time:&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sprintf</span><span class="p">(</span><span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="n">count</span><span class="o">++</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ttt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ttt</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">time</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ttt</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;*</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">task</span><span class="o">-&gt;</span><span class="n">SetFunc</span><span class="p">(</span><span class="n">Low</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">p</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">process</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">ttt</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">task_priority_queue</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">task</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">usleep</span><span class="p">(</span><span class="mi">1000000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">A</span> <span class="n">a</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;*</span> <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">aaa</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;aaa&#34;</span><span class="p">,</span> <span class="s">&#34;bbb&#34;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">aa</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="o">*</span><span class="n">bb</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">aa</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">aaa</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">aa</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">aaa</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">aa</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">task</span><span class="o">-&gt;</span><span class="n">SetFunc</span><span class="p">(</span><span class="n">Low</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">process</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">aa</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">task_priority_queue</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">task</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">char</span> <span class="n">bbb</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#34;ccc&#34;</span><span class="p">,</span> <span class="s">&#34;bbb&#34;</span><span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bb</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">bbb</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bb</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">bbb</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="n">bb</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">task</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CTaskQueue</span><span class="o">&lt;</span><span class="n">A</span><span class="o">&gt;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">task</span><span class="o">-&gt;</span><span class="n">SetFunc</span><span class="p">(</span><span class="n">Minimum</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">A</span><span class="o">::</span><span class="n">process</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">bb</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">//task_priority_queue.push(task);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    
+</span></span><span class="line"><span class="cl">    <span class="n">connnectpool</span><span class="p">.</span><span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="n">usleep</span><span class="p">(</span><span class="mi">30000</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">threadpool</span><span class="p">.</span><span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 github: <a class="link" href="https://github.com/sohunjug/queue_thread-connection_pool.git"  target="_blank" rel="noopener"
     >GitLink&hellip;.</a></p>
 <p>可能还有bug,还有很多不足，欢迎大家帮忙测试.</p>

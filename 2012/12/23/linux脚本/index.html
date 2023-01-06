@@ -2,7 +2,7 @@
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。
-首先需要安装插件 {% codeblock lang:bash %} ubuntu apt-get install expect fedora yum install expect.x86_64 opensuse zypper install expect {% endcodeblock %} 之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。
+首先需要安装插件 1 2 3 ubuntu apt-get install expect fedora yum install expect.x86_64 opensuse zypper install expect 之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。
 '>
 <title>Linux脚本</title>
 
@@ -10,7 +10,7 @@
 
 <link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='Linux脚本'>
 <meta property='og:description' content='Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。
-首先需要安装插件 {% codeblock lang:bash %} ubuntu apt-get install expect fedora yum install expect.x86_64 opensuse zypper install expect {% endcodeblock %} 之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。
+首先需要安装插件 1 2 3 ubuntu apt-get install expect fedora yum install expect.x86_64 opensuse zypper install expect 之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。
 '>
 <meta property='og:url' content='https://sohunjug.com/2012/12/23/linux%E8%84%9A%E6%9C%AC/'>
 <meta property='og:site_name' content='聽的资料'>
@@ -18,7 +18,7 @@
 <meta name="twitter:site" content="@sohunjug">
     <meta name="twitter:creator" content="@sohunjug"><meta name="twitter:title" content="Linux脚本">
 <meta name="twitter:description" content="Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。
-首先需要安装插件 {% codeblock lang:bash %} ubuntu apt-get install expect fedora yum install expect.x86_64 opensuse zypper install expect {% endcodeblock %} 之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。
+首先需要安装插件 1 2 3 ubuntu apt-get install expect fedora yum install expect.x86_64 opensuse zypper install expect 之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。
 ">
     <link rel="shortcut icon" href="/favicon.png" />
 
@@ -318,54 +318,126 @@
     
     <p>Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。</p>
 <p>首先需要安装插件
-{% codeblock lang:bash %}
-ubuntu       apt-get install expect
-fedora       yum install expect.x86_64
-opensuse     zypper install expect
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ubuntu       apt-get install expect
+</span></span><span class="line"><span class="cl">fedora       yum install expect.x86_64
+</span></span><span class="line"><span class="cl">opensuse     zypper install expect</span></span></code></pre></td></tr></table>
+</div>
+</div>
 之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。</p>
-<p>{% codeblock lang:bash%}
-#!/usr/bin/expect -f</p>
-<p>set user [lindex $argv 1]
-set host [lindex $argv 0]
-set password [lindex $argv 2]
-set lang [lindex $argv 3]
-set timeout -1</p>
-<p>spawn ssh $user@$host</p>
-<p>expect {
-&ldquo;<em>yes/no</em>&rdquo; { send &ldquo;yes\r&rdquo;;exp_continue }</p>
-<p>&ldquo;<em>assword:</em>&rdquo; { send &ldquo;$password\r&rdquo; }</p>
-<p>}
-sleep 1
-#send &ldquo;export LANG=$lang &amp;&amp; export LC_ALL=$lang \r&rdquo;</p>
-<p>interact
-{% endcodeblock %}
+<p><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/usr/bin/expect -f
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> user <span class="o">[</span>lindex <span class="nv">$argv</span> 1<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> host <span class="o">[</span>lindex <span class="nv">$argv</span> 0<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> password <span class="o">[</span>lindex <span class="nv">$argv</span> 2<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> lang <span class="o">[</span>lindex <span class="nv">$argv</span> 3<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> timeout -1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">spawn ssh <span class="nv">$user</span>@<span class="nv">$host</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">expect <span class="o">{</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;*yes/no*&#34;</span> <span class="o">{</span> send <span class="s2">&#34;yes\r&#34;</span><span class="p">;</span>exp_continue <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;*assword:*&#34;</span> <span class="o">{</span> send <span class="s2">&#34;</span><span class="nv">$password</span><span class="s2">\r&#34;</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">sleep <span class="m">1</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#send &#34;export LANG=$lang &amp;&amp; export LC_ALL=$lang \r&#34; </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">interact</span></span></code></pre></td></tr></table>
+</div>
+</div>
 而登录的时候可以将密码等信息存入文件中，然后自动读取。如：
-{% codeblock lang:bash %}
-#!/bin/bash</p>
-<p>if [ -f $HOME/Documents/ssh/conn.profile ]; then
-source $HOME/Documents/ssh/conn.profile
-fi</p>
-<p>ip=$1
-CONIP=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNIP$ip | grep -v grep | awk -F= '{print \$2}'</code>
-CONUSER=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNUSER$ip | grep -v grep | awk -F= '{print \$2}'</code>
-CONPASS=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNPASS$ip | grep -v grep | awk -F= '{print \$2}'</code>
-CONLANG=<code>cat $HOME/Documents/ssh/conn.profile | grep CONNLANG$ip | grep -v grep | awk -F= '{print \$2}'</code></p>
-<p>if [ -z ${CONIP} ]
-then
-echo error:  没有那个IP
-else
-echo ${CONIP}
-echo ${CONUSER}
-echo ${CONPASS}
-echo ${CONLANG}
-export LANG=${CONLANG} &amp;&amp; export LC_ALL=${CONLANG}
-$HOME/Documents/ssh/sshend.sh ${CONIP} ${CONUSER} ${CONPASS} ${CONLANG}
-`qdbus org.kde.konsole $session org.kde.konsole.Session.setCodec UTF-8`
-export LANG=zh_CN.UTF-8
-export LC_ALL=zh_CN.UTF-8
-fi
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -f <span class="nv">$HOME</span>/Documents/ssh/conn.profile <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">source</span> <span class="nv">$HOME</span>/Documents/ssh/conn.profile
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">ip</span><span class="o">=</span><span class="nv">$1</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CONIP</span><span class="o">=</span><span class="sb">`</span>cat <span class="nv">$HOME</span>/Documents/ssh/conn.profile <span class="p">|</span> grep CONNIP<span class="nv">$ip</span> <span class="p">|</span> grep -v grep <span class="p">|</span> awk -F<span class="o">=</span> <span class="s1">&#39;{print \$2}&#39;</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CONUSER</span><span class="o">=</span><span class="sb">`</span>cat <span class="nv">$HOME</span>/Documents/ssh/conn.profile <span class="p">|</span> grep CONNUSER<span class="nv">$ip</span> <span class="p">|</span> grep -v grep <span class="p">|</span> awk -F<span class="o">=</span> <span class="s1">&#39;{print \$2}&#39;</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CONPASS</span><span class="o">=</span><span class="sb">`</span>cat <span class="nv">$HOME</span>/Documents/ssh/conn.profile <span class="p">|</span> grep CONNPASS<span class="nv">$ip</span> <span class="p">|</span> grep -v grep <span class="p">|</span> awk -F<span class="o">=</span> <span class="s1">&#39;{print \$2}&#39;</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="nv">CONLANG</span><span class="o">=</span><span class="sb">`</span>cat <span class="nv">$HOME</span>/Documents/ssh/conn.profile <span class="p">|</span> grep CONNLANG<span class="nv">$ip</span> <span class="p">|</span> grep -v grep <span class="p">|</span> awk -F<span class="o">=</span> <span class="s1">&#39;{print \$2}&#39;</span><span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -z <span class="si">${</span><span class="nv">CONIP</span><span class="si">}</span> <span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> error:  没有那个IP
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="si">${</span><span class="nv">CONIP</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="si">${</span><span class="nv">CONUSER</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="si">${</span><span class="nv">CONPASS</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="si">${</span><span class="nv">CONLANG</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span><span class="si">${</span><span class="nv">CONLANG</span><span class="si">}</span> <span class="o">&amp;&amp;</span> <span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span><span class="si">${</span><span class="nv">CONLANG</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="nv">$HOME</span>/Documents/ssh/sshend.sh <span class="si">${</span><span class="nv">CONIP</span><span class="si">}</span> <span class="si">${</span><span class="nv">CONUSER</span><span class="si">}</span> <span class="si">${</span><span class="nv">CONPASS</span><span class="si">}</span> <span class="si">${</span><span class="nv">CONLANG</span><span class="si">}</span>
+</span></span><span class="line"><span class="cl">	<span class="se">\`</span>qdbus org.kde.konsole <span class="nv">$session</span> org.kde.konsole.Session.setCodec UTF-8<span class="se">\`</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="cl">	<span class="nb">export</span> <span class="nv">LC_ALL</span><span class="o">=</span>zh_CN.UTF-8
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 给这个文件建立一个alias，之后直接登录加上标志，用ssh或者ftp等命令就方便了很多吧～</p>
 </section>
 

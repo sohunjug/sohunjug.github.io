@@ -323,197 +323,389 @@
 <p>如果是大型项目肯定会用一些比较稳定的开源库一类的来解决。而如果是私人的小项目，或者是测试一类的代码遇到这类问题还需要各种检查，是否很浪费时间呢？</p>
 <p>给大家分享一个我个人使用的内存管理类哈~可以使用Create一块空间，之后可以不需要去管这块空间最后是否free掉，因为类析构时候会自动帮助free掉，而如果想要手动free也支持，直接传入申请空间时候取得的ID就可以指定析构了。这个还是比较适合私人用用哈~</p>
 <p><strong>首先是头文件~</strong>
-{% codeblock lang:cpp %}/*******************************************************************************</p>
-<ul>
-<li>Author : RKhuwq</li>
-<li>Email : <a class="link" href="mailto:huwq@neusoft.com" >huwq@neusoft.com</a></li>
-<li>Last modified : 2013-04-07 18:34</li>
-<li>Filename : MemCtrl.h</li>
-<li>Description : 内存管理类，类析构时自动释放内存。</li>
-<li>
-<pre><code>          用于给指针申请内存空间。
-</code></pre>
-</li>
-<li>*****************************************************************************/
-#ifndef <strong>MEMCTRL_H</strong>
-#define <strong>MEMCTRL_H</strong>
-#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include <!-- raw HTML omitted -->
-#include <!-- raw HTML omitted --></li>
-</ul>
-<p>class CMemCtrl
-{
-private:
-typedef struct <em>DATA_SPACE</em>
-{
-void* point;
-<em>DATA_SPACE</em>* Next;
-<em>DATA_SPACE</em>* Pre;
-int count;</p>
-<pre><code>        _DATA_SPACE_()
-        {
-            point = NULL;
-            Next = NULL;
-            Pre = NULL;
-            count = 0;
-        }
-        ~_DATA_SPACE_()
-        {
-            if (point != NULL)
-                free(point);
-            if (Pre != NULL &amp;&amp; Next == NULL)
-                Pre-&gt;Next = NULL;
-            else if (Pre == NULL &amp;&amp; Next != NULL)
-                Next-&gt;Pre = NULL;
-            else if (Pre != NULL &amp;&amp; Next != NULL)
-            {
-                Pre-&gt;Next = Next;
-                Next-&gt;Pre = Pre;
-            }
-        }
-        void SetPre(_DATA_SPACE_* Pre)
-        {
-            this-&gt;Pre = Pre;
-        }
-    }KDataSpace;
-
-    typedef KDataSpace* PDataSpace;
-public:
-    CMemCtrl();
-    ~CMemCtrl();
-
-    //申请空间
-    void* Create(int x, int size);
-    //指定ID释放空间
-    void Clear(int count);
-    //释放所有已申请空间
-    bool Reset();
-    //取得最近一次所申请的空间ID
-    int GetCount();
-private:
-    void Clear();
-    void* point_one;
-    std::vector&lt;int&gt; vCount;
-    PDataSpace header;
-    PDataSpace end;
-    PDataSpace point;
-    int count_one;
-</code></pre>
-<p>};</p>
-<p>#endif
-{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"> <span class="o">*</span> <span class="nl">Author</span> <span class="p">:</span> <span class="n">sohunjug</span>
+</span></span><span class="line"><span class="cl"> <span class="o">*</span> <span class="nl">Email</span> <span class="p">:</span> <span class="n">sohunjug</span><span class="err">@</span><span class="n">hotmail</span><span class="p">.</span><span class="n">com</span>
+</span></span><span class="line"><span class="cl"> <span class="o">*</span> <span class="n">Last</span> <span class="nl">modified</span> <span class="p">:</span> <span class="mi">2013</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mo">07</span> <span class="mi">18</span><span class="o">:</span><span class="mi">34</span>
+</span></span><span class="line"><span class="cl"> <span class="o">*</span> <span class="nl">Filename</span> <span class="p">:</span> <span class="n">MemCtrl</span><span class="p">.</span><span class="n">h</span>
+</span></span><span class="line"><span class="cl"> <span class="o">*</span> <span class="nl">Description</span> <span class="p">:</span> <span class="err">内存管理类，类析构时自动释放内存。</span>
+</span></span><span class="line"><span class="cl"> <span class="o">*</span>               <span class="err">用于给指针申请内存空间。</span>
+</span></span><span class="line"><span class="cl"> <span class="o">*</span> <span class="o">****************************************************************************</span><span class="err">*/</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifndef __MEMCTRL_H__
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __MEMCTRL_H__
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;algorithm&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CMemCtrl</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">typedef</span> <span class="k">struct</span> <span class="nc">_DATA_SPACE_</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span><span class="o">*</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_DATA_SPACE_</span><span class="o">*</span> <span class="n">Next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">_DATA_SPACE_</span><span class="o">*</span> <span class="n">Pre</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">_DATA_SPACE_</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">point</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Pre</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">~</span><span class="n">_DATA_SPACE_</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">point</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">free</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="p">(</span><span class="n">Pre</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">Next</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Pre</span><span class="o">-&gt;</span><span class="n">Next</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">Pre</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">Next</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Next</span><span class="o">-&gt;</span><span class="n">Pre</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">else</span> <span class="nf">if</span> <span class="p">(</span><span class="n">Pre</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">Next</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Pre</span><span class="o">-&gt;</span><span class="n">Next</span> <span class="o">=</span> <span class="n">Next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">Next</span><span class="o">-&gt;</span><span class="n">Pre</span> <span class="o">=</span> <span class="n">Pre</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span> <span class="nf">SetPre</span><span class="p">(</span><span class="n">_DATA_SPACE_</span><span class="o">*</span> <span class="n">Pre</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="o">-&gt;</span><span class="n">Pre</span> <span class="o">=</span> <span class="n">Pre</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}</span><span class="n">KDataSpace</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">typedef</span> <span class="n">KDataSpace</span><span class="o">*</span> <span class="n">PDataSpace</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">CMemCtrl</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="o">~</span><span class="n">CMemCtrl</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1">//申请空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">void</span><span class="o">*</span> <span class="nf">Create</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//指定ID释放空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">void</span> <span class="nf">Clear</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//释放所有已申请空间
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">bool</span> <span class="nf">Reset</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">//取得最近一次所申请的空间ID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>        <span class="kt">int</span> <span class="nf">GetCount</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">void</span> <span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">void</span><span class="o">*</span> <span class="n">point_one</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">vCount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PDataSpace</span> <span class="n">header</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PDataSpace</span> <span class="n">end</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">PDataSpace</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">int</span> <span class="n">count_one</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#endif</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
 <p><strong>下面就是具体的实现了~</strong>
-{% codeblock lang:cpp %}
-/*******************************************************************************</p>
-<ul>
-<li>Author : RKhuwq</li>
-<li>Email : <a class="link" href="mailto:huwq@neusoft.com" >huwq@neusoft.com</a></li>
-<li>Last modified : 2013-04-07 18:34</li>
-<li>Filename : MemCtrl.h</li>
-<li>Description : 内存管理类，类析构时自动释放内存。</li>
-<li>
-<pre><code>          用于给指针申请内存空间。
-</code></pre>
-</li>
-<li>*****************************************************************************/
-#include &ldquo;MemCtrl.h&rdquo;</li>
-</ul>
-<p>CMemCtrl::CMemCtrl()
-{
-header = NULL;
-end = NULL;
-count_one = 0;
-}</p>
-<p>CMemCtrl::~CMemCtrl()
-{
-Clear();
-}</p>
-<p>void CMemCtrl::Clear()
-{
-while(header != NULL)
-{
-point = header-&gt;Next;
-delete header;
-header = point;
-}
-header = NULL;
-end = NULL;
-count_one = 0;
-}</p>
-<p>void CMemCtrl::Clear(int count)
-{
-PDataSpace temp;
-temp = end;
-point = temp;
-while(point != NULL &amp;&amp; point-&gt;count != count)
-{
-point = temp-&gt;Pre;
-temp = point;
-}
-vCount.push_back(point-&gt;count);
-if (point == header)
-header = header-&gt;Next;
-if (point == end)
-end = end-&gt;Pre;
-if (point != NULL)
-{
-delete point;
-}</p>
-<pre><code>point = NULL;
-</code></pre>
-<p>}</p>
-<p>int CMemCtrl::GetCount()
-{
-return end-&gt;count;
-}</p>
-<p>void* CMemCtrl::Create(int x, int size)
-{
-std::vector<!-- raw HTML omitted -->::iterator vCountIte;
-point_one = NULL;
-point_one = (void*)calloc(x, size);
-if (point_one == NULL)
-return NULL;
-point = new KDataSpace();
-if (point == NULL)
-return NULL;
-point-&gt;point = point_one;
-while ((vCountIte = find(vCount.begin(), vCount.end(), count_one-1)) != vCount.end())
-{
-count_one&ndash;;
-vCount.erase(vCountIte);
-}
-if (vCount.size() &gt; 0)
-{
-point-&gt;count = vCount[0];
-vCount.erase(vCount.begin());
-}
-else
-{
-point-&gt;count = count_one;
-count_one ++;
-}</p>
-<pre><code>if (header == NULL)
-{
-    header = point;
-    end = point;
-}
-else
-{
-    end-&gt;Next = point;
-    point-&gt;SetPre(end);
-    end = point;
-}
-
-return point_one;
-</code></pre>
-<p>}</p>
-<p>bool CMemCtrl::Reset()
-{
-Clear();
-return true;
-}
-{% endcodeblock %}</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cm">/*******************************************************************************
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Author : sohunjug
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Email : sohunjug@hotmail.com
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Last modified : 2013-04-07 18:34
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Filename : MemCtrl.h
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Description : 内存管理类，类析构时自动释放内存。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *               用于给指针申请内存空间。
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * *****************************************************************************/</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&#34;MemCtrl.h&#34;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="n">CMemCtrl</span><span class="o">::</span><span class="n">CMemCtrl</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">header</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">count_one</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">CMemCtrl</span><span class="o">::~</span><span class="n">CMemCtrl</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CMemCtrl</span><span class="o">::</span><span class="n">Clear</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">header</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">point</span> <span class="o">=</span> <span class="n">header</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">delete</span> <span class="n">header</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">header</span> <span class="o">=</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">header</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">count_one</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="n">CMemCtrl</span><span class="o">::</span><span class="n">Clear</span><span class="p">(</span><span class="kt">int</span> <span class="n">count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">PDataSpace</span> <span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">temp</span> <span class="o">=</span> <span class="n">end</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">point</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span><span class="p">(</span><span class="n">point</span> <span class="o">!=</span> <span class="nb">NULL</span> <span class="o">&amp;&amp;</span> <span class="n">point</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">!=</span> <span class="n">count</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">point</span> <span class="o">=</span> <span class="n">temp</span><span class="o">-&gt;</span><span class="n">Pre</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">temp</span> <span class="o">=</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">vCount</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">point</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">point</span> <span class="o">==</span> <span class="n">header</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="o">-&gt;</span><span class="n">Next</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">point</span> <span class="o">==</span> <span class="n">end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">end</span> <span class="o">=</span> <span class="n">end</span><span class="o">-&gt;</span><span class="n">Pre</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">point</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">delete</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">point</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="n">CMemCtrl</span><span class="o">::</span><span class="n">GetCount</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">end</span><span class="o">-&gt;</span><span class="n">count</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">void</span><span class="o">*</span> <span class="n">CMemCtrl</span><span class="o">::</span><span class="n">Create</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">iterator</span> <span class="n">vCountIte</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">point_one</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">point_one</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">calloc</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">point_one</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">point</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KDataSpace</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">point</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">point</span><span class="o">-&gt;</span><span class="n">point</span> <span class="o">=</span> <span class="n">point_one</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="p">((</span><span class="n">vCountIte</span> <span class="o">=</span> <span class="n">find</span><span class="p">(</span><span class="n">vCount</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">vCount</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">count_one</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">!=</span> <span class="n">vCount</span><span class="p">.</span><span class="n">end</span><span class="p">())</span> 
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">count_one</span><span class="o">--</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vCount</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">vCountIte</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">vCount</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">point</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">=</span> <span class="n">vCount</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">        <span class="n">vCount</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="n">vCount</span><span class="p">.</span><span class="n">begin</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">point</span><span class="o">-&gt;</span><span class="n">count</span> <span class="o">=</span> <span class="n">count_one</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">count_one</span> <span class="o">++</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">header</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">header</span> <span class="o">=</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">end</span> <span class="o">=</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">end</span><span class="o">-&gt;</span><span class="n">Next</span> <span class="o">=</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="n">point</span><span class="o">-&gt;</span><span class="n">SetPre</span><span class="p">(</span><span class="n">end</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">        <span class="n">end</span> <span class="o">=</span> <span class="n">point</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">point_one</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kt">bool</span> <span class="n">CMemCtrl</span><span class="o">::</span><span class="n">Reset</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div></p>
 </section>
 
 

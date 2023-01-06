@@ -2,7 +2,8 @@
 <html lang="zh-cn" dir="ltr">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
-其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为 {% codeblock %} vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 {% endcodeblock %} 之后配置$HOME目录下的.vimrc
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+1 2 3 4 5 6 7 8 9 vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 之后配置$HOME目录下的.vimrc
 '>
 <title>我的vim配置</title>
 
@@ -10,7 +11,8 @@
 
 <link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='我的vim配置'>
 <meta property='og:description' content='我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
-其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为 {% codeblock %} vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 {% endcodeblock %} 之后配置$HOME目录下的.vimrc
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+1 2 3 4 5 6 7 8 9 vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 之后配置$HOME目录下的.vimrc
 '>
 <meta property='og:url' content='https://sohunjug.com/2012/12/22/%E6%88%91%E7%9A%84vim%E9%85%8D%E7%BD%AE/'>
 <meta property='og:site_name' content='聽的资料'>
@@ -18,7 +20,8 @@
 <meta name="twitter:site" content="@sohunjug">
     <meta name="twitter:creator" content="@sohunjug"><meta name="twitter:title" content="我的vim配置">
 <meta name="twitter:description" content="我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
-其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为 {% codeblock %} vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 {% endcodeblock %} 之后配置$HOME目录下的.vimrc
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+1 2 3 4 5 6 7 8 9 vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 之后配置$HOME目录下的.vimrc
 ">
     <link rel="shortcut icon" href="/favicon.png" />
 
@@ -301,7 +304,7 @@
 
 
                 <time class="article-time--reading">
-                    阅读时长: 5 分钟
+                    阅读时长: 6 分钟
                 </time>
             </div>
         
@@ -317,320 +320,768 @@
     
     
     <p>我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。</p>
-<p>其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
-{% codeblock %}
-vim-X11.x86_64
-vim-common.x86_64
-vim-enhanced.x86_64
-vim-filesystem.x86_64
-vim-halibut.noarch
-vim-minimal.x86_64
-vim-perl-support.noarch
-cscope.x86_64
-ctags.x86_64
-{% endcodeblock %}
-之后配置$HOME目录下的.vimrc</p>
-<p>{% codeblock lang:vim %}
-if has(&ldquo;cscope&rdquo;)
-set cscopequickfix=s-,c-,d-,i-,t-,e-
-set csto=0
-set cst
-set csverb
-endif</p>
-<p>&ldquo;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
-&ldquo;获取当前路径的上一级的路径
-function! GET_UP_PATH(dir)
-let pos=strlen(a:dir)-1
-while pos&gt;0
-if (a:dir[pos]==&rdquo;/&rdquo; )
-return  strpart(a:dir,0,pos)
-endif
-let pos=pos-1
-endwhile
-return  &quot;&quot;
-endfunction</p>
-<p>&ldquo;设置相关tags
-function! s:SET_TAGS()
-let dir = getcwd() &ldquo;获得源文件路径
-&ldquo;在路径上递归向上查找tags文件
-while dir!=&rdquo;&rdquo;
-if findfile(&ldquo;tags&rdquo;,dir ) !=&rdquo;&quot;
-&ldquo;找到了就加入到tags
-exec &ldquo;set tags+=&quot;.dir.&quot;/tags&rdquo;
-return
-endif
-&ldquo;得到上级路径
-let dir=GET_UP_PATH(dir)
-endwhile
-endfunction</p>
-<p>&ldquo;设置php cscope.out
-function! SET_CSPHP()
-if(executable(&lsquo;cscope&rsquo;) &amp;&amp; has(&ldquo;cscope&rdquo;) )
-silent! execute &ldquo;!find . -name &lsquo;<em>.php&rsquo;  -o -name &lsquo;</em>.inc&rsquo; -o -name &lsquo;*.module&rsquo; &gt; cscope.files&rdquo;
-silent! execute &ldquo;!cscope -bkq -i cscope.files&rdquo;
-if filereadable(&ldquo;cscope.out&rdquo;)
-silent! execute &ldquo;cs add cscope.out&rdquo;
-endif
-silent! execute &ldquo;!ctags -R &ndash;langmap=php:.engine.inc.module.theme.php  &ndash;php-kinds=cdf  &ndash;languages=php &quot;
-endif
-endfunction</p>
-<p>&ldquo;设置c cscope.out
-function! SET_CSAD()
-if(executable(&lsquo;cscope&rsquo;) &amp;&amp; has(&ldquo;cscope&rdquo;) )
-silent! execute &ldquo;!find . -name &lsquo;<em>.h&rsquo; -o -name &lsquo;</em>.c&rsquo; -o -name &lsquo;*.cpp&rsquo; &gt; cscope.files&rdquo;
-silent! execute &ldquo;!cscope -bkq -i cscope.files&rdquo;
-if filereadable(&ldquo;cscope.out&rdquo;)
-silent! execute &ldquo;cs add cscope.out&rdquo;
-endif
-silent! execute &ldquo;!ctags -R &ndash;c-kinds=+p &ndash;c++-kinds=+p &ndash;fields=+iaS &ndash;extra=+q .&rdquo;
-endif
-endfunction</p>
-<p>function! s:SET_CSC()
-let dir = expand(&rdquo;%:p:h&rdquo;) &ldquo;获得源文件路径
-&ldquo;在路径上递归向上查找tags文件
-while dir!=&rdquo;&rdquo;
-if findfile(&ldquo;cscope.out&rdquo;,dir ) !=&rdquo;&rdquo;
-&ldquo;找到了就加入到tags
-if 0 == cscope_connection(1, &ldquo;cscope.out&rdquo;, dir)
-execute &ldquo;cs add &ldquo;.dir.&quot;/cscope.out &ldquo;.dir
-endif
-return
-endif
-&ldquo;得到上级路径
-let dir=GET_UP_PATH(dir)
-endwhile
-endfunction</p>
-<p>autocmd BufEnter * call s:SET_CSC()
-autocmd BufEnter * call s:SET_TAGS()
-&ldquo;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
-set laststatus=2            &quot; 显示状态栏 (默认值为 1, 无法显示状态栏)</p>
-<p>nmap <!-- raw HTML omitted --> :bnext<!-- raw HTML omitted -->
-nmap <!-- raw HTML omitted --> :bprevious<!-- raw HTML omitted -->
-nmap <!-- raw HTML omitted --> :w!<!-- raw HTML omitted --></p>
-<p>nmap <!-- raw HTML omitted -->1 :set filetype=xhtml<!-- raw HTML omitted -->
-nmap <!-- raw HTML omitted -->2 :set filetype=css<!-- raw HTML omitted -->
-nmap <!-- raw HTML omitted -->3 :set filetype=javascript<!-- raw HTML omitted -->
-nmap <!-- raw HTML omitted -->4 :set filetype=php<!-- raw HTML omitted -->
-nmap <!-- raw HTML omitted -->5 :set filetype=default<!-- raw HTML omitted --></p>
-<p>nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hl <!-- raw HTML omitted -->MarkSet
-nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hh <!-- raw HTML omitted -->MarkClear
-nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hr <!-- raw HTML omitted -->MarkRegex
-vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hl <!-- raw HTML omitted -->MarkSet
-vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hh <!-- raw HTML omitted -->MarkClear
-vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hr <!-- raw HTML omitted -->MarkRegex</p>
-<p>let g:miniBufExplMapWindowNavVim = 1<br>
-let g:miniBufExplMapWindowNavArrows = 1<br>
-let g:miniBufExplMapCTabSwitchBufs = 1<br>
-let g:miniBufExplModSelTarget = 1<br>
-let g:miniBufExplMoreThanOne=0</p>
-<p>set mouse=a</p>
-<p>set noswf</p>
-<p>let g:winManagerWindowLayout=&ldquo;FileExplorer|TagList&rdquo;</p>
-<p>let Tlist_File_Fold_Auto_Close=1</p>
-<p>&ldquo;当文件在外部被修改，自动更新该文件
-set autoread</p>
-<p>&ldquo;设置历史记录步数
-set history=400</p>
-<p>&ldquo;快速退出（保存）为,<!-- raw HTML omitted -->
-map <!-- raw HTML omitted --> :set mouse=v<!-- raw HTML omitted -->
-map <!-- raw HTML omitted --> :set mouse=a<!-- raw HTML omitted --></p>
-<p>&ldquo;开启语法
-syntax enable
-syntax on</p>
-<p>&ldquo;头文件与实现文件转换
-map <!-- raw HTML omitted --> :A <!-- raw HTML omitted --></p>
-<p>&ldquo;设置字体</p>
-<p>&ldquo;设置配色
-colorscheme candycode</p>
-<p>set completeopt=menu</p>
-<p>set t_Co=256</p>
-<p>&ldquo;高亮显示当前行
-set cursorline
-hi cursorline guibg=#222222
-hi CursorColumn guibg=#333333</p>
-<p>&ldquo;tag
-set tags=tags;</p>
-<p>&quot;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
-&quot; =&gt; 缩进
-&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
-&ldquo;自动缩进
-set ai</p>
-<p>&ldquo;智能缩进
-set si</p>
-<p>&ldquo;设置缩进的空格数为4
-set autoindent</p>
-<p>&ldquo;设置自动缩进:即每行的缩进值与上一行相等；使用 noautoindent 取消设置
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4</p>
-<p>&ldquo;设置使用 C/C++ 语言的自动缩进方式
-set cin
-set cindent</p>
-<p>&ldquo;显示标尺
-set ruler</p>
-<p>&ldquo;设置命令行的高度
-set cmdheight=1</p>
-<p>&ldquo;显示行数
-set number</p>
-<p>&ldquo;显示匹配的括号([{和}])
-set showmatch</p>
-<p>&ldquo;高亮显示搜索的内容
-set hlsearch</p>
-<p>&ldquo;taglist
-let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1</p>
-<p>&quot;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
-&quot; =&gt; 编码设置
-&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</p>
-<p>&ldquo;Vim 内部使用的字符编码方式，包括 Vim 的 buffer (缓冲区)、菜单文本、
-&ldquo;消息文本等。用户手册上建议只在 .vimrc 中改变它的值，
-&ldquo;事实上似乎也只有在 .vimrc 中改变它的值才有意义。
-set encoding=utf-8</p>
-<p>&ldquo;Vim 启动时会按照它所列出的字符编码方式逐一探测即将打开的文件的
-&ldquo;字符编码方式，并且将 fileencoding 设置为最终探测到的字符编码方式。
-&ldquo;因此最好将 Unicode 编码方式放到这个列表的最前面。
-&ldquo;set fileencodings=Unicode,utf-8,gb2312,gbk,gb18030,latin-1
-&ldquo;set fencs=utf-8,Unicode,gb2312,gbk,gb18030,latin-1,cp936
-set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,latin-1,prc
-&ldquo;set fileencodings=ucs-bom,utf8,prc</p>
-<p>&ldquo;Vim 中当前编辑的文件的字符编码方式，
-&ldquo;Vim 保存文件时也会将文件保存为这种字符编码方式。
-set fileencoding=utf-8
-&ldquo;set fileencoding=prc</p>
-<p>&quot; termencoding: Vim 所工作的终端 (或者 Windows 的 Console 窗口)
-&quot; 的字符编码方式。这个选项对 GUI 模式的 gVim 无效，
-&quot; 而对 Console 模式的 Vim 而言就是Windows 控制台的代码页
-&quot; (对于 Windows 而言)，并且通常我们不需要改变它。
-&quot; 下面这句只影响普通模式 (非图形界面) 下的 Vim。
-&ldquo;set termencoding=prc
-let &amp;termencoding=&amp;encoding</p>
-<p>&quot; &ldquo;代码折叠, 命令 za
-set foldmethod=syntax
-set foldlevel=100  &ldquo;启动vim时不要自动折叠代码</p>
-<p>&quot; &ldquo;自动换行
-if (has(&ldquo;gui_running&rdquo;)) &ldquo;图形界面下的设置
-&quot; &quot;
-&quot; &ldquo;指定不折行。如果一行太长，超过屏幕宽度，则向右边延伸到屏幕外面
-set nowrap
-&quot;
-&ldquo;添加水平滚动条。如果你指定了不折行，那为窗口添加一个水平滚动条就非常有必要
-&quot; 了
-set guioptions+=b
-&quot;
-else
-&ldquo;字符界面下的设置
-set nowrap
-endif</p>
-<p>&quot; &ldquo;<!-- raw HTML omitted -->code_complete.vim插件：函数自动完成
-map <!-- raw HTML omitted --> :silent %!xmllint -format %<!-- raw HTML omitted -->
-if !exists(&ldquo;g:completekey&rdquo;)
-let g:completekey = &ldquo;<!-- raw HTML omitted -->&rdquo;   &ldquo;hotkey
-endif</p>
-<p>map <!-- raw HTML omitted --> gu
-map <!-- raw HTML omitted --> gU</p>
-<p>map <!-- raw HTML omitted --> :cp <!-- raw HTML omitted -->
-map <!-- raw HTML omitted --> :cn <!-- raw HTML omitted --></p>
-<p>&quot; &ldquo;当前目录生成tags语法文件，用于自动完成，函数提示：code_complete.vim
-&ldquo;OmniCppComplete.vim &hellip;
-&ldquo;map <!-- raw HTML omitted --> :call SET_CSAD() <!-- raw HTML omitted -->
-&quot;
-&quot; &ldquo;函数和变量列表
-map <!-- raw HTML omitted --> :TlistToggle<!-- raw HTML omitted -->
-&quot;
-&quot; &ldquo;文件浏览器
-&ldquo;map <!-- raw HTML omitted --> :WMToggle<!-- raw HTML omitted -->
-&quot;
-&quot; &ldquo;文件树状列表
-nmap <!-- raw HTML omitted --> <!-- raw HTML omitted --> :execute &lsquo;NERDTreeToggle &lsquo;. expand(&rdquo;%:p:h&rdquo;)<!-- raw HTML omitted -->
-&quot;
-&quot; &ldquo;映射复制、粘贴、剪贴ctrl+c ctrl+v ctrl+x
-&quot; map <!-- raw HTML omitted --> &ldquo;+pa<!-- raw HTML omitted -->
-&quot; map! <!-- raw HTML omitted --> <!-- raw HTML omitted -->&quot;+pa
-map <!-- raw HTML omitted --> &ldquo;+y
-map <!-- raw HTML omitted --> &ldquo;+x
-&quot;
-&quot; &quot; 映射全选 ctrl+a
-map <!-- raw HTML omitted --> ggVG
-map! <!-- raw HTML omitted --> <!-- raw HTML omitted -->ggVG
-&quot;
-&quot; &quot; 多行缩进
-map <!-- raw HTML omitted --> &gt;
-map <!-- raw HTML omitted --> &lt;</p>
-<p>&ldquo;设置自动补齐
-&ldquo;filetype plugin indent on
-&ldquo;set completeopt=longest,menu</p>
-<p>&ldquo;if has(&ldquo;autocmd&rdquo;) &amp;&amp; exists(&quot;+omnifunc&rdquo;)
-&quot;     autocmd Filetype *
-&quot;   \ if &amp;omnifunc == &quot;&rdquo; |
-&quot;   \   setlocal omnifunc=syntaxcomplete#Complete |
-&quot;   \ endif
-&ldquo;endif</p>
-<p>&ldquo;let g:SuperTabDefaultCompletionType=&quot;<!-- raw HTML omitted -->&lt;C-]&gt;&rdquo;</p>
-<p>&ldquo;let g:SuperTabRetainCompletionType=0
-&quot; 0 - 不记录上次的补全方式
-&quot; 1 - 记住上次的补全方式,直到用其他的补全命令改变它
-&quot; 2 - 记住上次的补全方式,直到按ESC退出插入模式为止</p>
-<p>map <!-- raw HTML omitted --> :call TitleDet()&rsquo;s <!-- raw HTML omitted --></p>
-<p>map <!-- raw HTML omitted --> :call SET_CSAD()&rsquo;s <!-- raw HTML omitted -->
-map <!-- raw HTML omitted --> :call SET_CSPHP()&rsquo;s <!-- raw HTML omitted --></p>
-<p>function AddTitle()
-call append(0,&rdquo;/*******************************************************************************&rdquo;)
-&ldquo;call append(1,&rdquo;#&rdquo;)
-call append(1,&rdquo; * Author : RKhuwq&rdquo;)
-&ldquo;call append(3,&rdquo;#&rdquo;)
-call append(2,&rdquo; * Email : <a class="link" href="mailto:huwq@neusoft.com" >huwq@neusoft.com</a>&rdquo;)
-&ldquo;call append(5,&rdquo;#&rdquo;)
-call append(3,&rdquo; * Last modified : &ldquo;.strftime(&quot;%Y-%m-%d %H:%M&rdquo;))
-&ldquo;call append(7,&rdquo;#&rdquo;)
-call append(4,&rdquo; * Filename : &ldquo;.expand(&rdquo;%&rdquo;))
-&ldquo;call append(9,&rdquo;#&rdquo;)
-call append(5,&rdquo; * Description : &ldquo;)
-&ldquo;call append(11,&rdquo;#&rdquo;)
-call append(6,&rdquo; * *****************************************************************************/&rdquo;)
-echohl WarningMsg | echo &ldquo;Successful in adding the copyright.&rdquo; | echohl None
-endfunction</p>
-<p>&ldquo;更新最近修改时间和文件名
-function UpdateTitle()
-normal m&rsquo;
-execute &rsquo; * Last modified : /s@:.<em>$@=strftime(&rdquo;:\t%Y-%m-%d %H:%M&rdquo;)@&rsquo;
-normal &quot;
-normal mk
-execute &rsquo; * Filename : /s@:.</em>$@=&rdquo;:\t\t&rdquo;.expand(&rdquo;%:t&rdquo;)@&rsquo;
-execute &ldquo;noh&rdquo;
-normal &lsquo;k
-echohl WarningMsg | echo &ldquo;Successful in updating the copy right.&quot;| echohl None
-endfunction</p>
-<p>autocmd BufEnter :/ * Last modified : /s@:.*$@=strftime(&rdquo; : %Y-%m-%d %H:%M&rdquo;)@</p>
-<p>&ldquo;判断第四行行代码里面，是否有Last modified这个单词，
-&ldquo;如果没有的话，代表没有添加过作者信息，需要新添加；
-&ldquo;如果有的话，那么只需要更新即可
-function TitleDet()
-let line = getline(4)
-if line =~ &lsquo;\s*\sLast\smodified\s:\s\S*&rsquo;
-:/ * Last modified : /s@:.*$@=strftime(&rdquo;: %Y-%m-%d %H:%M&rdquo;)@
-return
-endif
-call AddTitle()
-endfunction</p>
-<p>&ldquo;自动补全
-set completeopt=menu,menuone
-let OmniCpp_MayCompleteDot = 1 &quot; autocomplete with .
-let OmniCpp_MayCompleteArrow = 1 &quot; autocomplete with -&gt;
-let OmniCpp_MayCompleteScope = 1 &quot; autocomplete with ::
-let OmniCpp_SelectFirstItem = 2 &quot; select first item (but don&rsquo;t insert)
-let OmniCpp_NamespaceSearch = 2 &quot; search namespaces in this and included files
-let OmniCpp_ShowPrototypeInAbbr = 1 &quot; show function prototype  in popup window
-let OmniCpp_GlobalScopeSearch=1
-let OmniCpp_DisplayMode=1
-let OmniCpp_DefaultNamespaces=[&ldquo;std&rdquo;]</p>
-<p>&quot; ~/.vimrc (configuration file for vim only)
-&quot; skeletons
-&ldquo;autocmd BufNewFile	*.spec	call SKEL_spec()
-&quot; filetypes
-filetype plugin on
-filetype indent on
-&quot; ~/.vimrc ends here
-{% endcodeblock %}
+<p>其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">vim-X11.x86_64
+</span></span><span class="line"><span class="cl">vim-common.x86_64 
+</span></span><span class="line"><span class="cl">vim-enhanced.x86_64
+</span></span><span class="line"><span class="cl">vim-filesystem.x86_64 
+</span></span><span class="line"><span class="cl">vim-halibut.noarch 
+</span></span><span class="line"><span class="cl">vim-minimal.x86_64
+</span></span><span class="line"><span class="cl">vim-perl-support.noarch
+</span></span><span class="line"><span class="cl">cscope.x86_64
+</span></span><span class="line"><span class="cl">ctags.x86_64
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>之后配置$HOME目录下的.vimrc</p>
+<p><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span><span class="lnt">313
+</span><span class="lnt">314
+</span><span class="lnt">315
+</span><span class="lnt">316
+</span><span class="lnt">317
+</span><span class="lnt">318
+</span><span class="lnt">319
+</span><span class="lnt">320
+</span><span class="lnt">321
+</span><span class="lnt">322
+</span><span class="lnt">323
+</span><span class="lnt">324
+</span><span class="lnt">325
+</span><span class="lnt">326
+</span><span class="lnt">327
+</span><span class="lnt">328
+</span><span class="lnt">329
+</span><span class="lnt">330
+</span><span class="lnt">331
+</span><span class="lnt">332
+</span><span class="lnt">333
+</span><span class="lnt">334
+</span><span class="lnt">335
+</span><span class="lnt">336
+</span><span class="lnt">337
+</span><span class="lnt">338
+</span><span class="lnt">339
+</span><span class="lnt">340
+</span><span class="lnt">341
+</span><span class="lnt">342
+</span><span class="lnt">343
+</span><span class="lnt">344
+</span><span class="lnt">345
+</span><span class="lnt">346
+</span><span class="lnt">347
+</span><span class="lnt">348
+</span><span class="lnt">349
+</span><span class="lnt">350
+</span><span class="lnt">351
+</span><span class="lnt">352
+</span><span class="lnt">353
+</span><span class="lnt">354
+</span><span class="lnt">355
+</span><span class="lnt">356
+</span><span class="lnt">357
+</span><span class="lnt">358
+</span><span class="lnt">359
+</span><span class="lnt">360
+</span><span class="lnt">361
+</span><span class="lnt">362
+</span><span class="lnt">363
+</span><span class="lnt">364
+</span><span class="lnt">365
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-vim" data-lang="vim"><span class="line"><span class="cl"><span class="k">if</span> <span class="nx">has</span><span class="p">(</span><span class="s2">&#34;cscope&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">set</span> <span class="nx">cscopequickfix</span><span class="p">=</span><span class="nx">s</span><span class="p">-,</span><span class="nx">c</span><span class="p">-,</span><span class="nx">d</span><span class="p">-,</span><span class="nx">i</span><span class="p">-,</span><span class="nx">t</span><span class="p">-,</span><span class="nx">e</span><span class="p">-</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">set</span> <span class="nx">csto</span><span class="p">=</span><span class="m">0</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">set</span> <span class="nx">cst</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">set</span> <span class="nx">csverb</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;------------------------------------------------------------------------------</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;获取当前路径的上一级的路径</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span><span class="p">!</span> <span class="nx">GET_UP_PATH</span><span class="p">(</span><span class="nx">dir</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="k">let</span> <span class="nx">pos</span><span class="p">=</span><span class="nx">strlen</span><span class="p">(</span><span class="nx">a</span>:<span class="nx">dir</span><span class="p">)</span><span class="m">-1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">while</span> <span class="nx">pos</span><span class="p">&gt;</span><span class="m">0</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">if</span> <span class="p">(</span><span class="nx">a</span>:<span class="nx">dir</span>[<span class="nx">pos</span>]<span class="p">==</span><span class="s2">&#34;/&#34;</span> <span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>           <span class="nx">return</span>  <span class="nx">strpart</span><span class="p">(</span><span class="nx">a</span>:<span class="nx">dir</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="nx">pos</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">let</span> <span class="nx">pos</span><span class="p">=</span><span class="nx">pos</span><span class="m">-1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">endwhile</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">return</span>  <span class="s2">&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置相关tags</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span><span class="p">!</span> <span class="nx">s</span>:<span class="nx">SET_TAGS</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="k">let</span> <span class="nx">dir</span> <span class="p">=</span> <span class="nx">getcwd</span><span class="p">()</span> <span class="c">&#34;获得源文件路径</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;在路径上递归向上查找tags文件</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">while</span> <span class="nx">dir</span><span class="p">!=</span><span class="s2">&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">if</span> <span class="nx">findfile</span><span class="p">(</span><span class="s2">&#34;tags&#34;</span><span class="p">,</span><span class="nx">dir</span> <span class="p">)</span> <span class="p">!=</span><span class="s2">&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;找到了就加入到tags</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>           <span class="nx">exec</span> <span class="s2">&#34;set tags+=&#34;</span>.<span class="nx">dir</span>.<span class="s2">&#34;/tags&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>		 <span class="nx">return</span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;得到上级路径</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">let</span> <span class="nx">dir</span><span class="p">=</span><span class="nx">GET_UP_PATH</span><span class="p">(</span><span class="nx">dir</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">endwhile</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置php cscope.out</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span><span class="p">!</span> <span class="nx">SET_CSPHP</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span><span class="p">(</span><span class="nx">executable</span><span class="p">(</span><span class="s1">&#39;cscope&#39;</span><span class="p">)</span> &amp;&amp; <span class="nx">has</span><span class="p">(</span><span class="s2">&#34;cscope&#34;</span><span class="p">)</span> <span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;!find . -name &#39;*.php&#39;  -o -name &#39;*.inc&#39; -o -name &#39;*.module&#39; &gt; cscope.files&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;!cscope -bkq -i cscope.files&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="k">if</span> <span class="nx">filereadable</span><span class="p">(</span><span class="s2">&#34;cscope.out&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>            <span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;cs add cscope.out&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>		<span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;!ctags -R --langmap=php:.engine.inc.module.theme.php  --php-kinds=cdf  --languages=php &#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置c cscope.out</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span><span class="p">!</span> <span class="nx">SET_CSAD</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">if</span><span class="p">(</span><span class="nx">executable</span><span class="p">(</span><span class="s1">&#39;cscope&#39;</span><span class="p">)</span> &amp;&amp; <span class="nx">has</span><span class="p">(</span><span class="s2">&#34;cscope&#34;</span><span class="p">)</span> <span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;!find . -name &#39;*.h&#39; -o -name &#39;*.c&#39; -o -name &#39;*.cpp&#39; &gt; cscope.files&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;!cscope -bkq -i cscope.files&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="k">if</span> <span class="nx">filereadable</span><span class="p">(</span><span class="s2">&#34;cscope.out&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>            <span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;cs add cscope.out&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>        <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>		<span class="nx">silent</span><span class="p">!</span> <span class="nx">execute</span> <span class="s2">&#34;!ctags -R --c-kinds=+p --c++-kinds=+p --fields=+iaS --extra=+q .&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>    <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span><span class="p">!</span> <span class="nx">s</span>:<span class="nx">SET_CSC</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>  <span class="k">let</span> <span class="nx">dir</span> <span class="p">=</span> <span class="nx">expand</span><span class="p">(</span><span class="s2">&#34;%:p:h&#34;</span><span class="p">)</span> <span class="c">&#34;获得源文件路径</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;在路径上递归向上查找tags文件</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">while</span> <span class="nx">dir</span><span class="p">!=</span><span class="s2">&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">if</span> <span class="nx">findfile</span><span class="p">(</span><span class="s2">&#34;cscope.out&#34;</span><span class="p">,</span><span class="nx">dir</span> <span class="p">)</span> <span class="p">!=</span><span class="s2">&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;找到了就加入到tags</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>			 <span class="k">if</span> <span class="m">0</span> <span class="p">==</span> <span class="nx">cscope_connection</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="s2">&#34;cscope.out&#34;</span><span class="p">,</span> <span class="nx">dir</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>						 <span class="nx">execute</span> <span class="s2">&#34;cs add &#34;</span>.<span class="nx">dir</span>.<span class="s2">&#34;/cscope.out &#34;</span>.<span class="nx">dir</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>			 <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>           <span class="nx">return</span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;得到上级路径</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>       <span class="k">let</span> <span class="nx">dir</span><span class="p">=</span><span class="nx">GET_UP_PATH</span><span class="p">(</span><span class="nx">dir</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>   <span class="nx">endwhile</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">autocmd</span> <span class="nx">BufEnter</span> * <span class="nx">call</span> <span class="nx">s</span>:<span class="nx">SET_CSC</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">autocmd</span> <span class="nx">BufEnter</span> * <span class="nx">call</span> <span class="nx">s</span>:<span class="nx">SET_TAGS</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;------------------------------------------------------------------------------</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">laststatus</span><span class="p">=</span><span class="m">2</span>            <span class="c">&#34; 显示状态栏 (默认值为 1, 无法显示状态栏)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">S</span><span class="p">-</span><span class="nx">L</span><span class="p">&gt;</span> :<span class="nx">bnext</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">S</span><span class="p">-</span><span class="nx">H</span><span class="p">&gt;</span> :<span class="nx">bprevious</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">s</span><span class="p">&gt;</span> :<span class="nx">w</span><span class="p">!&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="m">1</span> :<span class="nx">set</span> <span class="nx">filetype</span><span class="p">=</span><span class="nx">xhtml</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="m">2</span> :<span class="nx">set</span> <span class="nx">filetype</span><span class="p">=</span><span class="nx">css</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="m">3</span> :<span class="nx">set</span> <span class="nx">filetype</span><span class="p">=</span><span class="nx">javascript</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="m">4</span> :<span class="nx">set</span> <span class="nx">filetype</span><span class="p">=</span><span class="nx">php</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="m">5</span> :<span class="nx">set</span> <span class="nx">filetype</span><span class="p">=</span><span class="nx">default</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="nx">hl</span> <span class="p">&lt;</span><span class="nx">Plug</span><span class="p">&gt;</span><span class="nx">MarkSet</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="nx">hh</span> <span class="p">&lt;</span><span class="nx">Plug</span><span class="p">&gt;</span><span class="nx">MarkClear</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="nx">hr</span> <span class="p">&lt;</span><span class="nx">Plug</span><span class="p">&gt;</span><span class="nx">MarkRegex</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">vmap</span> <span class="p">&lt;</span><span class="nx">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="nx">hl</span> <span class="p">&lt;</span><span class="nx">Plug</span><span class="p">&gt;</span><span class="nx">MarkSet</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">vmap</span> <span class="p">&lt;</span><span class="nx">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="nx">hh</span> <span class="p">&lt;</span><span class="nx">Plug</span><span class="p">&gt;</span><span class="nx">MarkClear</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">vmap</span> <span class="p">&lt;</span><span class="nx">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">leader</span><span class="p">&gt;</span><span class="nx">hr</span> <span class="p">&lt;</span><span class="nx">Plug</span><span class="p">&gt;</span><span class="nx">MarkRegex</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">g</span>:<span class="nx">miniBufExplMapWindowNavVim</span> <span class="p">=</span> <span class="m">1</span>   <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">g</span>:<span class="nx">miniBufExplMapWindowNavArrows</span> <span class="p">=</span> <span class="m">1</span>   <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">g</span>:<span class="nx">miniBufExplMapCTabSwitchBufs</span> <span class="p">=</span> <span class="m">1</span>   <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">g</span>:<span class="nx">miniBufExplModSelTarget</span> <span class="p">=</span> <span class="m">1</span>  <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">g</span>:<span class="nx">miniBufExplMoreThanOne</span><span class="p">=</span><span class="m">0</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">mouse</span><span class="p">=</span><span class="nx">a</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">noswf</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">g</span>:<span class="nx">winManagerWindowLayout</span><span class="p">=</span><span class="s2">&#34;FileExplorer|TagList&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">Tlist_File_Fold_Auto_Close</span><span class="p">=</span><span class="m">1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;当文件在外部被修改，自动更新该文件</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">autoread</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置历史记录步数</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">history</span><span class="p">=</span><span class="m">400</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;快速退出（保存）为,&lt;F12&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F9</span><span class="p">&gt;</span> :<span class="nx">set</span> <span class="nx">mouse</span><span class="p">=</span><span class="nx">v</span><span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F8</span><span class="p">&gt;</span> :<span class="nx">set</span> <span class="nx">mouse</span><span class="p">=</span><span class="nx">a</span><span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;开启语法</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">syntax</span> <span class="nx">enable</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">syntax</span> <span class="nx">on</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;头文件与实现文件转换</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F12</span><span class="p">&gt;</span> :<span class="nx">A</span> <span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置字体</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置配色</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">colorscheme</span> <span class="nx">candycode</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">completeopt</span><span class="p">=</span><span class="nx">menu</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">t_Co</span><span class="p">=</span><span class="m">256</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;高亮显示当前行</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">cursorline</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">hi</span> <span class="nx">cursorline</span> <span class="nx">guibg</span><span class="p">=</span><span class="mh">#222222</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">hi</span> <span class="nx">CursorColumn</span> <span class="nx">guibg</span><span class="p">=</span><span class="mh">#333333</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;tag</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">tags</span><span class="p">=</span><span class="nx">tags</span>;<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; =&gt; 缩进</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;自动缩进</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">ai</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">  
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;智能缩进</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">si</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置缩进的空格数为4</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">autoindent</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置自动缩进:即每行的缩进值与上一行相等；使用 noautoindent 取消设置</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">shiftwidth</span><span class="p">=</span><span class="m">4</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">tabstop</span><span class="p">=</span><span class="m">4</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">softtabstop</span><span class="p">=</span><span class="m">4</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置使用 C/C++ 语言的自动缩进方式</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">cin</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">cindent</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;显示标尺</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">ruler</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">  
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置命令行的高度</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">cmdheight</span><span class="p">=</span><span class="m">1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">  
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;显示行数</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">number</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;显示匹配的括号([{和}])</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">showmatch</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;高亮显示搜索的内容</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">hlsearch</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;taglist</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">Tlist_Show_One_File</span><span class="p">=</span><span class="m">1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">Tlist_Exit_OnlyWindow</span><span class="p">=</span><span class="m">1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; =&gt; 编码设置</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;Vim 内部使用的字符编码方式，包括 Vim 的 buffer (缓冲区)、菜单文本、</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;消息文本等。用户手册上建议只在 .vimrc 中改变它的值，</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;事实上似乎也只有在 .vimrc 中改变它的值才有意义。</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">encoding</span><span class="p">=</span><span class="nx">utf</span><span class="m">-8</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;Vim 启动时会按照它所列出的字符编码方式逐一探测即将打开的文件的</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;字符编码方式，并且将 fileencoding 设置为最终探测到的字符编码方式。</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;因此最好将 Unicode 编码方式放到这个列表的最前面。</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;set fileencodings=Unicode,utf-8,gb2312,gbk,gb18030,latin-1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;set fencs=utf-8,Unicode,gb2312,gbk,gb18030,latin-1,cp936</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">fencs</span><span class="p">=</span><span class="nx">utf</span><span class="m">-8</span><span class="p">,</span><span class="nx">ucs</span><span class="p">-</span><span class="nx">bom</span><span class="p">,</span><span class="nx">shift</span><span class="p">-</span><span class="nx">jis</span><span class="p">,</span><span class="nx">gb18030</span><span class="p">,</span><span class="nx">gbk</span><span class="p">,</span><span class="nx">gb2312</span><span class="p">,</span><span class="nx">cp936</span><span class="p">,</span><span class="nx">latin</span><span class="m">-1</span><span class="p">,</span><span class="nx">prc</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;set fileencodings=ucs-bom,utf8,prc</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;Vim 中当前编辑的文件的字符编码方式，</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;Vim 保存文件时也会将文件保存为这种字符编码方式。</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">fileencoding</span><span class="p">=</span><span class="nx">utf</span><span class="m">-8</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;set fileencoding=prc</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"> 
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; termencoding: Vim 所工作的终端 (或者 Windows 的 Console 窗口)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; 的字符编码方式。这个选项对 GUI 模式的 gVim 无效，</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; 而对 Console 模式的 Vim 而言就是Windows 控制台的代码页</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; (对于 Windows 而言)，并且通常我们不需要改变它。</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; 下面这句只影响普通模式 (非图形界面) 下的 Vim。</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;set termencoding=prc</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> &amp;<span class="nx">termencoding</span><span class="p">=</span>&amp;<span class="nx">encoding</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; &#34;代码折叠, 命令 za</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">foldmethod</span><span class="p">=</span><span class="nx">syntax</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">foldlevel</span><span class="p">=</span><span class="m">100</span>  <span class="c">&#34;启动vim时不要自动折叠代码 </span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; &#34;自动换行</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">if</span> <span class="p">(</span><span class="nx">has</span><span class="p">(</span><span class="s2">&#34;gui_running&#34;</span><span class="p">))</span> <span class="c">&#34;图形界面下的设置</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34;指定不折行。如果一行太长，超过屏幕宽度，则向右边延伸到屏幕外面</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">nowrap</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;添加水平滚动条。如果你指定了不折行，那为窗口添加一个水平滚动条就非常有必要</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; 了</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">guioptions</span><span class="p">+=</span><span class="nx">b</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">else</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;字符界面下的设置</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">nowrap</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endif</span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; &#34;&lt;F2&gt;code_complete.vim插件：函数自动完成</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F2</span><span class="p">&gt;</span> :<span class="nx">silent</span> %<span class="p">!</span><span class="nx">xmllint</span> <span class="p">-</span><span class="nx">format</span> %<span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">if</span> <span class="p">!</span><span class="nx">exists</span><span class="p">(</span><span class="s2">&#34;g:completekey&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="k">let</span> <span class="nx">g</span>:<span class="nx">completekey</span> <span class="p">=</span> <span class="s2">&#34;&lt;F2&gt;&#34;</span>   <span class="c">&#34;hotkey</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endif</span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="m">-1</span><span class="p">&gt;</span> <span class="nx">gu</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="m">-2</span><span class="p">&gt;</span> <span class="nx">gU</span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F3</span><span class="p">&gt;</span> :<span class="nx">cp</span> <span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F4</span><span class="p">&gt;</span> :<span class="nx">cn</span> <span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; &#34;当前目录生成tags语法文件，用于自动完成，函数提示：code_complete.vim</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;OmniCppComplete.vim ...</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;map &lt;F5&gt; :call SET_CSAD() &lt;CR&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34;函数和变量列表</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F6</span><span class="p">&gt;</span> :<span class="nx">TlistToggle</span><span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34;文件浏览器</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;map &lt;F7&gt; :WMToggle&lt;CR&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34;文件树状列表</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">nmap</span> <span class="p">&lt;</span><span class="nx">silent</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">F7</span><span class="p">&gt;</span> :<span class="nx">execute</span> <span class="s1">&#39;NERDTreeToggle &#39;</span>. <span class="nx">expand</span><span class="p">(</span><span class="s2">&#34;%:p:h&#34;</span><span class="p">)&lt;</span><span class="nx">CR</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34;映射复制、粘贴、剪贴ctrl+c ctrl+v ctrl+x</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; map &lt;C-V&gt; &#34;+pa&lt;Esc&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; map! &lt;C-V&gt; &lt;Esc&gt;&#34;+pa</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">C</span><span class="p">&gt;</span> <span class="c">&#34;+y</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">X</span><span class="p">&gt;</span> <span class="c">&#34;+x</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34; 映射全选 ctrl+a</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">A</span><span class="p">&gt;</span> <span class="nx">ggVG</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span><span class="p">!</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">A</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nx">Esc</span><span class="p">&gt;</span><span class="nx">ggVG</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; &#34; 多行缩进</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">Tab</span><span class="p">&gt;</span> <span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">S</span><span class="p">-</span><span class="nx">Tab</span><span class="p">&gt;</span> <span class="p">&lt;</span> <span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;设置自动补齐</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;filetype plugin indent on</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;set completeopt=longest,menu</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;if has(&#34;autocmd&#34;) &amp;&amp; exists(&#34;+omnifunc&#34;)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;     autocmd Filetype *</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;   \ if &amp;omnifunc == &#34;&#34; |</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;   \   setlocal omnifunc=syntaxcomplete#Complete |</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;   \ endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;let g:SuperTabDefaultCompletionType=&#34;&lt;C-X&gt;&lt;C-]&gt;&#34; </span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;let g:SuperTabRetainCompletionType=0</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; 0 - 不记录上次的补全方式</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; 1 - 记住上次的补全方式,直到用其他的补全命令改变它</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; 2 - 记住上次的补全方式,直到按ESC退出插入模式为止</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">E</span><span class="p">&gt;</span> :<span class="nx">call</span> <span class="nx">TitleDet</span><span class="p">()</span>&#39;<span class="nx">s</span> <span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">F5</span><span class="p">&gt;</span> :<span class="nx">call</span> <span class="nx">SET_CSAD</span><span class="p">()</span>&#39;<span class="nx">s</span> <span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">C</span><span class="p">-</span><span class="nx">F6</span><span class="p">&gt;</span> :<span class="nx">call</span> <span class="nx">SET_CSPHP</span><span class="p">()</span>&#39;<span class="nx">s</span> <span class="p">&lt;</span><span class="nx">cr</span><span class="p">&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">AddTitle</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">append</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="s2">&#34;/*******************************************************************************&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">	&#34;call append(1,&#34;#&#34;)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">append</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="s2">&#34; * Author : RKhuwq&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">	&#34;call append(3,&#34;#&#34;)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">append</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="s2">&#34; * Email : huwq@neusoft.com&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">	&#34;call append(5,&#34;#&#34;)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">append</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="s2">&#34; * Last modified : &#34;</span>.<span class="nx">strftime</span><span class="p">(</span><span class="s2">&#34;%Y-%m-%d %H:%M&#34;</span><span class="p">))</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">	&#34;call append(7,&#34;#&#34;)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">append</span><span class="p">(</span><span class="m">4</span><span class="p">,</span><span class="s2">&#34; * Filename : &#34;</span>.<span class="nx">expand</span><span class="p">(</span><span class="s2">&#34;%&#34;</span><span class="p">))</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">	&#34;call append(9,&#34;#&#34;)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">append</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="s2">&#34; * Description : &#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">	&#34;call append(11,&#34;#&#34;)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">append</span><span class="p">(</span><span class="m">6</span><span class="p">,</span><span class="s2">&#34; * *****************************************************************************/&#34;</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">echohl</span> <span class="nx">WarningMsg</span> <span class="p">|</span> <span class="nx">echo</span> <span class="s2">&#34;Successful in adding the copyright.&#34;</span> <span class="p">|</span> <span class="nx">echohl</span> <span class="nx">None</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;更新最近修改时间和文件名</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">UpdateTitle</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">normal</span> <span class="nx">m</span>&#39;<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">execute</span> <span class="s1">&#39; * Last modified : /s@:.*$@\=strftime(&#34;:\t%Y-%m-%d %H:%M&#34;)@&#39;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">normal</span> <span class="c">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="c">	normal mk</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">execute</span> <span class="s1">&#39; * Filename : /s@:.*$@\=&#34;:\t\t&#34;.expand(&#34;%:t&#34;)@&#39;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">execute</span> <span class="s2">&#34;noh&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">normal</span> &#39;<span class="nx">k</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">echohl</span> <span class="nx">WarningMsg</span> <span class="p">|</span> <span class="nx">echo</span> <span class="s2">&#34;Successful in updating the copy right.&#34;</span><span class="p">|</span> <span class="nx">echohl</span> <span class="nx">None</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">autocmd</span> <span class="nx">BufEnter</span> :<span class="sr">/ * Last modified : /</span><span class="nx">s</span>@:.*$@\<span class="p">=</span><span class="nx">strftime</span><span class="p">(</span><span class="s2">&#34; : %Y-%m-%d %H:%M&#34;</span><span class="p">)</span>@<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;判断第四行行代码里面，是否有Last modified这个单词，</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;如果没有的话，代表没有添加过作者信息，需要新添加；</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;如果有的话，那么只需要更新即可</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">function</span> <span class="nx">TitleDet</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="k">let</span> <span class="nx">line</span> <span class="p">=</span> <span class="nx">getline</span><span class="p">(</span><span class="m">4</span><span class="p">)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="k">if</span> <span class="nx">line</span> <span class="p">=~</span> <span class="s1">&#39;\s\*\sLast\smodified\s:\s\S*&#39;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>		:<span class="sr">/ * Last modified : /</span><span class="nx">s</span>@:.*$@\<span class="p">=</span><span class="nx">strftime</span><span class="p">(</span><span class="s2">&#34;: %Y-%m-%d %H:%M&#34;</span><span class="p">)</span>@<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>		<span class="nx">return</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="k">endif</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span>	<span class="nx">call</span> <span class="nx">AddTitle</span><span class="p">()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">endfunction</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34;自动补全</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">set</span> <span class="nx">completeopt</span><span class="p">=</span><span class="nx">menu</span><span class="p">,</span><span class="nx">menuone</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_MayCompleteDot</span> <span class="p">=</span> <span class="m">1</span> <span class="c">&#34; autocomplete with .</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_MayCompleteArrow</span> <span class="p">=</span> <span class="m">1</span> <span class="c">&#34; autocomplete with -&gt;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_MayCompleteScope</span> <span class="p">=</span> <span class="m">1</span> <span class="c">&#34; autocomplete with ::</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_SelectFirstItem</span> <span class="p">=</span> <span class="m">2</span> <span class="c">&#34; select first item (but don&#39;t insert)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_NamespaceSearch</span> <span class="p">=</span> <span class="m">2</span> <span class="c">&#34; search namespaces in this and included files</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_ShowPrototypeInAbbr</span> <span class="p">=</span> <span class="m">1</span> <span class="c">&#34; show function prototype  in popup window</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_GlobalScopeSearch</span><span class="p">=</span><span class="m">1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_DisplayMode</span><span class="p">=</span><span class="m">1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">let</span> <span class="nx">OmniCpp_DefaultNamespaces</span><span class="p">=</span>[<span class="s2">&#34;std&#34;</span>]<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">
+</span></span></span><span class="line"><span class="cl"><span class="c">&#34; ~/.vimrc (configuration file for vim only)</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; skeletons</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34;autocmd BufNewFile	*.spec	call SKEL_spec()</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; filetypes</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">filetype</span> <span class="nx">plugin</span> <span class="nx">on</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="nx">filetype</span> <span class="nx">indent</span> <span class="nx">on</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c">&#34; ~/.vimrc ends here</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 其中F2为xml排版，F3为cscope搜索上一条，F4下一条，F6当前文件函数列表，F7目录列表，F8启用鼠标，F9不使用鼠标，F12 C语言中头文件与代码文件转换</p>
 <p>Ctrl+E注释，Ctrl+F5生成C语言ctags与cscope，Ctrl+F6生成php语言ctags与cscope</p>
 <p>之后下载本文的配置。复制到$HOME目录的.vim目录中。</p>

@@ -330,18 +330,33 @@
 ></p>
 <p>需要安装一个程序。</p>
 <p>如果使用的是fedora，输入
-{% codeblock lang:bash %}
-yum install xml2
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install xml2</span></span></code></pre></td></tr></table>
+</div>
+</div>
 如果是其他系统可能会叫xmllint</p>
 <p>之后可以在终端中用命令排版，
-{% codeblock lang:bash %}
-xmllint -format -recover 后边加上文件名
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xmllint -format -recover 后边加上文件名</span></span></code></pre></td></tr></table>
+</div>
+</div>
 如果vim中使用，则需要修改~/.vimrc，添加如下：
-{% codeblock lang:vim %}
-map <!-- raw HTML omitted --> :silent %!xmllint -format <!-- raw HTML omitted -->
-{% endcodeblock %}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-vim" data-lang="vim"><span class="line"><span class="cl"><span class="nx">map</span> <span class="p">&lt;</span><span class="nx">F2</span><span class="p">&gt;</span> :<span class="nx">silent</span> %<span class="p">!</span><span class="nx">xmllint</span> <span class="p">-</span><span class="nx">format</span> <span class="p">&lt;</span><span class="nx">CR</span><span class="p">&gt;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>
 <img src="/img/blog/xml-2.jpg"
 	
 	
