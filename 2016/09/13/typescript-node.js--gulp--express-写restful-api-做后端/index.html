@@ -376,9 +376,9 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mkdir localtest
-</span></span><span class="line"><span class="cl">cd localtest
-</span></span><span class="line"><span class="cl">npm init
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">mkdir</span> localtest
+</span></span><span class="line"><span class="cl"><span class="k">cd</span> localtest
+</span></span><span class="line"><span class="cl"><span class="nf">npm</span> init
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -386,6 +386,16 @@
 </blockquote>
 <blockquote>
 <p>package.json 样例:</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">cat</span> package.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -402,23 +412,21 @@
 </span><span class="lnt">11
 </span><span class="lnt">12
 </span><span class="lnt">13
-</span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat package.json
-</span></span><span class="line"><span class="cl">{
-</span></span><span class="line"><span class="cl">  &#34;name&#34;: &#34;localtest&#34;,
-</span></span><span class="line"><span class="cl">  &#34;version&#34;: &#34;1.0.0&#34;,
-</span></span><span class="line"><span class="cl">  &#34;description&#34;: &#34;This is a test.&#34;,
-</span></span><span class="line"><span class="cl">  &#34;main&#34;: &#34;index.js&#34;,
-</span></span><span class="line"><span class="cl">  &#34;dependencies&#34;: {},
-</span></span><span class="line"><span class="cl">  &#34;devDependencies&#34;: {},
-</span></span><span class="line"><span class="cl">  &#34;scripts&#34;: {
-</span></span><span class="line"><span class="cl">    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
-</span></span><span class="line"><span class="cl">  },
-</span></span><span class="line"><span class="cl">  &#34;author&#34;: &#34;sohunjug&#34;,
-</span></span><span class="line"><span class="cl">  &#34;license&#34;: &#34;ISC&#34;
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;localtest&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;1.0.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;This is a test.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;main&#34;</span><span class="p">:</span> <span class="s2">&#34;index.js&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;dependencies&#34;</span><span class="p">:</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;devDependencies&#34;</span><span class="p">:</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;scripts&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;test&#34;</span><span class="p">:</span> <span class="s2">&#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;sohunjug&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;license&#34;</span><span class="p">:</span> <span class="s2">&#34;ISC&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="依赖库安装">依赖库安装</h3>
@@ -432,9 +440,9 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">npm install -g typescript
-</span></span><span class="line"><span class="cl">npm install -g typings
-</span></span><span class="line"><span class="cl">npm install -g tslint
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">npm</span> install <span class="na">-g</span> typescript
+</span></span><span class="line"><span class="cl"><span class="nf">npm</span> install <span class="na">-g</span> typings
+</span></span><span class="line"><span class="cl"><span class="nf">npm</span> install <span class="na">-g</span> tslint
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -445,7 +453,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">npm install -g cnpm --registry=https://registry.npm.taobao.org
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">npm</span> install <span class="na">-g</span> cnpm <span class="na">--registry</span><span class="o">=</span>https://registry.npm.taobao.org
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -458,9 +466,9 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cnpm install -g typescript
-</span></span><span class="line"><span class="cl">cnpm install -g typings
-</span></span><span class="line"><span class="cl">cnpm install -g tslint
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">-g</span> typescript
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">-g</span> typings
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">-g</span> tslint
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -473,9 +481,9 @@
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cnpm install --save typescript
-</span></span><span class="line"><span class="cl">cnpm install --save typings
-</span></span><span class="line"><span class="cl">cnpm install --save tslint
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> typescript
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> typings
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> tslint
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -499,24 +507,34 @@
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cnpm install --save express
-</span></span><span class="line"><span class="cl">cnpm install --save body-parser
-</span></span><span class="line"><span class="cl">cnpm install --save jade
-</span></span><span class="line"><span class="cl">cnpm install --save cookie-parser
-</span></span><span class="line"><span class="cl">cnpm install --save morgan
-</span></span><span class="line"><span class="cl">cnpm install --save gulp
-</span></span><span class="line"><span class="cl">cnpm install --save gulp-tsc
-</span></span><span class="line"><span class="cl">cnpm install --save run-sequence
-</span></span><span class="line"><span class="cl">cnpm install --save gulp-util
-</span></span><span class="line"><span class="cl">cnpm install --save gulp-clean
-</span></span><span class="line"><span class="cl">cnpm install --save tiny-lr
-</span></span><span class="line"><span class="cl">cnpm install --save gulp-live-server
-</span></span><span class="line"><span class="cl">cnpm install --save gulp-tslint
-</span></span><span class="line"><span class="cl">cnpm install --save debug
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> express
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> body-parser
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> jade
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> cookie-parser
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> morgan
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> gulp
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> gulp-tsc
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> run-sequence
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> gulp-util
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> gulp-clean
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> tiny-lr
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> gulp-live-server
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> gulp-tslint
+</span></span><span class="line"><span class="cl"><span class="nf">cnpm</span> install <span class="na">--save</span> debug
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
 <p>此时package.json变为:</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">cat</span> package.json
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 </blockquote>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -548,38 +566,36 @@
 </span><span class="lnt">26
 </span><span class="lnt">27
 </span><span class="lnt">28
-</span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat package.json
-</span></span><span class="line"><span class="cl">{
-</span></span><span class="line"><span class="cl">  &#34;name&#34;: &#34;localtest&#34;,
-</span></span><span class="line"><span class="cl">  &#34;version&#34;: &#34;1.0.0&#34;,
-</span></span><span class="line"><span class="cl">  &#34;description&#34;: &#34;This is a test.&#34;,
-</span></span><span class="line"><span class="cl">  &#34;main&#34;: &#34;index.js&#34;,
-</span></span><span class="line"><span class="cl">  &#34;dependencies&#34;: {
-</span></span><span class="line"><span class="cl">    &#34;body-parser&#34;: &#34;^1.15.2&#34;,
-</span></span><span class="line"><span class="cl">    &#34;cookie-parser&#34;: &#34;^1.4.3&#34;,
-</span></span><span class="line"><span class="cl">    &#34;debug&#34;: &#34;^2.2.0&#34;,
-</span></span><span class="line"><span class="cl">    &#34;express&#34;: &#34;^4.14.0&#34;,
-</span></span><span class="line"><span class="cl">    &#34;gulp&#34;: &#34;^3.9.1&#34;,
-</span></span><span class="line"><span class="cl">    &#34;gulp-clean&#34;: &#34;^0.3.2&#34;,
-</span></span><span class="line"><span class="cl">    &#34;gulp-live-server&#34;: &#34;^0.0.30&#34;,
-</span></span><span class="line"><span class="cl">    &#34;gulp-tsc&#34;: &#34;^1.2.3&#34;,
-</span></span><span class="line"><span class="cl">    &#34;gulp-tslint&#34;: &#34;^6.1.1&#34;,
-</span></span><span class="line"><span class="cl">    &#34;gulp-util&#34;: &#34;^3.0.7&#34;,
-</span></span><span class="line"><span class="cl">    &#34;jade&#34;: &#34;^1.11.0&#34;,
-</span></span><span class="line"><span class="cl">    &#34;morgan&#34;: &#34;^1.7.0&#34;,
-</span></span><span class="line"><span class="cl">    &#34;run-sequence&#34;: &#34;^1.2.2&#34;,
-</span></span><span class="line"><span class="cl">    &#34;tiny-lr&#34;: &#34;^0.2.1&#34;
-</span></span><span class="line"><span class="cl">  },
-</span></span><span class="line"><span class="cl">  &#34;devDependencies&#34;: {},
-</span></span><span class="line"><span class="cl">  &#34;scripts&#34;: {
-</span></span><span class="line"><span class="cl">    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
-</span></span><span class="line"><span class="cl">  },
-</span></span><span class="line"><span class="cl">  &#34;author&#34;: &#34;sohunjug&#34;,
-</span></span><span class="line"><span class="cl">  &#34;license&#34;: &#34;ISC&#34;
-</span></span><span class="line"><span class="cl">}
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;localtest&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;version&#34;</span><span class="p">:</span> <span class="s2">&#34;1.0.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;description&#34;</span><span class="p">:</span> <span class="s2">&#34;This is a test.&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;main&#34;</span><span class="p">:</span> <span class="s2">&#34;index.js&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;dependencies&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;body-parser&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.15.2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;cookie-parser&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.4.3&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;debug&#34;</span><span class="p">:</span> <span class="s2">&#34;^2.2.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;express&#34;</span><span class="p">:</span> <span class="s2">&#34;^4.14.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;gulp&#34;</span><span class="p">:</span> <span class="s2">&#34;^3.9.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;gulp-clean&#34;</span><span class="p">:</span> <span class="s2">&#34;^0.3.2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;gulp-live-server&#34;</span><span class="p">:</span> <span class="s2">&#34;^0.0.30&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;gulp-tsc&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.2.3&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;gulp-tslint&#34;</span><span class="p">:</span> <span class="s2">&#34;^6.1.1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;gulp-util&#34;</span><span class="p">:</span> <span class="s2">&#34;^3.0.7&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;jade&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.11.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;morgan&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.7.0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;run-sequence&#34;</span><span class="p">:</span> <span class="s2">&#34;^1.2.2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;tiny-lr&#34;</span><span class="p">:</span> <span class="s2">&#34;^0.2.1&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;devDependencies&#34;</span><span class="p">:</span> <span class="p">{},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;scripts&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;test&#34;</span><span class="p">:</span> <span class="s2">&#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;author&#34;</span><span class="p">:</span> <span class="s2">&#34;sohunjug&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;license&#34;</span><span class="p">:</span> <span class="s2">&#34;ISC&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="typescript中依赖安装">TypeScript中依赖安装</h3>
@@ -602,15 +618,15 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">typings install --global --save dt~express
-</span></span><span class="line"><span class="cl">typings install --global --save dt~node 
-</span></span><span class="line"><span class="cl">typings install --global --save dt~serve-static 
-</span></span><span class="line"><span class="cl">typings install --global --save dt~express-serve-static-core 
-</span></span><span class="line"><span class="cl">typings install --global --save dt~mime 
-</span></span><span class="line"><span class="cl">typings install --global --save dt~body-parser 
-</span></span><span class="line"><span class="cl">typings install --global --save dt~debug 
-</span></span><span class="line"><span class="cl">typings install --global --save dt~cookie-parser 
-</span></span><span class="line"><span class="cl">typings install --global --save dt~morgan
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~express
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~node 
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~serve-static 
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~express-serve-static-core 
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~mime 
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~body-parser 
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~debug 
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~cookie-parser 
+</span></span><span class="line"><span class="cl"><span class="nf">typings</span> install <span class="na">--global</span> <span class="na">--save</span> dt~morgan
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -629,15 +645,15 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~express
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~node 
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~serve-static 
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~express-serve-static-core 
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~mime 
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~body-parser 
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~debug 
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~cookie-parser 
-</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~morgan
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~express
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~node 
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~serve-static 
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~express-serve-static-core 
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~mime 
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~body-parser 
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~debug 
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~cookie-parser 
+</span></span><span class="line"><span class="cl"><span class="nf">node_modules</span>/.bin/typings install <span class="na">--global</span> <span class="na">--save</span> dt~morgan
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="gulp配置">gulp配置</h3>
@@ -716,71 +732,71 @@
 </span><span class="lnt">65
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var gulp = require(&#39;gulp&#39;);
-</span></span><span class="line"><span class="cl">var tsc = require(&#39;gulp-tsc&#39;);
-</span></span><span class="line"><span class="cl">var seq = require(&#39;run-sequence&#39;);
-</span></span><span class="line"><span class="cl">var del = require(&#39;gulp-clean&#39;);
-</span></span><span class="line"><span class="cl">var gls = require(&#39;gulp-live-server&#39;);
-</span></span><span class="line"><span class="cl">var chalk = require(&#39;chalk&#39;);
-</span></span><span class="line"><span class="cl">var gutil = require(&#39;gulp-util&#39;);
-</span></span><span class="line"><span class="cl">var tslint = require(&#39;gulp-tslint&#39;);
+<pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">tsc</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-tsc&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">seq</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;run-sequence&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">del</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-clean&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">gls</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-live-server&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">chalk</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;chalk&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">gutil</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-util&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">tslint</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-tslint&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">var paths = {
-</span></span><span class="line"><span class="cl">    ts: {
-</span></span><span class="line"><span class="cl">        src: [
-</span></span><span class="line"><span class="cl">            &#39;app/**/*.ts&#39;
-</span></span><span class="line"><span class="cl">        ],
-</span></span><span class="line"><span class="cl">        dest: &#39;build&#39;
-</span></span><span class="line"><span class="cl">    }
-</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl"><span class="kd">var</span> <span class="nx">paths</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">ts</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">src</span><span class="o">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;app/**/*.ts&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;build&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">gulp.task(&#39;serve&#39;, () =&gt; {
-</span></span><span class="line"><span class="cl">    seq(&#39;clean&#39;, &#39;build&#39;, &#39;watch&#39;);
-</span></span><span class="line"><span class="cl">})
+</span></span><span class="line"><span class="cl"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;serve&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">seq</span><span class="p">(</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">})</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">gulp.task(&#39;watch&#39;, () =&gt; {
-</span></span><span class="line"><span class="cl">    var server = gls.new(&#39;build/www.js&#39;);
-</span></span><span class="line"><span class="cl">    server.start();
-</span></span><span class="line"><span class="cl">    gulp.watch([&#39;app/**/*.ts&#39;], () =&gt; seq(&#39;tslint&#39;, &#39;clean&#39;, &#39;build&#39;));
-</span></span><span class="line"><span class="cl">    gulp.watch([&#39;build/**/*.js&#39;, &#39;build/**/*.css&#39;, &#39;build/**/*.html&#39;], file =&gt;
-</span></span><span class="line"><span class="cl">      server.notify.apply(server, [file])
-</span></span><span class="line"><span class="cl">    );
-</span></span><span class="line"><span class="cl">    gulp.watch(&#39;build/www.js&#39;, () =&gt; {
-</span></span><span class="line"><span class="cl">      setTimeout(() =&gt; gutil.log(&#39;Restart Succeed!&#39;), 500);
-</span></span><span class="line"><span class="cl">      server.start.bind(server)()
-</span></span><span class="line"><span class="cl">    });
-</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="nx">gls</span><span class="p">.</span><span class="k">new</span><span class="p">(</span><span class="s1">&#39;build/www.js&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">server</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">([</span><span class="s1">&#39;app/**/*.ts&#39;</span><span class="p">],</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">seq</span><span class="p">(</span><span class="s1">&#39;tslint&#39;</span><span class="p">,</span> <span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;build&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">([</span><span class="s1">&#39;build/**/*.js&#39;</span><span class="p">,</span> <span class="s1">&#39;build/**/*.css&#39;</span><span class="p">,</span> <span class="s1">&#39;build/**/*.html&#39;</span><span class="p">],</span> <span class="nx">file</span> <span class="p">=&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">server</span><span class="p">.</span><span class="nx">notify</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">server</span><span class="p">,</span> <span class="p">[</span><span class="nx">file</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;build/www.js&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">setTimeout</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="nx">gutil</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Restart Succeed!&#39;</span><span class="p">),</span> <span class="mi">500</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">server</span><span class="p">.</span><span class="nx">start</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">server</span><span class="p">)()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">gulp.task(&#39;build&#39;, () =&gt; {
-</span></span><span class="line"><span class="cl">    return gulp.src(paths.ts.src)
-</span></span><span class="line"><span class="cl">        .pipe(tslint({
-</span></span><span class="line"><span class="cl">            formatter: &#34;verbose&#34;
-</span></span><span class="line"><span class="cl">        }))
-</span></span><span class="line"><span class="cl">        .pipe(tsc({
-</span></span><span class="line"><span class="cl">            module: &#34;CommonJS&#34;,
-</span></span><span class="line"><span class="cl">            sourcemap: true,
-</span></span><span class="line"><span class="cl">            emitError: false
-</span></span><span class="line"><span class="cl">        }))
-</span></span><span class="line"><span class="cl">        .pipe(gulp.dest(paths.ts.dest));
-</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;build&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">paths</span><span class="p">.</span><span class="nx">ts</span><span class="p">.</span><span class="nx">src</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">tslint</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">formatter</span><span class="o">:</span> <span class="s2">&#34;verbose&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}))</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">tsc</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">module</span><span class="o">:</span> <span class="s2">&#34;CommonJS&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">sourcemap</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">emitError</span><span class="o">:</span> <span class="kc">false</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}))</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">paths</span><span class="p">.</span><span class="nx">ts</span><span class="p">.</span><span class="nx">dest</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">gulp.task(&#39;clean&#39;, () =&gt; {
-</span></span><span class="line"><span class="cl">    del(paths.ts.dest);
-</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">del</span><span class="p">(</span><span class="nx">paths</span><span class="p">.</span><span class="nx">ts</span><span class="p">.</span><span class="nx">dest</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">gulp.task(&#39;rebuild&#39;, file =&gt; {
-</span></span><span class="line"><span class="cl">    seq(&#39;clean&#39;, &#39;build&#39;);
-</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;rebuild&#39;</span><span class="p">,</span> <span class="nx">file</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">seq</span><span class="p">(</span><span class="s1">&#39;clean&#39;</span><span class="p">,</span> <span class="s1">&#39;build&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">gulp.task(&#34;tslint&#34;, () =&gt; {
-</span></span><span class="line"><span class="cl">    return gulp.src(paths.ts.src)
-</span></span><span class="line"><span class="cl">        .pipe(tslint({
-</span></span><span class="line"><span class="cl">            formatter: &#34;verbose&#34;
-</span></span><span class="line"><span class="cl">        }))
-</span></span><span class="line"><span class="cl">        .pipe(tslint.report());
-</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s2">&#34;tslint&#34;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">paths</span><span class="p">.</span><span class="nx">ts</span><span class="p">.</span><span class="nx">src</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">tslint</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">            <span class="nx">formatter</span><span class="o">:</span> <span class="s2">&#34;verbose&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">}))</span>
+</span></span><span class="line"><span class="cl">        <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">tslint</span><span class="p">.</span><span class="nx">report</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">gulp.task(&#39;default&#39;, [&#39;rebuild&#39;]);
+</span></span><span class="line"><span class="cl"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;rebuild&#39;</span><span class="p">]);</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>
@@ -813,26 +829,26 @@
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ gulp serve
-</span></span><span class="line"><span class="cl">[15:27:30] Using gulpfile xxxx/localtest/gulpfile.js
-</span></span><span class="line"><span class="cl">[15:27:30] Starting &#39;serve&#39;...
-</span></span><span class="line"><span class="cl">[15:27:30] Starting &#39;clean&#39;...
-</span></span><span class="line"><span class="cl">[15:27:30] Finished &#39;clean&#39; after 1.36 ms
-</span></span><span class="line"><span class="cl">[15:27:30] Starting &#39;build&#39;...
-</span></span><span class="line"><span class="cl">[15:27:30] Finished &#39;serve&#39; after 15 ms
-</span></span><span class="line"><span class="cl">[15:27:30] Compiling TypeScript files using tsc version 1.8.10
-</span></span><span class="line"><span class="cl">[15:27:32] Finished &#39;build&#39; after 2.6 s
-</span></span><span class="line"><span class="cl">[15:27:32] Starting &#39;watch&#39;...
-</span></span><span class="line"><span class="cl">[15:27:32] Finished &#39;watch&#39; after 57 ms
-</span></span><span class="line"><span class="cl">livereload[tiny-lr] listening on 35729 ...
-</span></span><span class="line"><span class="cl">[15:27:38] Starting &#39;tslint&#39;...
-</span></span><span class="line"><span class="cl">[15:27:38] Finished &#39;tslint&#39; after 213 ms
-</span></span><span class="line"><span class="cl">[15:27:38] Starting &#39;clean&#39;...
-</span></span><span class="line"><span class="cl">[15:27:38] Finished &#39;clean&#39; after 266 μs
-</span></span><span class="line"><span class="cl">[15:27:38] Starting &#39;build&#39;...
-</span></span><span class="line"><span class="cl">[15:27:38] Compiling TypeScript files using tsc version 1.8.10
-</span></span><span class="line"><span class="cl">[15:27:40] Finished &#39;build&#39; after 2.39 s
-</span></span><span class="line"><span class="cl">[15:27:41] Restart Succeed!
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nv">$ </span>gulp serve
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">30</span><span class="o">]</span> Using gulpfile xxxx/localtest/gulpfile.js
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">30</span><span class="o">]</span> Starting <span class="s1">&#39;serve&#39;</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">30</span><span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">30</span><span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after <span class="m">1</span>.<span class="m">36</span> ms
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">30</span><span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">30</span><span class="o">]</span> Finished <span class="s1">&#39;serve&#39;</span> after <span class="m">15</span> ms
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">30</span><span class="o">]</span> Compiling TypeScript files using tsc version <span class="m">1</span>.<span class="m">8</span>.<span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">32</span><span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">2</span>.<span class="m">6</span> s
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">32</span><span class="o">]</span> Starting <span class="s1">&#39;watch&#39;</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">32</span><span class="o">]</span> Finished <span class="s1">&#39;watch&#39;</span> after <span class="m">57</span> ms
+</span></span><span class="line"><span class="cl"><span class="nf">livereload</span><span class="o">[</span>tiny<span class="o">-</span>lr<span class="o">]</span> listening on <span class="m">35729</span> ...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">38</span><span class="o">]</span> Starting <span class="s1">&#39;tslint&#39;</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">38</span><span class="o">]</span> Finished <span class="s1">&#39;tslint&#39;</span> after <span class="m">213</span> ms
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">38</span><span class="o">]</span> Starting <span class="s1">&#39;clean&#39;</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">38</span><span class="o">]</span> Finished <span class="s1">&#39;clean&#39;</span> after <span class="m">266</span> μs
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">38</span><span class="o">]</span> Starting <span class="s1">&#39;build&#39;</span>...
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">38</span><span class="o">]</span> Compiling TypeScript files using tsc version <span class="m">1</span>.<span class="m">8</span>.<span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">40</span><span class="o">]</span> Finished <span class="s1">&#39;build&#39;</span> after <span class="m">2</span>.<span class="m">39</span> s
+</span></span><span class="line"><span class="cl"><span class="o">[</span><span class="m">15</span>:<span class="m">27</span>:<span class="m">41</span><span class="o">]</span> Restart Succeed!
 </span></span></code></pre></td></tr></table>
 </div>
 </div><blockquote>

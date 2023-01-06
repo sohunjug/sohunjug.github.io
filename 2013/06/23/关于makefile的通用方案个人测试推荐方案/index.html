@@ -325,8 +325,8 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">FileName</span><span class="o">=</span><span class="se">\`</span><span class="nb">pwd</span> <span class="p">|</span> awk -Fsohunjug <span class="s1">&#39;{print $3}&#39;</span> <span class="p">|</span> awk -F/ <span class="s1">&#39;{print $2}&#39;</span><span class="se">\`</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FileName</span><span class="s2">&#34;</span></span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fish" data-lang="fish"><span class="line"><span class="cl"><span class="nv">FileName</span><span class="o">=</span><span class="se">\`</span>pwd <span class="o">|</span> <span class="nf">awk</span> <span class="na">-Fsohunjug</span> <span class="s1">&#39;{print $3}&#39;</span> <span class="o">|</span> <span class="nf">awk</span> <span class="na">-F</span>/ <span class="s1">&#39;{print $2}&#39;</span><span class="se">\`</span>
+</span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="s2">&#34;</span><span class="nv">$FileName</span><span class="s2">&#34;</span></span></span></code></pre></td></tr></table>
 </div>
 </div></p>
 <p>之后就可以将makefile考入需要的路径，然后执行make，就会生成以子文件夹名来命名的程序了～</p>

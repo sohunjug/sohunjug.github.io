@@ -55,14 +55,22 @@ sudo sh -c &amp;ldquo;echo 5000 &amp;gt; /sys/devices/platform/applesmc.768/fan1
     &gt;http://sourceforge.net/projects/macfan/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;官方没有提到Win7，但是我的Win7-64bit也没有问题的。这是一个基于CLI（CommandLine Interface，命令行界面）的程序，而且同时还需要管理员权限，还要带参数，使用起来稍微有点麻烦，我个人是这么处理的：&lt;/p&gt;
 &lt;p&gt;1.首先将解压缩后的文件放在\windows\mf目录；&lt;/p&gt;
-&lt;p&gt;2.同时在目录里面增加一个批处理文件mf.cmd，内容如下：
-{% codeblock lang:bat %}
-@echo off
-@echo Input the fan speed (2000-6200):
-set /p speed=
-C:\Windows\mf\MacFanx64.exe %speed%
-{% endcodeblock %}
-3.之后按住Alt键，把mf.cmd拖到桌面上，之后在mf.cmd上右键，选择“属性”，选择“快捷方式”页面，点击“高级”，之后把“以管理员权限运行”勾上。&lt;/p&gt;
+&lt;p&gt;2.同时在目录里面增加一个批处理文件mf.cmd，内容如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bat&#34; data-lang=&#34;bat&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; off
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;@&lt;/span&gt;&lt;span class=&#34;k&#34;&gt;echo&lt;/span&gt; Input the fan speed (2000-6200): 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;/p&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;speed&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; 
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;C&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;nl&#34;&gt;\Windows\mf\MacFanx64.exe&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt; %speed%&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;3.之后按住Alt键，把mf.cmd拖到桌面上，之后在mf.cmd上右键，选择“属性”，选择“快捷方式”页面，点击“高级”，之后把“以管理员权限运行”勾上。&lt;/p&gt;
 &lt;p&gt;4.双击桌面上的“mf.cmd – 快捷方式”，之后输入你想要调整的风扇转速，回车即可。&lt;/p&gt;
 &lt;p&gt;因为我的是MBP 13，只有一个风扇，所以只需要提供一个参数，如果有多个风扇的话，请依据自己的需要进行修改，按照&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
 &lt;p&gt;基本上，我现在三系统使用的很完美，win7只是下个电影或者游戏下，平时上班linux，下班mac~&lt;/p&gt;
