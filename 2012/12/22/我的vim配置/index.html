@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为 {% codeblock %} vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 {% endcodeblock %} 之后配置$HOME目录下的.vimrc
+'>
+<title>我的vim配置</title>
+
+<link rel='canonical' href='https://sohunjug.com/2012/12/22/%E6%88%91%E7%9A%84vim%E9%85%8D%E7%BD%AE/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='我的vim配置'>
+<meta property='og:description' content='我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为 {% codeblock %} vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 {% endcodeblock %} 之后配置$HOME目录下的.vimrc
+'>
+<meta property='og:url' content='https://sohunjug.com/2012/12/22/%E6%88%91%E7%9A%84vim%E9%85%8D%E7%BD%AE/'>
+<meta property='og:site_name' content='聽的资料'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Vim profile' /><meta property='article:published_time' content='2012-12-22T00:00:00&#43;08:00'/><meta property='article:modified_time' content='2012-12-22T00:00:00&#43;08:00'/>
+<meta name="twitter:site" content="@sohunjug">
+    <meta name="twitter:creator" content="@sohunjug"><meta name="twitter:title" content="我的vim配置">
+<meta name="twitter:description" content="我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。
+其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为 {% codeblock %} vim-X11.x86_64 vim-common.x86_64 vim-enhanced.x86_64 vim-filesystem.x86_64 vim-halibut.noarch vim-minimal.x86_64 vim-perl-support.noarch cscope.x86_64 ctags.x86_64 {% endcodeblock %} 之后配置$HOME目录下的.vimrc
+">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    <img src="/img/avatar.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">聽的资料</a></h1>
+            <h2 class="site-description">Opportunity favors only the prepared mind. And everything change with time.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sohunjug'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/sohunjug'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/vim/" >
+                Vim
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2012/12/22/%E6%88%91%E7%9A%84vim%E9%85%8D%E7%BD%AE/">我的vim配置</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Dec 22, 2012</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。</p>
+<p>其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
+{% codeblock %}
+vim-X11.x86_64
+vim-common.x86_64
+vim-enhanced.x86_64
+vim-filesystem.x86_64
+vim-halibut.noarch
+vim-minimal.x86_64
+vim-perl-support.noarch
+cscope.x86_64
+ctags.x86_64
+{% endcodeblock %}
+之后配置$HOME目录下的.vimrc</p>
+<p>{% codeblock lang:vim %}
+if has(&ldquo;cscope&rdquo;)
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+set csto=0
+set cst
+set csverb
+endif</p>
+<p>&ldquo;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+&ldquo;获取当前路径的上一级的路径
+function! GET_UP_PATH(dir)
+let pos=strlen(a:dir)-1
+while pos&gt;0
+if (a:dir[pos]==&rdquo;/&rdquo; )
+return  strpart(a:dir,0,pos)
+endif
+let pos=pos-1
+endwhile
+return  &quot;&quot;
+endfunction</p>
+<p>&ldquo;设置相关tags
+function! s:SET_TAGS()
+let dir = getcwd() &ldquo;获得源文件路径
+&ldquo;在路径上递归向上查找tags文件
+while dir!=&rdquo;&rdquo;
+if findfile(&ldquo;tags&rdquo;,dir ) !=&rdquo;&quot;
+&ldquo;找到了就加入到tags
+exec &ldquo;set tags+=&quot;.dir.&quot;/tags&rdquo;
+return
+endif
+&ldquo;得到上级路径
+let dir=GET_UP_PATH(dir)
+endwhile
+endfunction</p>
+<p>&ldquo;设置php cscope.out
+function! SET_CSPHP()
+if(executable(&lsquo;cscope&rsquo;) &amp;&amp; has(&ldquo;cscope&rdquo;) )
+silent! execute &ldquo;!find . -name &lsquo;<em>.php&rsquo;  -o -name &lsquo;</em>.inc&rsquo; -o -name &lsquo;*.module&rsquo; &gt; cscope.files&rdquo;
+silent! execute &ldquo;!cscope -bkq -i cscope.files&rdquo;
+if filereadable(&ldquo;cscope.out&rdquo;)
+silent! execute &ldquo;cs add cscope.out&rdquo;
+endif
+silent! execute &ldquo;!ctags -R &ndash;langmap=php:.engine.inc.module.theme.php  &ndash;php-kinds=cdf  &ndash;languages=php &quot;
+endif
+endfunction</p>
+<p>&ldquo;设置c cscope.out
+function! SET_CSAD()
+if(executable(&lsquo;cscope&rsquo;) &amp;&amp; has(&ldquo;cscope&rdquo;) )
+silent! execute &ldquo;!find . -name &lsquo;<em>.h&rsquo; -o -name &lsquo;</em>.c&rsquo; -o -name &lsquo;*.cpp&rsquo; &gt; cscope.files&rdquo;
+silent! execute &ldquo;!cscope -bkq -i cscope.files&rdquo;
+if filereadable(&ldquo;cscope.out&rdquo;)
+silent! execute &ldquo;cs add cscope.out&rdquo;
+endif
+silent! execute &ldquo;!ctags -R &ndash;c-kinds=+p &ndash;c++-kinds=+p &ndash;fields=+iaS &ndash;extra=+q .&rdquo;
+endif
+endfunction</p>
+<p>function! s:SET_CSC()
+let dir = expand(&rdquo;%:p:h&rdquo;) &ldquo;获得源文件路径
+&ldquo;在路径上递归向上查找tags文件
+while dir!=&rdquo;&rdquo;
+if findfile(&ldquo;cscope.out&rdquo;,dir ) !=&rdquo;&rdquo;
+&ldquo;找到了就加入到tags
+if 0 == cscope_connection(1, &ldquo;cscope.out&rdquo;, dir)
+execute &ldquo;cs add &ldquo;.dir.&quot;/cscope.out &ldquo;.dir
+endif
+return
+endif
+&ldquo;得到上级路径
+let dir=GET_UP_PATH(dir)
+endwhile
+endfunction</p>
+<p>autocmd BufEnter * call s:SET_CSC()
+autocmd BufEnter * call s:SET_TAGS()
+&ldquo;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+set laststatus=2            &quot; 显示状态栏 (默认值为 1, 无法显示状态栏)</p>
+<p>nmap <!-- raw HTML omitted --> :bnext<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted --> :bprevious<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted --> :w!<!-- raw HTML omitted --></p>
+<p>nmap <!-- raw HTML omitted -->1 :set filetype=xhtml<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->2 :set filetype=css<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->3 :set filetype=javascript<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->4 :set filetype=php<!-- raw HTML omitted -->
+nmap <!-- raw HTML omitted -->5 :set filetype=default<!-- raw HTML omitted --></p>
+<p>nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hl <!-- raw HTML omitted -->MarkSet
+nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hh <!-- raw HTML omitted -->MarkClear
+nmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hr <!-- raw HTML omitted -->MarkRegex
+vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hl <!-- raw HTML omitted -->MarkSet
+vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hh <!-- raw HTML omitted -->MarkClear
+vmap <!-- raw HTML omitted --> <!-- raw HTML omitted -->hr <!-- raw HTML omitted -->MarkRegex</p>
+<p>let g:miniBufExplMapWindowNavVim = 1<br>
+let g:miniBufExplMapWindowNavArrows = 1<br>
+let g:miniBufExplMapCTabSwitchBufs = 1<br>
+let g:miniBufExplModSelTarget = 1<br>
+let g:miniBufExplMoreThanOne=0</p>
+<p>set mouse=a</p>
+<p>set noswf</p>
+<p>let g:winManagerWindowLayout=&ldquo;FileExplorer|TagList&rdquo;</p>
+<p>let Tlist_File_Fold_Auto_Close=1</p>
+<p>&ldquo;当文件在外部被修改，自动更新该文件
+set autoread</p>
+<p>&ldquo;设置历史记录步数
+set history=400</p>
+<p>&ldquo;快速退出（保存）为,<!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :set mouse=v<!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :set mouse=a<!-- raw HTML omitted --></p>
+<p>&ldquo;开启语法
+syntax enable
+syntax on</p>
+<p>&ldquo;头文件与实现文件转换
+map <!-- raw HTML omitted --> :A <!-- raw HTML omitted --></p>
+<p>&ldquo;设置字体</p>
+<p>&ldquo;设置配色
+colorscheme candycode</p>
+<p>set completeopt=menu</p>
+<p>set t_Co=256</p>
+<p>&ldquo;高亮显示当前行
+set cursorline
+hi cursorline guibg=#222222
+hi CursorColumn guibg=#333333</p>
+<p>&ldquo;tag
+set tags=tags;</p>
+<p>&quot;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
+&quot; =&gt; 缩进
+&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
+&ldquo;自动缩进
+set ai</p>
+<p>&ldquo;智能缩进
+set si</p>
+<p>&ldquo;设置缩进的空格数为4
+set autoindent</p>
+<p>&ldquo;设置自动缩进:即每行的缩进值与上一行相等；使用 noautoindent 取消设置
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4</p>
+<p>&ldquo;设置使用 C/C++ 语言的自动缩进方式
+set cin
+set cindent</p>
+<p>&ldquo;显示标尺
+set ruler</p>
+<p>&ldquo;设置命令行的高度
+set cmdheight=1</p>
+<p>&ldquo;显示行数
+set number</p>
+<p>&ldquo;显示匹配的括号([{和}])
+set showmatch</p>
+<p>&ldquo;高亮显示搜索的内容
+set hlsearch</p>
+<p>&ldquo;taglist
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1</p>
+<p>&quot;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&rdquo;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;
+&quot; =&gt; 编码设置
+&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;&quot;</p>
+<p>&ldquo;Vim 内部使用的字符编码方式，包括 Vim 的 buffer (缓冲区)、菜单文本、
+&ldquo;消息文本等。用户手册上建议只在 .vimrc 中改变它的值，
+&ldquo;事实上似乎也只有在 .vimrc 中改变它的值才有意义。
+set encoding=utf-8</p>
+<p>&ldquo;Vim 启动时会按照它所列出的字符编码方式逐一探测即将打开的文件的
+&ldquo;字符编码方式，并且将 fileencoding 设置为最终探测到的字符编码方式。
+&ldquo;因此最好将 Unicode 编码方式放到这个列表的最前面。
+&ldquo;set fileencodings=Unicode,utf-8,gb2312,gbk,gb18030,latin-1
+&ldquo;set fencs=utf-8,Unicode,gb2312,gbk,gb18030,latin-1,cp936
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,latin-1,prc
+&ldquo;set fileencodings=ucs-bom,utf8,prc</p>
+<p>&ldquo;Vim 中当前编辑的文件的字符编码方式，
+&ldquo;Vim 保存文件时也会将文件保存为这种字符编码方式。
+set fileencoding=utf-8
+&ldquo;set fileencoding=prc</p>
+<p>&quot; termencoding: Vim 所工作的终端 (或者 Windows 的 Console 窗口)
+&quot; 的字符编码方式。这个选项对 GUI 模式的 gVim 无效，
+&quot; 而对 Console 模式的 Vim 而言就是Windows 控制台的代码页
+&quot; (对于 Windows 而言)，并且通常我们不需要改变它。
+&quot; 下面这句只影响普通模式 (非图形界面) 下的 Vim。
+&ldquo;set termencoding=prc
+let &amp;termencoding=&amp;encoding</p>
+<p>&quot; &ldquo;代码折叠, 命令 za
+set foldmethod=syntax
+set foldlevel=100  &ldquo;启动vim时不要自动折叠代码</p>
+<p>&quot; &ldquo;自动换行
+if (has(&ldquo;gui_running&rdquo;)) &ldquo;图形界面下的设置
+&quot; &quot;
+&quot; &ldquo;指定不折行。如果一行太长，超过屏幕宽度，则向右边延伸到屏幕外面
+set nowrap
+&quot;
+&ldquo;添加水平滚动条。如果你指定了不折行，那为窗口添加一个水平滚动条就非常有必要
+&quot; 了
+set guioptions+=b
+&quot;
+else
+&ldquo;字符界面下的设置
+set nowrap
+endif</p>
+<p>&quot; &ldquo;<!-- raw HTML omitted -->code_complete.vim插件：函数自动完成
+map <!-- raw HTML omitted --> :silent %!xmllint -format %<!-- raw HTML omitted -->
+if !exists(&ldquo;g:completekey&rdquo;)
+let g:completekey = &ldquo;<!-- raw HTML omitted -->&rdquo;   &ldquo;hotkey
+endif</p>
+<p>map <!-- raw HTML omitted --> gu
+map <!-- raw HTML omitted --> gU</p>
+<p>map <!-- raw HTML omitted --> :cp <!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :cn <!-- raw HTML omitted --></p>
+<p>&quot; &ldquo;当前目录生成tags语法文件，用于自动完成，函数提示：code_complete.vim
+&ldquo;OmniCppComplete.vim &hellip;
+&ldquo;map <!-- raw HTML omitted --> :call SET_CSAD() <!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;函数和变量列表
+map <!-- raw HTML omitted --> :TlistToggle<!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;文件浏览器
+&ldquo;map <!-- raw HTML omitted --> :WMToggle<!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;文件树状列表
+nmap <!-- raw HTML omitted --> <!-- raw HTML omitted --> :execute &lsquo;NERDTreeToggle &lsquo;. expand(&rdquo;%:p:h&rdquo;)<!-- raw HTML omitted -->
+&quot;
+&quot; &ldquo;映射复制、粘贴、剪贴ctrl+c ctrl+v ctrl+x
+&quot; map <!-- raw HTML omitted --> &ldquo;+pa<!-- raw HTML omitted -->
+&quot; map! <!-- raw HTML omitted --> <!-- raw HTML omitted -->&quot;+pa
+map <!-- raw HTML omitted --> &ldquo;+y
+map <!-- raw HTML omitted --> &ldquo;+x
+&quot;
+&quot; &quot; 映射全选 ctrl+a
+map <!-- raw HTML omitted --> ggVG
+map! <!-- raw HTML omitted --> <!-- raw HTML omitted -->ggVG
+&quot;
+&quot; &quot; 多行缩进
+map <!-- raw HTML omitted --> &gt;
+map <!-- raw HTML omitted --> &lt;</p>
+<p>&ldquo;设置自动补齐
+&ldquo;filetype plugin indent on
+&ldquo;set completeopt=longest,menu</p>
+<p>&ldquo;if has(&ldquo;autocmd&rdquo;) &amp;&amp; exists(&quot;+omnifunc&rdquo;)
+&quot;     autocmd Filetype *
+&quot;   \ if &amp;omnifunc == &quot;&rdquo; |
+&quot;   \   setlocal omnifunc=syntaxcomplete#Complete |
+&quot;   \ endif
+&ldquo;endif</p>
+<p>&ldquo;let g:SuperTabDefaultCompletionType=&quot;<!-- raw HTML omitted -->&lt;C-]&gt;&rdquo;</p>
+<p>&ldquo;let g:SuperTabRetainCompletionType=0
+&quot; 0 - 不记录上次的补全方式
+&quot; 1 - 记住上次的补全方式,直到用其他的补全命令改变它
+&quot; 2 - 记住上次的补全方式,直到按ESC退出插入模式为止</p>
+<p>map <!-- raw HTML omitted --> :call TitleDet()&rsquo;s <!-- raw HTML omitted --></p>
+<p>map <!-- raw HTML omitted --> :call SET_CSAD()&rsquo;s <!-- raw HTML omitted -->
+map <!-- raw HTML omitted --> :call SET_CSPHP()&rsquo;s <!-- raw HTML omitted --></p>
+<p>function AddTitle()
+call append(0,&rdquo;/*******************************************************************************&rdquo;)
+&ldquo;call append(1,&rdquo;#&rdquo;)
+call append(1,&rdquo; * Author : RKhuwq&rdquo;)
+&ldquo;call append(3,&rdquo;#&rdquo;)
+call append(2,&rdquo; * Email : <a class="link" href="mailto:huwq@neusoft.com" >huwq@neusoft.com</a>&rdquo;)
+&ldquo;call append(5,&rdquo;#&rdquo;)
+call append(3,&rdquo; * Last modified : &ldquo;.strftime(&quot;%Y-%m-%d %H:%M&rdquo;))
+&ldquo;call append(7,&rdquo;#&rdquo;)
+call append(4,&rdquo; * Filename : &ldquo;.expand(&rdquo;%&rdquo;))
+&ldquo;call append(9,&rdquo;#&rdquo;)
+call append(5,&rdquo; * Description : &ldquo;)
+&ldquo;call append(11,&rdquo;#&rdquo;)
+call append(6,&rdquo; * *****************************************************************************/&rdquo;)
+echohl WarningMsg | echo &ldquo;Successful in adding the copyright.&rdquo; | echohl None
+endfunction</p>
+<p>&ldquo;更新最近修改时间和文件名
+function UpdateTitle()
+normal m&rsquo;
+execute &rsquo; * Last modified : /s@:.<em>$@=strftime(&rdquo;:\t%Y-%m-%d %H:%M&rdquo;)@&rsquo;
+normal &quot;
+normal mk
+execute &rsquo; * Filename : /s@:.</em>$@=&rdquo;:\t\t&rdquo;.expand(&rdquo;%:t&rdquo;)@&rsquo;
+execute &ldquo;noh&rdquo;
+normal &lsquo;k
+echohl WarningMsg | echo &ldquo;Successful in updating the copy right.&quot;| echohl None
+endfunction</p>
+<p>autocmd BufEnter :/ * Last modified : /s@:.*$@=strftime(&rdquo; : %Y-%m-%d %H:%M&rdquo;)@</p>
+<p>&ldquo;判断第四行行代码里面，是否有Last modified这个单词，
+&ldquo;如果没有的话，代表没有添加过作者信息，需要新添加；
+&ldquo;如果有的话，那么只需要更新即可
+function TitleDet()
+let line = getline(4)
+if line =~ &lsquo;\s*\sLast\smodified\s:\s\S*&rsquo;
+:/ * Last modified : /s@:.*$@=strftime(&rdquo;: %Y-%m-%d %H:%M&rdquo;)@
+return
+endif
+call AddTitle()
+endfunction</p>
+<p>&ldquo;自动补全
+set completeopt=menu,menuone
+let OmniCpp_MayCompleteDot = 1 &quot; autocomplete with .
+let OmniCpp_MayCompleteArrow = 1 &quot; autocomplete with -&gt;
+let OmniCpp_MayCompleteScope = 1 &quot; autocomplete with ::
+let OmniCpp_SelectFirstItem = 2 &quot; select first item (but don&rsquo;t insert)
+let OmniCpp_NamespaceSearch = 2 &quot; search namespaces in this and included files
+let OmniCpp_ShowPrototypeInAbbr = 1 &quot; show function prototype  in popup window
+let OmniCpp_GlobalScopeSearch=1
+let OmniCpp_DisplayMode=1
+let OmniCpp_DefaultNamespaces=[&ldquo;std&rdquo;]</p>
+<p>&quot; ~/.vimrc (configuration file for vim only)
+&quot; skeletons
+&ldquo;autocmd BufNewFile	*.spec	call SKEL_spec()
+&quot; filetypes
+filetype plugin on
+filetype indent on
+&quot; ~/.vimrc ends here
+{% endcodeblock %}
+其中F2为xml排版，F3为cscope搜索上一条，F4下一条，F6当前文件函数列表，F7目录列表，F8启用鼠标，F9不使用鼠标，F12 C语言中头文件与代码文件转换</p>
+<p>Ctrl+E注释，Ctrl+F5生成C语言ctags与cscope，Ctrl+F6生成php语言ctags与cscope</p>
+<p>之后下载本文的配置。复制到$HOME目录的.vim目录中。</p>
+<p><a class="link" href="/files/vim.zip" >下载地址</a></p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/vim-profile/">Vim profile</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2012/12/21/vim%E7%9A%84xml%E6%8E%92%E7%89%88/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Vim的xml排版</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2012 - 
+        
+        2023 聽的资料
+    </section>
+    
+    <section class="powerby">
+        
+            <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备14034266号</a> <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='最近因为任务需要，专门调研了一下MongoDB数据库的效率。与常规的OracleDB做了一下对比。
+MongoDB是一个基于分布式文件存储的数据库。由C&#43;&#43;语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。 他支持的数据结构非常松散，是类似json的bjson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。 Mongodb的存储方式是文档式存储，并不是Key-Value形式。 Mongodb的主要的三种集群方式的搭建：Replica Set、 Sharding、 Master-Slaver。 其他大部分内容互联网上也有很多，我也就不再做介绍了。
+'>
+<title>MongoDB与OracleDB效率测试</title>
+
+<link rel='canonical' href='https://sohunjug.com/2013/08/26/mongodb%E4%B8%8Eoracledb%E6%95%88%E7%8E%87%E6%B5%8B%E8%AF%95/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='MongoDB与OracleDB效率测试'>
+<meta property='og:description' content='最近因为任务需要，专门调研了一下MongoDB数据库的效率。与常规的OracleDB做了一下对比。
+MongoDB是一个基于分布式文件存储的数据库。由C&#43;&#43;语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。 他支持的数据结构非常松散，是类似json的bjson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。 Mongodb的存储方式是文档式存储，并不是Key-Value形式。 Mongodb的主要的三种集群方式的搭建：Replica Set、 Sharding、 Master-Slaver。 其他大部分内容互联网上也有很多，我也就不再做介绍了。
+'>
+<meta property='og:url' content='https://sohunjug.com/2013/08/26/mongodb%E4%B8%8Eoracledb%E6%95%88%E7%8E%87%E6%B5%8B%E8%AF%95/'>
+<meta property='og:site_name' content='聽的资料'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='MongoDB' /><meta property='article:tag' content='Oracle' /><meta property='article:published_time' content='2013-08-26T00:00:00&#43;08:00'/><meta property='article:modified_time' content='2013-08-26T00:00:00&#43;08:00'/>
+<meta name="twitter:site" content="@sohunjug">
+    <meta name="twitter:creator" content="@sohunjug"><meta name="twitter:title" content="MongoDB与OracleDB效率测试">
+<meta name="twitter:description" content="最近因为任务需要，专门调研了一下MongoDB数据库的效率。与常规的OracleDB做了一下对比。
+MongoDB是一个基于分布式文件存储的数据库。由C&#43;&#43;语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。 他支持的数据结构非常松散，是类似json的bjson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。 Mongodb的存储方式是文档式存储，并不是Key-Value形式。 Mongodb的主要的三种集群方式的搭建：Replica Set、 Sharding、 Master-Slaver。 其他大部分内容互联网上也有很多，我也就不再做介绍了。
+">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    <img src="/img/avatar.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">聽的资料</a></h1>
+            <h2 class="site-description">Opportunity favors only the prepared mind. And everything change with time.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sohunjug'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/sohunjug'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mongodb/" >
+                MongoDB
+            </a>
+        
+            <a href="/categories/oracle/" >
+                Oracle
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2013/08/26/mongodb%E4%B8%8Eoracledb%E6%95%88%E7%8E%87%E6%B5%8B%E8%AF%95/">MongoDB与OracleDB效率测试</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 26, 2013</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>最近因为任务需要，专门调研了一下MongoDB数据库的效率。与常规的OracleDB做了一下对比。</p>
+<p>MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。
+他支持的数据结构非常松散，是类似json的bjson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。
+Mongodb的存储方式是文档式存储，并不是Key-Value形式。
+Mongodb的主要的三种集群方式的搭建：Replica Set、 Sharding、 Master-Slaver。
+其他大部分内容互联网上也有很多，我也就不再做介绍了。</p>
+<p>主要测试时设备环境以及数据格式</p>
+<p><strong>设备环境</strong></p>
+<p><em>175、176服务器：</em></p>
+<p><em>CPU：8核</em></p>
+<p><em>内存：32G（空闲19G）</em></p>
+<p><em>硬盘：4TB</em></p>
+<p><em>系统：Red Hat 6.3</em></p>
+<p><em>网络：千兆光纤</em></p>
+<p>.</p>
+<p><em>165数据库服务器：</em></p>
+<p><em>CPU：8核</em></p>
+<p><em>内存：16G</em></p>
+<p><em>硬盘：2TB</em></p>
+<p><em>系统：Red Hat 4</em></p>
+<p><em>网络：百兆光纤</em></p>
+<p><strong>数据格式</strong></p>
+<p>每条数据包含6个字段。
+字段名为:usr, pwd, age, email, address, phone
+每个字段均为整形，每个字段内容为当前条数，如：第100条数据，每个字段内容为100。</p>
+<p>一、oracle数据库入库测试</p>
+<p>数据库环境:165数据库，表结构：hash分区16个，usr字段唯一索引</p>
+<p>入库条数：10,000,000</p>
+<p>1 单条数据入库</p>
+<p>总入库时间2836s（不包含创建连接以及句柄时间）约47.3分钟。</p>
+<p>2 批量数据入库</p>
+<p>2.1 每批次数据量50,000</p>
+<p>总入库时间564s，约9.4分钟。</p>
+<p>2.2 每批次数据量100,000</p>
+<p>总入库时间553s，约9.2分钟。</p>
+<p>二、mongodb入库测试</p>
+<p>1 主从备份数据库配置(主从复制)（Master-Slaver）</p>
+<p>比较初级的构架，配置简单。</p>
+<p>1.1 数据库环境（无索引）</p>
+<p>数据库环境：176主节点，175为备份节点，内容时时同步。无索引（索引可以在查询之前建立）。</p>
+<p>1.1.1 入库数据量10,000,000</p>
+<p>总入库时间355s，约5.9分钟。</p>
+<p>从头遍历一次时间13s。</p>
+<p>1.1.2 入库数据量50,000,000</p>
+<p>总入库时间1815s，约30.25分钟</p>
+<p>从头遍历一次时间58s</p>
+<p>注：推荐每次插入前删除索引，插入后重新建立索引，减少插入数据时对索引的处理时间。</p>
+<p>1.2 数据库环境（有索引）</p>
+<p>数据库环境：176主节点，175为备份节点，内容时时同步。usr字段索引。先建立索引</p>
+<p>1.2.1 入库数据量10,000,000</p>
+<p>总入库时间418s，约6.97分钟。</p>
+<p>从头遍历一次时间11s。</p>
+<p>1.2.2 入库数据量50,000,000（放弃）</p>
+<p>入库25,000,000数据大概1小时，后续时间持续增长，速度过慢。</p>
+<p>注：网上资料提供说：这种先写后读的需求，完全可以等全部插入后再建索引，防止大量的锁竞争。</p>
+<p>2 mongodb高可用性架构—Replica Set (副本集)</p>
+<p>2.1 数据库环境</p>
+<p>数据库环境：主节点10.4.120.176:27017，从节点10.4.120.175:27017，仲裁节点10.4.120.176:17017。</p>
+<p>作用：当主节点宕机或停电，从节点与仲裁节点进行投票，选择票数大于总主机数一半的从主机为新的主节点。保证服务正常运转。</p>
+<p>2.1.1 入库数据量50,000,000(无索引)</p>
+<p>总入库时间2348s，约39.5分钟。</p>
+<p>从头遍历一次时间58s。</p>
+<p>注：</p>
+<p>1.大部分网络上的构架应该是这种的升级版（主要为后期数据库调优）。</p>
+<p>2.入库后新建索引大概时间为5分钟。</p>
+<p>3 MongoDB分布式主备集群架构</p>
+<p>本架构为2章节介绍中1和2架构的结合</p>
+<p>集群子集r0主备：主服务器176:10000，备服务器175:20000，仲裁服务器176:10001。</p>
+<p>集群子集r1主备：主服务器175:10000，备服务器176:20000，仲裁服务器175:10001。</p>
+<p>将r0，r1子集架构为分布式集群，自动分片。</p>
+<p>3.1.1 入库数据量10,000,000</p>
+<p>总入库时间618s，约10.3分钟。</p>
+<p>从头遍历一次时间34s。</p>
+<p>本次测试包含：插入过程中将某个子集主节点kill掉模拟服务器故障，过1分钟后重新启动该节点主服务器进程，持续插入进程继续，当最后插入结束时，数据丢失1条。</p>
+<p>3.1.2 入库数据量20,000,000</p>
+<p>多进程入库，每个进程入库10,000,000</p>
+<p>总入库时间1315s，约21.9分钟。</p>
+<p>3.1.3 入库数据量50,000,000</p>
+<p>总入库时间2771s，约46.2分钟。</p>
+<p>从头遍历一次时间160s。</p>
+<p>三、总结</p>
+<p>通过下方的表格可以看出，当处理数据多时，MongoDB效率基本不会改变，而OracleDB效率慢的地方是执行sql语句的时间，当某些业务需求必须单独执行sql时，MongoDB的效率约为OracleDB的5倍。</p>
+<p>其中商业架构主推分布式主备集群的架构方式，此方式可以实现数据时时备份，且数据分布式存储，可以实现当某一台主机宕机，无需暂停业务处理。数据丢失情况，为宕机前100ms内执行的数据，约为数据的千万分之一。</p>
+<p>个人认为MongoDB单机的效率虽然非常高，但可用性低，而分布式架构适合数据重要性不强情况，能实现远超oracle的效率，分布式主备架构是可用性、安全性最高的架构方式，前期的效率可能会等同于oracle，但当数据量过大时，会超过oracle效率。实现水平扩展，将计算能力提升到最大。</p>
+<!-- raw HTML omitted -->
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mongodb/">MongoDB</a>
+        
+            <a href="/tags/oracle/">Oracle</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2012/12/24/%E5%85%B3%E4%BA%8E%E8%84%8F%E6%95%B0%E6%8D%AE%E8%84%8F%E6%95%B0%E6%8D%AE%E5%9D%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9A%E4%B9%89commit%E7%9A%84%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">关于脏数据、脏数据块的正确定义，commit的内部机制</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2012/12/23/%E6%B2%A1%E6%9C%89%E8%BF%9B%E8%A1%8Ccommit%E6%93%8D%E4%BD%9C%E7%9A%84%E6%95%B0%E6%8D%AE%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E6%9F%A5%E8%AF%A2%E5%88%B0%E5%85%B3%E4%BA%8Eoracle%E7%9A%84%E8%84%8F%E8%AF%BB%E5%92%8C%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2012 - 
+        
+        2023 聽的资料
+    </section>
+    
+    <section class="powerby">
+        
+            <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备14034266号</a> <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Mac on 聽的资料</title>
+        <link>https://sohunjug.com/categories/mac/</link>
+        <description>Recent content in Mac on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 26 Jul 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/categories/mac/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>MacBook Pro – Fan Control</title>
+        <link>https://sohunjug.com/2013/07/26/macbook-pro-fan-control/</link>
+        <pubDate>Fri, 26 Jul 2013 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2013/07/26/macbook-pro-fan-control/</guid>
+        <description>&lt;p&gt;这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。&lt;/p&gt;
+&lt;p&gt;目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;hr&gt;
+&lt;p&gt;这个身为MBP原生的，与硬件契合度最高的系统同样存在风扇自动调整的问题，至少在我重置了N次SMC的情况依然还是只能达到90度附近才会提速，于是只能用软件来对付了，我个人觉得效果比较好的是Fan Control。&lt;/p&gt;
+&lt;p&gt;名称：Fan Control&lt;/p&gt;
+&lt;p&gt;下载：&lt;a class=&#34;link&#34; href=&#34;http://www.lobotomo.com/products/FanControl/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.lobotomo.com/products/FanControl/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;安装之后，会在“系统偏好设置”里面增加一个叫“Fan Control”的设置面板。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sohunjug.com/img/blog/1.gif&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;Mac FanControl&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;进去之后三项设置，&lt;/p&gt;
+&lt;p&gt;Base Speed，初始速度，系统默认是2000RPM，系统启动之后会以这个初始速度为基准；&lt;/p&gt;
+&lt;p&gt;Lower Threshold，温度下限阀值，这个是配合Base Speed工作的，在这个温度下，转速是Base Speed；&lt;/p&gt;
+&lt;p&gt;Upper Threshold，温度上限阀值，这个是值达到时系统将以最高转速跑风扇，我的MBP 13是6200。&lt;/p&gt;
+&lt;p&gt;风扇的转速会自动在Lower和Upper之间自动调整。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;!-- raw HTML omitted --&gt;Ubuntu 13.04 x64&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;遇到Linux有个好处，直接修改配置文件就行，可以省掉软件了，但是这个没法进行曲线调速了，所以有的人是直接把速度一步到位直接上到5500RPM，喜欢6000RPM的也行，反正风扇的作用就是处理积热嘛~&lt;/p&gt;
+&lt;p&gt;不过我个人只是上班使用linux，所以我设置3800就完全够用了，一点不热，感觉灰常好啊~&lt;/p&gt;
+&lt;p&gt;操作如下：&lt;/p&gt;
+&lt;p&gt;开启终端（Terminal），输入以下指令，之后需要输入你当前用户的密码，然后回车，
+{% codeblock lang:bash %}
+sudo sh -c &amp;ldquo;echo 5000 &amp;gt; /sys/devices/platform/applesmc.768/fan1_min&amp;rdquo;
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;通过修改fan1_min中的数字“1”，可以调整各个不同风扇的转速，因为MBP 13只有一个风扇，所以也只有fan1，像MBP 15这一类的，可以分别调整fan1和fan2的转速等。并且每次开机的话系统都会自动重置，所以如果需要每次开机都保持一个转速的话，可以自行修改rc脚本。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;&lt;!-- raw HTML omitted --&gt;Windows 7 x64&lt;!-- raw HTML omitted --&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;在Windows下也是需要依靠第三方软件的，据说是有类似于OSX下Fan Control那样的自动调速软件，不过我个人还是比较喜欢把速度调整到4000左右，基本也就够用了。软件叫“Mac/SMC Fan Control for Windows (+ Temp) ”。&lt;/p&gt;
+&lt;p&gt;名称：Mac/SMC Fan Control for Windows (+ Temp)&lt;/p&gt;
+&lt;p&gt;平台：32-bit MS Windows (NT/2000/XP/7/8/8.1), 64-bit MS Windows 7/8/8.1, Vista, WinXP.&lt;/p&gt;
+&lt;p&gt;下载：&lt;a class=&#34;link&#34; href=&#34;http://sourceforge.net/projects/macfan/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://sourceforge.net/projects/macfan/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;官方没有提到Win7，但是我的Win7-64bit也没有问题的。这是一个基于CLI（CommandLine Interface，命令行界面）的程序，而且同时还需要管理员权限，还要带参数，使用起来稍微有点麻烦，我个人是这么处理的：&lt;/p&gt;
+&lt;p&gt;1.首先将解压缩后的文件放在\windows\mf目录；&lt;/p&gt;
+&lt;p&gt;2.同时在目录里面增加一个批处理文件mf.cmd，内容如下：
+{% codeblock lang:bat %}
+@echo off
+@echo Input the fan speed (2000-6200):
+set /p speed=
+C:\Windows\mf\MacFanx64.exe %speed%
+{% endcodeblock %}
+3.之后按住Alt键，把mf.cmd拖到桌面上，之后在mf.cmd上右键，选择“属性”，选择“快捷方式”页面，点击“高级”，之后把“以管理员权限运行”勾上。&lt;/p&gt;
+&lt;p&gt;4.双击桌面上的“mf.cmd – 快捷方式”，之后输入你想要调整的风扇转速，回车即可。&lt;/p&gt;
+&lt;p&gt;因为我的是MBP 13，只有一个风扇，所以只需要提供一个参数，如果有多个风扇的话，请依据自己的需要进行修改，按照&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;基本上，我现在三系统使用的很完美，win7只是下个电影或者游戏下，平时上班linux，下班mac~&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;引用参考：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Fan Control: &lt;a class=&#34;link&#34; href=&#34;http://www.lobotomo.com/products/FanControl/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://www.lobotomo.com/products/FanControl/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;MacFan: &lt;a class=&#34;link&#34; href=&#34;http://sourceforge.net/projects/macfan/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;http://sourceforge.net/projects/macfan/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Ubuntu Forum: http://ub&lt;a class=&#34;link&#34; href=&#34;http://ubuntuforums.org/showthread.php?t=1378663&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;untuforums.org/showthread.php?t=1378663&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

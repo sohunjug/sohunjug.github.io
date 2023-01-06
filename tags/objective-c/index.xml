@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Objective-C on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/objective-c/</link>
-    <description>Recent content in Objective-C on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 18 Aug 2016 22:33:12 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/objective-c/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>PacketSender 发送接收socket macOS App</title>
-      <link>https://sohunjug.com/posts/packetsender/</link>
-      <pubDate>Thu, 18 Aug 2016 22:33:12 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/packetsender/</guid>
-      <description>&lt;h4 id=&#34;更新&#34;&gt;更新&lt;/h4&gt;
+    <channel>
+        <title>Objective-C on 聽的资料</title>
+        <link>https://sohunjug.com/tags/objective-c/</link>
+        <description>Recent content in Objective-C on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Thu, 18 Aug 2016 22:33:12 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/objective-c/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>PacketSender 发送接收socket macOS App</title>
+        <link>https://sohunjug.com/2016/08/18/packetsender-%E5%8F%91%E9%80%81%E6%8E%A5%E6%94%B6socket-macos-app/</link>
+        <pubDate>Thu, 18 Aug 2016 22:33:12 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2016/08/18/packetsender-%E5%8F%91%E9%80%81%E6%8E%A5%E6%94%B6socket-macos-app/</guid>
+        <description>&lt;h4 id=&#34;更新&#34;&gt;更新&lt;/h4&gt;
 &lt;blockquote&gt;
 &lt;p&gt;问题原因可能为 macOS 10.12 beta 系统问题，新更新为 10.12 beta 6 问题解决。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -22,20 +21,185 @@
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;起因&#34;&gt;起因&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;最近工作发现有时候需要测试发送 TCP 包，而目前 Mac 上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。&lt;a href=&#34;https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;&gt;PacketSender&lt;/a&gt;
-因后来实用 ObjC 重写了的原因，所以开源旧版本的 Swift 版本吧。&lt;a href=&#34;https://gitlab.com/sohunjug/PacketSender-Swift.git&#34;&gt;GitLab&lt;/a&gt;、&lt;a href=&#34;https://github.com/sohunjug/PacketSender-Swift.git&#34;&gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;最近工作发现有时候需要测试发送 TCP 包，而目前 Mac 上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。&lt;a class=&#34;link&#34; href=&#34;https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;amp;ls=1&amp;amp;mt=12&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;PacketSender&lt;/a&gt;
+因后来实用 ObjC 重写了的原因，所以开源旧版本的 Swift 版本吧。&lt;a class=&#34;link&#34; href=&#34;https://gitlab.com/sohunjug/PacketSender-Swift.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitLab&lt;/a&gt;、&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/PacketSender-Swift.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;所使用库&#34;&gt;所使用库&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;两个版本都使用的&lt;a class=&#34;link&#34; href=&#34;https://github.com/robbiehanson/CocoaAsyncSocket&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;CocoaAsyncSocket&lt;/a&gt;开源库来实现 socket 连接。
+在 objc 或 swift 中，主界面是在主线程中执行，所以相关 socket 操作等，尽量需要效率且非阻塞，让等待函数在后台线程执行，这个库正好满足。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;版本&#34;&gt;版本&lt;/h2&gt;
+&lt;h3 id=&#34;version-10&#34;&gt;Version 1.0&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;满足单一发送功能&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://qn.sohunjug.com/289304.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;1.0&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;version-12&#34;&gt;Version 1.2&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;增加了发送历史记录功能&lt;/li&gt;
+&lt;li&gt;增加了消息背景&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://qn.sohunjug.com/684062.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;1.2.1&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://qn.sohunjug.com/802423.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;1.2.2&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;h3 id=&#34;version-13&#34;&gt;Version 1.3&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;增加了行数&lt;/li&gt;
+&lt;li&gt;修改了 Server 状态显示&lt;/li&gt;
+&lt;li&gt;增加了发收包数量复制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;http://qn.sohunjug.com/289304.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;1.3&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在此版本之前，一直未发现之前版本在 Mac OS X 10.11.6 版本，根本无法使用，NSTextView 无法选中，无法输入，也无法显示。
+期初我以为是 Swift 在 macOS 10.12 beta 4 版本使用 Xcode 7.3.1 编译，造成不兼容问题，所以使用了 ObjC 重写了 Version 1.2.2。
+但是结果显示问题依旧。虽然现在更新了 1.3 版本。但是此版本是使用朋友的机器，在 Mac OS X 10.11.6 环境下编译。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;待解决问题&#34;&gt;待解决问题&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;希望以后如果有某位朋友找到解决办法，能沟通下，谢谢。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;blockquote&gt;
+&lt;p&gt;欢迎关于 macOS 开发的朋友，来跟我一起交流技术。&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-    <item>
-      <title>Mac应用开发-启程</title>
-      <link>https://sohunjug.com/posts/parld/</link>
-      <pubDate>Thu, 27 Feb 2014 00:00:00 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/parld/</guid>
-      <description>&lt;p&gt;最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是&lt;a href=&#34;http://www.parld.com&#34;&gt;parld音乐聚汇&lt;/a&gt;(推广下哈)。其中Mac客户端&lt;a href=&#34;http://www.parld.com/api?act=download&amp;amp;type=mac&#34;&gt;下载地址&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+        </item>
+        <item>
+        <title>Mac应用开发-启程</title>
+        <link>https://sohunjug.com/2014/02/27/mac%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%90%AF%E7%A8%8B/</link>
+        <pubDate>Thu, 27 Feb 2014 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2014/02/27/mac%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91-%E5%90%AF%E7%A8%8B/</guid>
+        <description>&lt;p&gt;最近和一些小伙伴一起合伙做了个小玩具，大家感觉还是满开心的，网站是&lt;a class=&#34;link&#34; href=&#34;http://www.parld.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;parld音乐聚汇&lt;/a&gt;(推广下哈)。其中Mac客户端&lt;a class=&#34;link&#34; href=&#34;http://www.parld.com/api?act=download&amp;amp;type=mac&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;下载地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;目前的Mac客户端功能还很简单，但是已经不影响使用了，制作过程中遇到了各种问题，发现在网上找Mac开发的相关资源实在是太难，所以我也同步写一点吧，分享给大家&lt;/p&gt;
+&lt;p&gt;** 2016-08-11 **&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;由于项目搁浅，现分享下当时的macOS端代码，objective-c代码&lt;a class=&#34;link&#34; href=&#34;http://git.oschina.net/sohunjug/Parld-macOS&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Git-oschina&lt;/a&gt;，&lt;a class=&#34;link&#34; href=&#34;https://github.com/sohunjug/Parld-macOS.git&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;GitHub&lt;/a&gt;
+代码技术都比较老了，欢迎指教。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;首先是音乐播放问题，对于第一次开发来说，我是在网上找了好多的demo来测试，所以选择了AudioStreamer，其次，需要做状态栏应用，所以找了一段代码
+{% codeblock lang:objc %}
+NSMenu		*menu;&lt;/p&gt;
+&lt;p&gt;_statusItem = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength] ;&lt;/p&gt;
+&lt;p&gt;[_statusItem setImage:[NSImage imageNamed:@&amp;ldquo;start&amp;rdquo;]];
+[_statusItem setHighlightMode:YES];
+[_statusItem setTitle:@&amp;quot; 音乐汇聚&amp;quot;];&lt;/p&gt;
+&lt;p&gt;menu = [[NSMenu alloc] initWithTitle:@&amp;ldquo;音乐汇聚&amp;rdquo;];
+[menu addItemWithTitle:@&amp;ldquo;上一首&amp;rdquo; action:@selector(pre) keyEquivalent:@&amp;quot;&amp;quot;];
+[menu addItemWithTitle:@&amp;ldquo;下一首&amp;rdquo; action:@selector(next) keyEquivalent:@&amp;quot;&amp;quot;];
+[menu addItemWithTitle:@&amp;ldquo;更新音乐池&amp;rdquo; action:@selector(updateMusic) keyEquivalent:@&amp;quot;&amp;quot;];
+[menu addItemWithTitle:@&amp;ldquo;关于&amp;rdquo; action:@selector(orderFrontStandardAboutPanel:) keyEquivalent:@&amp;quot;&amp;quot;];
+[menu addItemWithTitle:@&amp;ldquo;退出&amp;rdquo; action:@selector(exit:) keyEquivalent:@&amp;quot;&amp;quot;];
+[menu addObserver:view forKeyPath:@&amp;ldquo;123&amp;rdquo; options:NSKeyValueObservingOptionNew context:nil];
+[_statusItem setMenu:menu];
+{% endcodeblock %}
+之后需要做的就是逻辑了，获取歌单，播放歌单。
+后期的版本又添加了Mac笔记本的媒体播放键功能，同样是找了一段代码，封装好的，如果想了解原理也可自行下载。SPMediaKeyTap。
+加入之后需要修改主程序
+添加继承NSApplication的类
+{% codeblock lang:objc %}&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;(void)sendEvent:(NSEvent *)theEvent
+{
+// If event tap is not installed, handle events that reach the app instead
+BOOL shouldHandleMediaKeyEventLocally = ![SPMediaKeyTap usesGlobalMediaKeyTap];&lt;/p&gt;
+&lt;p&gt;if(shouldHandleMediaKeyEventLocally &amp;amp;&amp;amp; [theEvent type] == NSSystemDefined &amp;amp;&amp;amp; [theEvent subtype] == SPSystemDefinedEventMediaKeys) {
+[(id)[self delegate] mediaKeyTap:nil receivedMediaKeyEvent:theEvent];
+}
+[super sendEvent:theEvent];
+}
+{% endcodeblock %}
+${PRODUCT_NAME}-Info.plist文件中Principal class字段修改为重写的NSApplication&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;并在主AppDelegate添加按键映射
+{% codeblock lang:objc %}
+-(void)mediaKeyTap:(SPMediaKeyTap*)keyTap receivedMediaKeyEvent:(NSEvent*)event;
+{
+NSAssert([event type] == NSSystemDefined &amp;amp;&amp;amp; [event subtype] == SPSystemDefinedEventMediaKeys, @&amp;ldquo;Unexpected NSEvent in mediaKeyTap:receivedMediaKeyEvent:&amp;rdquo;);
+// here be dragons&amp;hellip;
+int keyCode = (([event data1] &amp;amp; 0xFFFF0000) &amp;raquo; 16);
+int keyFlags = ([event data1] &amp;amp; 0x0000FFFF);
+BOOL keyIsPressed = (((keyFlags &amp;amp; 0xFF00) &amp;raquo; 8)) == 0xA;
+int keyRepeat = (keyFlags &amp;amp; 0x1);&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if (keyIsPressed) {
+	NSString *debugString;
+    debugString = [NSString stringWithFormat:@&amp;quot;%@&amp;quot;, keyRepeat?@&amp;quot;, repeated.&amp;quot;:@&amp;quot;.&amp;quot;];
+	switch (keyCode) {
+		case NX_KEYTYPE_PLAY:
+			if (_isPlay) {
+                [self pauseMusic];
+            }
+            else{
+                [self playMusic];
+            }
+			break;
+			
+		case NX_KEYTYPE_FAST:
+			[self nextMusic];
+			break;
+			
+		case NX_KEYTYPE_REWIND:
+			[self lastMusic];
+			break;
+		default:
+            break;
+            // More cases defined in hidsystem/ev_keymap.h
+	}
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;}
+{% endcodeblock %}
+还要添加一个开机自启动的配置，同样可以使用LaunchAtLoginController，只需要将Check控件的value绑定到LaunchAtLoginController里面的launchAtLogin变量上即可&lt;/p&gt;
+&lt;p&gt;以上就是第一个初级版本所用到的技术，比较简单，但是还是蛮实用的。
+而从今天开始，打算重构做第二版本，支持Mac悬浮窗，拖拽文件上传，悬浮窗下拉主窗体，目前基本功能的技术难点已经基本完成，后续会继续发表博客。&lt;/p&gt;
+&lt;p&gt;在如今Mac已经越来越多的情况下，Mac开发人员还是比较少的，希望大家都能一起来讨论讨论技术。共同提高&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

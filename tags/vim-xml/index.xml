@@ -1,22 +1,56 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Vim xml on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/vim-xml/</link>
-    <description>Recent content in Vim xml on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Fri, 21 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/vim-xml/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Vim的xml排版</title>
-      <link>https://sohunjug.com/posts/vim-xml/</link>
-      <pubDate>Fri, 21 Dec 2012 00:00:00 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/vim-xml/</guid>
-      <description>&lt;p&gt;如果你手中有一个xml，而这个xml显示的排版非常混乱，大家看的时候可能会很为难，其实vim也可以实现xml的排版。&lt;/p&gt;
+    <channel>
+        <title>Vim xml on 聽的资料</title>
+        <link>https://sohunjug.com/tags/vim-xml/</link>
+        <description>Recent content in Vim xml on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 21 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/vim-xml/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Vim的xml排版</title>
+        <link>https://sohunjug.com/2012/12/21/vim%E7%9A%84xml%E6%8E%92%E7%89%88/</link>
+        <pubDate>Fri, 21 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/21/vim%E7%9A%84xml%E6%8E%92%E7%89%88/</guid>
+        <description>&lt;p&gt;如果你手中有一个xml，而这个xml显示的排版非常混乱，大家看的时候可能会很为难，其实vim也可以实现xml的排版。&lt;/p&gt;
 &lt;p&gt;比如你的xml是这样：&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;https://sohunjug.com/img/blog/xml-11.jpeg&#34; alt=&#34;未排版的xml&#34;&gt;&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+&lt;p&gt;&lt;img src=&#34;https://sohunjug.com/img/blog/xml-11.jpeg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;未排版的xml&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;需要安装一个程序。&lt;/p&gt;
+&lt;p&gt;如果使用的是fedora，输入
+{% codeblock lang:bash %}
+yum install xml2
+{% endcodeblock %}
+如果是其他系统可能会叫xmllint&lt;/p&gt;
+&lt;p&gt;之后可以在终端中用命令排版，
+{% codeblock lang:bash %}
+xmllint -format -recover 后边加上文件名
+{% endcodeblock %}
+如果vim中使用，则需要修改~/.vimrc，添加如下：
+{% codeblock lang:vim %}
+map &lt;!-- raw HTML omitted --&gt; :silent %!xmllint -format &lt;!-- raw HTML omitted --&gt;
+{% endcodeblock %}
+&lt;img src=&#34;https://sohunjug.com/img/blog/xml-2.jpg&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;排版后的xml&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;效果还不错吧～    以后就可以使用F2直接排版xml了～&lt;/p&gt;
+&lt;p&gt; &lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

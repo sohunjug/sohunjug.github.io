@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Oracle on 聽的资料</title>
+        <link>https://sohunjug.com/categories/oracle/</link>
+        <description>Recent content in Oracle on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 26 Aug 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/categories/oracle/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>MongoDB与OracleDB效率测试</title>
+        <link>https://sohunjug.com/2013/08/26/mongodb%E4%B8%8Eoracledb%E6%95%88%E7%8E%87%E6%B5%8B%E8%AF%95/</link>
+        <pubDate>Mon, 26 Aug 2013 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2013/08/26/mongodb%E4%B8%8Eoracledb%E6%95%88%E7%8E%87%E6%B5%8B%E8%AF%95/</guid>
+        <description>&lt;p&gt;最近因为任务需要，专门调研了一下MongoDB数据库的效率。与常规的OracleDB做了一下对比。&lt;/p&gt;
+&lt;p&gt;MongoDB是一个基于分布式文件存储的数据库。由C++语言编写。旨在为WEB应用提供可扩展的高性能数据存储解决方案。
+他支持的数据结构非常松散，是类似json的bjson格式，因此可以存储比较复杂的数据类型。Mongo最大的特点是他支持的查询语言非常强大，其语法有点类似于面向对象的查询语言，几乎可以实现类似关系数据库单表查询的绝大部分功能，而且还支持对数据建立索引。
+Mongodb的存储方式是文档式存储，并不是Key-Value形式。
+Mongodb的主要的三种集群方式的搭建：Replica Set、 Sharding、 Master-Slaver。
+其他大部分内容互联网上也有很多，我也就不再做介绍了。&lt;/p&gt;
+&lt;p&gt;主要测试时设备环境以及数据格式&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;设备环境&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;175、176服务器：&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;CPU：8核&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;内存：32G（空闲19G）&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;硬盘：4TB&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;系统：Red Hat 6.3&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;网络：千兆光纤&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;165数据库服务器：&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;CPU：8核&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;内存：16G&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;硬盘：2TB&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;系统：Red Hat 4&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;网络：百兆光纤&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数据格式&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;每条数据包含6个字段。
+字段名为:usr, pwd, age, email, address, phone
+每个字段均为整形，每个字段内容为当前条数，如：第100条数据，每个字段内容为100。&lt;/p&gt;
+&lt;p&gt;一、oracle数据库入库测试&lt;/p&gt;
+&lt;p&gt;数据库环境:165数据库，表结构：hash分区16个，usr字段唯一索引&lt;/p&gt;
+&lt;p&gt;入库条数：10,000,000&lt;/p&gt;
+&lt;p&gt;1 单条数据入库&lt;/p&gt;
+&lt;p&gt;总入库时间2836s（不包含创建连接以及句柄时间）约47.3分钟。&lt;/p&gt;
+&lt;p&gt;2 批量数据入库&lt;/p&gt;
+&lt;p&gt;2.1 每批次数据量50,000&lt;/p&gt;
+&lt;p&gt;总入库时间564s，约9.4分钟。&lt;/p&gt;
+&lt;p&gt;2.2 每批次数据量100,000&lt;/p&gt;
+&lt;p&gt;总入库时间553s，约9.2分钟。&lt;/p&gt;
+&lt;p&gt;二、mongodb入库测试&lt;/p&gt;
+&lt;p&gt;1 主从备份数据库配置(主从复制)（Master-Slaver）&lt;/p&gt;
+&lt;p&gt;比较初级的构架，配置简单。&lt;/p&gt;
+&lt;p&gt;1.1 数据库环境（无索引）&lt;/p&gt;
+&lt;p&gt;数据库环境：176主节点，175为备份节点，内容时时同步。无索引（索引可以在查询之前建立）。&lt;/p&gt;
+&lt;p&gt;1.1.1 入库数据量10,000,000&lt;/p&gt;
+&lt;p&gt;总入库时间355s，约5.9分钟。&lt;/p&gt;
+&lt;p&gt;从头遍历一次时间13s。&lt;/p&gt;
+&lt;p&gt;1.1.2 入库数据量50,000,000&lt;/p&gt;
+&lt;p&gt;总入库时间1815s，约30.25分钟&lt;/p&gt;
+&lt;p&gt;从头遍历一次时间58s&lt;/p&gt;
+&lt;p&gt;注：推荐每次插入前删除索引，插入后重新建立索引，减少插入数据时对索引的处理时间。&lt;/p&gt;
+&lt;p&gt;1.2 数据库环境（有索引）&lt;/p&gt;
+&lt;p&gt;数据库环境：176主节点，175为备份节点，内容时时同步。usr字段索引。先建立索引&lt;/p&gt;
+&lt;p&gt;1.2.1 入库数据量10,000,000&lt;/p&gt;
+&lt;p&gt;总入库时间418s，约6.97分钟。&lt;/p&gt;
+&lt;p&gt;从头遍历一次时间11s。&lt;/p&gt;
+&lt;p&gt;1.2.2 入库数据量50,000,000（放弃）&lt;/p&gt;
+&lt;p&gt;入库25,000,000数据大概1小时，后续时间持续增长，速度过慢。&lt;/p&gt;
+&lt;p&gt;注：网上资料提供说：这种先写后读的需求，完全可以等全部插入后再建索引，防止大量的锁竞争。&lt;/p&gt;
+&lt;p&gt;2 mongodb高可用性架构—Replica Set (副本集)&lt;/p&gt;
+&lt;p&gt;2.1 数据库环境&lt;/p&gt;
+&lt;p&gt;数据库环境：主节点10.4.120.176:27017，从节点10.4.120.175:27017，仲裁节点10.4.120.176:17017。&lt;/p&gt;
+&lt;p&gt;作用：当主节点宕机或停电，从节点与仲裁节点进行投票，选择票数大于总主机数一半的从主机为新的主节点。保证服务正常运转。&lt;/p&gt;
+&lt;p&gt;2.1.1 入库数据量50,000,000(无索引)&lt;/p&gt;
+&lt;p&gt;总入库时间2348s，约39.5分钟。&lt;/p&gt;
+&lt;p&gt;从头遍历一次时间58s。&lt;/p&gt;
+&lt;p&gt;注：&lt;/p&gt;
+&lt;p&gt;1.大部分网络上的构架应该是这种的升级版（主要为后期数据库调优）。&lt;/p&gt;
+&lt;p&gt;2.入库后新建索引大概时间为5分钟。&lt;/p&gt;
+&lt;p&gt;3 MongoDB分布式主备集群架构&lt;/p&gt;
+&lt;p&gt;本架构为2章节介绍中1和2架构的结合&lt;/p&gt;
+&lt;p&gt;集群子集r0主备：主服务器176:10000，备服务器175:20000，仲裁服务器176:10001。&lt;/p&gt;
+&lt;p&gt;集群子集r1主备：主服务器175:10000，备服务器176:20000，仲裁服务器175:10001。&lt;/p&gt;
+&lt;p&gt;将r0，r1子集架构为分布式集群，自动分片。&lt;/p&gt;
+&lt;p&gt;3.1.1 入库数据量10,000,000&lt;/p&gt;
+&lt;p&gt;总入库时间618s，约10.3分钟。&lt;/p&gt;
+&lt;p&gt;从头遍历一次时间34s。&lt;/p&gt;
+&lt;p&gt;本次测试包含：插入过程中将某个子集主节点kill掉模拟服务器故障，过1分钟后重新启动该节点主服务器进程，持续插入进程继续，当最后插入结束时，数据丢失1条。&lt;/p&gt;
+&lt;p&gt;3.1.2 入库数据量20,000,000&lt;/p&gt;
+&lt;p&gt;多进程入库，每个进程入库10,000,000&lt;/p&gt;
+&lt;p&gt;总入库时间1315s，约21.9分钟。&lt;/p&gt;
+&lt;p&gt;3.1.3 入库数据量50,000,000&lt;/p&gt;
+&lt;p&gt;总入库时间2771s，约46.2分钟。&lt;/p&gt;
+&lt;p&gt;从头遍历一次时间160s。&lt;/p&gt;
+&lt;p&gt;三、总结&lt;/p&gt;
+&lt;p&gt;通过下方的表格可以看出，当处理数据多时，MongoDB效率基本不会改变，而OracleDB效率慢的地方是执行sql语句的时间，当某些业务需求必须单独执行sql时，MongoDB的效率约为OracleDB的5倍。&lt;/p&gt;
+&lt;p&gt;其中商业架构主推分布式主备集群的架构方式，此方式可以实现数据时时备份，且数据分布式存储，可以实现当某一台主机宕机，无需暂停业务处理。数据丢失情况，为宕机前100ms内执行的数据，约为数据的千万分之一。&lt;/p&gt;
+&lt;p&gt;个人认为MongoDB单机的效率虽然非常高，但可用性低，而分布式架构适合数据重要性不强情况，能实现远超oracle的效率，分布式主备架构是可用性、安全性最高的架构方式，前期的效率可能会等同于oracle，但当数据量过大时，会超过oracle效率。实现水平扩展，将计算能力提升到最大。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;</description>
+        </item>
+        <item>
+        <title>关于脏数据、脏数据块的正确定义，commit的内部机制</title>
+        <link>https://sohunjug.com/2012/12/24/%E5%85%B3%E4%BA%8E%E8%84%8F%E6%95%B0%E6%8D%AE%E8%84%8F%E6%95%B0%E6%8D%AE%E5%9D%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9A%E4%B9%89commit%E7%9A%84%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/</link>
+        <pubDate>Mon, 24 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/24/%E5%85%B3%E4%BA%8E%E8%84%8F%E6%95%B0%E6%8D%AE%E8%84%8F%E6%95%B0%E6%8D%AE%E5%9D%97%E7%9A%84%E6%AD%A3%E7%A1%AE%E5%AE%9A%E4%B9%89commit%E7%9A%84%E5%86%85%E9%83%A8%E6%9C%BA%E5%88%B6/</guid>
+        <description>&lt;p&gt;有人觉得脏数据是指错误的业务流程在系统中产生的无用异常数据。  产生这种数据的原因可能是因为错误的业务流程或者手动在数据库中制造。&lt;/p&gt;
+&lt;p&gt;例如在百度百科中，对脏数据的定义是这样的，“脏数据是指源系统中的数据不在给定的范围内或对于实际业务毫无意义，或是数据格式非法，以及在源系统中存在不规范的编码和含糊的业务逻辑”。&lt;/p&gt;
+&lt;p&gt;无论这种定义是否正确，在oracle中脏数据的定义不是这样的。在oracle中，脏数据是指在内存中而未写入硬盘的数据。脏数据块即为在内存中而未写入硬盘的数据块。&lt;/p&gt;
+&lt;p&gt;那到底执行了commit语句之后，数据是否就立刻写到硬盘上了哪？事实上不是这样的，因为I/O操作是非常昂贵的，每次commit都写入硬盘会对系统造成巨大的压力。&lt;/p&gt;
+&lt;p&gt;将内存数据块写入硬盘是一个相当复杂的过程。简单的说DBWn进程会&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;定期&lt;!-- raw HTML omitted --&gt;&lt;!-- raw HTML omitted --&gt;将内存数据块写入硬盘，由CKPT后台进程确定写入的时间间隔。但是为了保证安全性，将由LGWR进程将redo日志写入联机日志，以备数据库实例崩溃时，恢复未写入硬盘的数据。&lt;/p&gt;
+&lt;p&gt;DBWn：database writer&amp;mdash;&amp;gt; &lt;em&gt;DBW n&lt;/em&gt;是数字,代表unix下多个数据库写进程。&lt;/p&gt;
+&lt;p&gt;LGWR：Log Writer 将日志缓冲区中的所有记录项写到日志文件中。该进程在启动实例时自动启动。&lt;/p&gt;
+&lt;p&gt;CKPT： 检验点进程。&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>没有进行commit操作的数据是否能被查询到，关于oracle的脏读和隔离级别</title>
+        <link>https://sohunjug.com/2012/12/23/%E6%B2%A1%E6%9C%89%E8%BF%9B%E8%A1%8Ccommit%E6%93%8D%E4%BD%9C%E7%9A%84%E6%95%B0%E6%8D%AE%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E6%9F%A5%E8%AF%A2%E5%88%B0%E5%85%B3%E4%BA%8Eoracle%E7%9A%84%E8%84%8F%E8%AF%BB%E5%92%8C%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</link>
+        <pubDate>Sun, 23 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/23/%E6%B2%A1%E6%9C%89%E8%BF%9B%E8%A1%8Ccommit%E6%93%8D%E4%BD%9C%E7%9A%84%E6%95%B0%E6%8D%AE%E6%98%AF%E5%90%A6%E8%83%BD%E8%A2%AB%E6%9F%A5%E8%AF%A2%E5%88%B0%E5%85%B3%E4%BA%8Eoracle%E7%9A%84%E8%84%8F%E8%AF%BB%E5%92%8C%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/</guid>
+        <description>&lt;p&gt;以前在辽宁电信做数据转换的时候曾经问过别人一个问题，“修改的数据没有进行commit操作时，能否被其他用户查询到”，当时就被同事鄙视了，在大家眼里这个问题的结果是弱智和显而易见的，但是其实这是一个可以深入研究的问题。&lt;/p&gt;
+&lt;h1 id=&#34;关于脏读&#34;&gt;关于脏读&lt;/h1&gt;
+&lt;p&gt;&amp;ldquo;修改的数据没有进行commit，可以被其它用户查到”，这种场景即为“脏读(dirty read)&amp;quot;。&lt;/p&gt;
+&lt;p&gt;脏读存在的意义是为了实现非阻塞读(高并发无等待)，但是Oracle可以完全得到脏读的所有好处（即无阻塞），而不会带来任何不正确的结果，所以oracle不支持脏读，但是sqlserver等一些数据库是支持脏读的。&lt;/p&gt;
+&lt;p&gt;oracle是怎么实现这种机制的？当一条数据被修改而未进行commit时，当有其它用户查询这条数据时，oracle会绕过已修改的原数据，而是从undo段获得数据。因此可以返回一致而且正确的答案，而无需等待事务提交。&lt;/p&gt;
+&lt;h1 id=&#34;关于隔离级别&#34;&gt;关于隔离级别&lt;/h1&gt;
+&lt;p&gt;标准sql的隔离级别如下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://sohunjug.com/img/blog/oracle.png&#34;
+	
+	
+	
+	loading=&#34;lazy&#34;
+	
+		alt=&#34;级别&#34;
+	
+	
+&gt;&lt;/p&gt;
+&lt;p&gt;oracle提供了SQL92标准中的read committed和serializable，同时提供了非SQL92标准的read-only。由于oracle不支持read uncommited，所以oracle不支持脏读。oracle默认的的事务隔离级别为read commited。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;read uncommited的隔离级别最低， serializable的隔离级别最高。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;较低的隔离级别可以增强许多用户同时访问数据的能力，但也增加了用户可能遇到的并发副作用（例如脏读或丢失更新）的数量。相反，较高的隔离级别减少了用户可能遇到的并发副作用的类型，但需要更多的系统资源，并增加了一个事务阻塞其他事务的可能性。&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

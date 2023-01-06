@@ -1,22 +1,213 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Memory on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/memory/</link>
-    <description>Recent content in Memory on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 26 Jun 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/memory/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>简单的内存管理类（关于malloc与free）</title>
-      <link>https://sohunjug.com/posts/memory/</link>
-      <pubDate>Wed, 26 Jun 2013 00:00:00 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/memory/</guid>
-      <description>&lt;p&gt;大家在写代码的时候是否有忘记free指针的时候呢？&lt;/p&gt;
+    <channel>
+        <title>Memory on 聽的资料</title>
+        <link>https://sohunjug.com/tags/memory/</link>
+        <description>Recent content in Memory on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 26 Jun 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/memory/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>简单的内存管理类（关于malloc与free）</title>
+        <link>https://sohunjug.com/2013/06/26/%E7%AE%80%E5%8D%95%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%B1%BB%E5%85%B3%E4%BA%8Emalloc%E4%B8%8Efree/</link>
+        <pubDate>Wed, 26 Jun 2013 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2013/06/26/%E7%AE%80%E5%8D%95%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%B1%BB%E5%85%B3%E4%BA%8Emalloc%E4%B8%8Efree/</guid>
+        <description>&lt;p&gt;大家在写代码的时候是否有忘记free指针的时候呢？&lt;/p&gt;
 &lt;p&gt;如果是大型项目肯定会用一些比较稳定的开源库一类的来解决。而如果是私人的小项目，或者是测试一类的代码遇到这类问题还需要各种检查，是否很浪费时间呢？&lt;/p&gt;
-&lt;p&gt;给大家分享一个我个人使用的内存管理类哈~可以使用Create一块空间，之后可以不需要去管这块空间最后是否free掉，因为类析构时候会自动帮助free掉，而如果想要手动free也支持，直接传入申请空间时候取得的ID就可以指定析构了。这个还是比较适合私人用用哈~&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+&lt;p&gt;给大家分享一个我个人使用的内存管理类哈~可以使用Create一块空间，之后可以不需要去管这块空间最后是否free掉，因为类析构时候会自动帮助free掉，而如果想要手动free也支持，直接传入申请空间时候取得的ID就可以指定析构了。这个还是比较适合私人用用哈~&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;首先是头文件~&lt;/strong&gt;
+{% codeblock lang:cpp %}/*******************************************************************************&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Author : RKhuwq&lt;/li&gt;
+&lt;li&gt;Email : &lt;a class=&#34;link&#34; href=&#34;mailto:huwq@neusoft.com&#34; &gt;huwq@neusoft.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Last modified : 2013-04-07 18:34&lt;/li&gt;
+&lt;li&gt;Filename : MemCtrl.h&lt;/li&gt;
+&lt;li&gt;Description : 内存管理类，类析构时自动释放内存。&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          用于给指针申请内存空间。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;*****************************************************************************/
+#ifndef &lt;strong&gt;MEMCTRL_H&lt;/strong&gt;
+#define &lt;strong&gt;MEMCTRL_H&lt;/strong&gt;
+#include &amp;lt;stdio.h&amp;gt;
+#include &amp;lt;stdlib.h&amp;gt;
+#include &lt;!-- raw HTML omitted --&gt;
+#include &lt;!-- raw HTML omitted --&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;class CMemCtrl
+{
+private:
+typedef struct &lt;em&gt;DATA_SPACE&lt;/em&gt;
+{
+void* point;
+&lt;em&gt;DATA_SPACE&lt;/em&gt;* Next;
+&lt;em&gt;DATA_SPACE&lt;/em&gt;* Pre;
+int count;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;        _DATA_SPACE_()
+        {
+            point = NULL;
+            Next = NULL;
+            Pre = NULL;
+            count = 0;
+        }
+        ~_DATA_SPACE_()
+        {
+            if (point != NULL)
+                free(point);
+            if (Pre != NULL &amp;amp;&amp;amp; Next == NULL)
+                Pre-&amp;gt;Next = NULL;
+            else if (Pre == NULL &amp;amp;&amp;amp; Next != NULL)
+                Next-&amp;gt;Pre = NULL;
+            else if (Pre != NULL &amp;amp;&amp;amp; Next != NULL)
+            {
+                Pre-&amp;gt;Next = Next;
+                Next-&amp;gt;Pre = Pre;
+            }
+        }
+        void SetPre(_DATA_SPACE_* Pre)
+        {
+            this-&amp;gt;Pre = Pre;
+        }
+    }KDataSpace;
+
+    typedef KDataSpace* PDataSpace;
+public:
+    CMemCtrl();
+    ~CMemCtrl();
+
+    //申请空间
+    void* Create(int x, int size);
+    //指定ID释放空间
+    void Clear(int count);
+    //释放所有已申请空间
+    bool Reset();
+    //取得最近一次所申请的空间ID
+    int GetCount();
+private:
+    void Clear();
+    void* point_one;
+    std::vector&amp;lt;int&amp;gt; vCount;
+    PDataSpace header;
+    PDataSpace end;
+    PDataSpace point;
+    int count_one;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;};&lt;/p&gt;
+&lt;p&gt;#endif
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;下面就是具体的实现了~&lt;/strong&gt;
+{% codeblock lang:cpp %}
+/*******************************************************************************&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Author : RKhuwq&lt;/li&gt;
+&lt;li&gt;Email : &lt;a class=&#34;link&#34; href=&#34;mailto:huwq@neusoft.com&#34; &gt;huwq@neusoft.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Last modified : 2013-04-07 18:34&lt;/li&gt;
+&lt;li&gt;Filename : MemCtrl.h&lt;/li&gt;
+&lt;li&gt;Description : 内存管理类，类析构时自动释放内存。&lt;/li&gt;
+&lt;li&gt;
+&lt;pre&gt;&lt;code&gt;          用于给指针申请内存空间。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;*****************************************************************************/
+#include &amp;ldquo;MemCtrl.h&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CMemCtrl::CMemCtrl()
+{
+header = NULL;
+end = NULL;
+count_one = 0;
+}&lt;/p&gt;
+&lt;p&gt;CMemCtrl::~CMemCtrl()
+{
+Clear();
+}&lt;/p&gt;
+&lt;p&gt;void CMemCtrl::Clear()
+{
+while(header != NULL)
+{
+point = header-&amp;gt;Next;
+delete header;
+header = point;
+}
+header = NULL;
+end = NULL;
+count_one = 0;
+}&lt;/p&gt;
+&lt;p&gt;void CMemCtrl::Clear(int count)
+{
+PDataSpace temp;
+temp = end;
+point = temp;
+while(point != NULL &amp;amp;&amp;amp; point-&amp;gt;count != count)
+{
+point = temp-&amp;gt;Pre;
+temp = point;
+}
+vCount.push_back(point-&amp;gt;count);
+if (point == header)
+header = header-&amp;gt;Next;
+if (point == end)
+end = end-&amp;gt;Pre;
+if (point != NULL)
+{
+delete point;
+}&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;point = NULL;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;int CMemCtrl::GetCount()
+{
+return end-&amp;gt;count;
+}&lt;/p&gt;
+&lt;p&gt;void* CMemCtrl::Create(int x, int size)
+{
+std::vector&lt;!-- raw HTML omitted --&gt;::iterator vCountIte;
+point_one = NULL;
+point_one = (void*)calloc(x, size);
+if (point_one == NULL)
+return NULL;
+point = new KDataSpace();
+if (point == NULL)
+return NULL;
+point-&amp;gt;point = point_one;
+while ((vCountIte = find(vCount.begin(), vCount.end(), count_one-1)) != vCount.end())
+{
+count_one&amp;ndash;;
+vCount.erase(vCountIte);
+}
+if (vCount.size() &amp;gt; 0)
+{
+point-&amp;gt;count = vCount[0];
+vCount.erase(vCount.begin());
+}
+else
+{
+point-&amp;gt;count = count_one;
+count_one ++;
+}&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;if (header == NULL)
+{
+    header = point;
+    end = point;
+}
+else
+{
+    end-&amp;gt;Next = point;
+    point-&amp;gt;SetPre(end);
+    end = point;
+}
+
+return point_one;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;}&lt;/p&gt;
+&lt;p&gt;bool CMemCtrl::Reset()
+{
+Clear();
+return true;
+}
+{% endcodeblock %}&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

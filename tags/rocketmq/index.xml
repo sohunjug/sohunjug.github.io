@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>RocketMQ on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/rocketmq/</link>
-    <description>Recent content in RocketMQ on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Mon, 08 Aug 2016 09:10:28 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/rocketmq/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Kafka、RocketMQ调研</title>
-      <link>https://sohunjug.com/posts/kafka-rocketmq/</link>
-      <pubDate>Mon, 08 Aug 2016 09:10:28 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/kafka-rocketmq/</guid>
-      <description>&lt;h3 id=&#34;kafka是linkin开源的消息中间件&#34;&gt;Kafka是Linkin开源的消息中间件&lt;/h3&gt;
+    <channel>
+        <title>RocketMQ on 聽的资料</title>
+        <link>https://sohunjug.com/tags/rocketmq/</link>
+        <description>Recent content in RocketMQ on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Mon, 08 Aug 2016 09:10:28 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/rocketmq/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Kafka、RocketMQ调研</title>
+        <link>https://sohunjug.com/2016/08/08/kafkarocketmq%E8%B0%83%E7%A0%94/</link>
+        <pubDate>Mon, 08 Aug 2016 09:10:28 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2016/08/08/kafkarocketmq%E8%B0%83%E7%A0%94/</guid>
+        <description>&lt;h3 id=&#34;kafka是linkin开源的消息中间件&#34;&gt;Kafka是Linkin开源的消息中间件&lt;/h3&gt;
 &lt;h4 id=&#34;kafka的设计目标是&#34;&gt;Kafka的设计目标是：&lt;/h4&gt;
 &lt;blockquote&gt;
 &lt;p&gt;（1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。
@@ -25,8 +24,217 @@
 &lt;h3 id=&#34;rocketmq是阿里开源的消息中间件&#34;&gt;RocketMQ是阿里开源的消息中间件&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;其最初也是基于Kafka发展而来。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;数据可靠性&#34;&gt;数据可靠性&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;RocketMQ支持异步实时刷盘，同步刷盘，同步Replication，异步Replication&lt;/li&gt;
+&lt;li&gt;Kafka使用异步刷盘方式，异步Replication/同步Replication&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;性能对比&#34;&gt;性能对比&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka会在Producer端将多个小消息合并，批量发向Broker，所以在批量发送消息时有着大量的优势，在批量时，Kafka单机写入TPS约在百万条/秒，消息大小100个字节&lt;/li&gt;
+&lt;li&gt;RocketMQ单机写入TPS单实例约7万条/秒，RocketMQ在阿里使用在淘宝支付宝端，在处理异步消息需要保证消息到达，所以未实现api级别批量发送消息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;单机支持的队列数&#34;&gt;单机支持的队列数&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka单机超过64个队列/分区，Load会发生明显的飙高现象，队列越多，load越高，发送消息响应时间变长。&lt;/li&gt;
+&lt;li&gt;RocketMQ单机支持最高5万个队列，Load不会发生明显变化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;严格的消息顺序&#34;&gt;严格的消息顺序&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka支持消息顺序，但是一台Broker宕机后，就会产生消息乱序&lt;/li&gt;
+&lt;li&gt;RocketMQ支持严格的消息顺序，在顺序消息场景下，一台Broker宕机后，发送消息会失败，但是不会乱序&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;分布式事务消息&#34;&gt;分布式事务消息&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka不支持分布式事务消息&lt;/li&gt;
+&lt;li&gt;阿里云MQ支持分布式事务消息，未来开源版本的RocketMQ也有计划支持分布式事务消息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;消息查询&#34;&gt;消息查询&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka不支持消息查询&lt;/li&gt;
+&lt;li&gt;RocketMQ支持根据Message Id查询消息，也支持根据消息内容查询消息（发送消息时指定一个Message Key，任意字符串，例如指定为订单Id）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;总结：消息查询对于定位消息丢失问题非常有帮助，例如某个订单处理失败，是消息没收到还是收到处理出错了。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;消息回溯&#34;&gt;消息回溯&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka理论上可以按照Offset来回溯消息&lt;/li&gt;
+&lt;li&gt;RocketMQ支持按照时间来回溯消息，精度毫秒，例如从一天之前的某时某分某秒开始重新消费消息&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;总结：典型业务场景如consumer做订单分析，但是由于程序逻辑或者依赖的系统发生故障等原因，导致今天消费的消息全部无效，需要重新从昨天零点开始消费，那么以时间为起点的消息重放功能对于业务非常有帮助。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;消费并行度&#34;&gt;消费并行度&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka的消费并行度依赖Topic配置的分区数，如分区数为10，那么最多10台机器来并行消费（每台机器只能开启一个线程），或者一台机器消费（10个线程并行消费）。即消费并行度和分区数一致。&lt;/li&gt;
+&lt;li&gt;RocketMQ消费并行度分两种情况
+&lt;ul&gt;
+&lt;li&gt;顺序消费方式并行度同Kafka完全一致&lt;/li&gt;
+&lt;li&gt;乱序方式并行度取决于Consumer的线程数，如Topic配置10个队列，10台机器消费，每台机器100个线程，那么并行度为1000。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;broker端消息过滤&#34;&gt;Broker端消息过滤&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Kafka不支持Broker端的消息过滤&lt;/li&gt;
+&lt;li&gt;RocketMQ支持两种Broker端消息过滤方式
+&lt;ul&gt;
+&lt;li&gt;根据Message Tag来过滤，相当于子topic概念&lt;/li&gt;
+&lt;li&gt;向服务器上传一段Java代码，可以对消息做任意形式的过滤，甚至可以做Message Body的过滤拆分。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;单机系统可靠性&#34;&gt;单机系统可靠性&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;模拟进程退出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在消息收发过程中，利用Kill -9 命令使Broker进程终止，然后重新启动，得到可靠性数据如下：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;产品&lt;/th&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;刷盘策略&lt;/th&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;并发&lt;/th&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;tps&lt;/th&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;丢失&lt;/th&gt;
+&lt;th style=&#34;text-align:left&#34;&gt;重复&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;Kafka&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;异步&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;600&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不丢&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不重复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;Kafka&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;异步&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;30&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;10500&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不丢&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不重复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;Kafka&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;异步&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;150&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;49200&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不丢&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;重复7条&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;RocketMQ&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;异步&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;1&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;4066&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不丢&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不重复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;RocketMQ&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;异步&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;3&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;10900&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不丢&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不重复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;RocketMQ&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;异步&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;140&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;52428&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不丢&lt;/td&gt;
+&lt;td style=&#34;text-align:left&#34;&gt;不重复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在Broker进程被终止重启，Kafka和RMQ都能保证同步发送的消息不丢，因为进程退出后操作系统能确保将该进程遗留在内存的数据刷到磁盘上。实验中，Kafka出现了极少量的消息重复。再次可以确定此场景中，二者的可靠性都很高。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;模拟机器掉电&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;在消息收发过程中，直接拔掉Broker所在的宿主机电源，然后重启宿主机和Broker应用。因受到机房断电限制，我们在本场景测试中使用的是普通PC机器。得到可靠性数据如下：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;产品&lt;/th&gt;
+&lt;th&gt;刷盘策略&lt;/th&gt;
+&lt;th&gt;并发&lt;/th&gt;
+&lt;th&gt;tps&lt;/th&gt;
+&lt;th&gt;丢失&lt;/th&gt;
+&lt;th&gt;重复&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Kafka&lt;/td&gt;
+&lt;td&gt;异步&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;2000&lt;/td&gt;
+&lt;td&gt;丢失3条&lt;/td&gt;
+&lt;td&gt;掉电前所有发送重新消费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Kafka&lt;/td&gt;
+&lt;td&gt;同步&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;300&lt;/td&gt;
+&lt;td&gt;不丢&lt;/td&gt;
+&lt;td&gt;重复3条&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Kafka&lt;/td&gt;
+&lt;td&gt;同步&lt;/td&gt;
+&lt;td&gt;60&lt;/td&gt;
+&lt;td&gt;500&lt;/td&gt;
+&lt;td&gt;不丢&lt;/td&gt;
+&lt;td&gt;重复2w条&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RocketMQ&lt;/td&gt;
+&lt;td&gt;异步&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;2500&lt;/td&gt;
+&lt;td&gt;丢失19条&lt;/td&gt;
+&lt;td&gt;不重复&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RocketMQ&lt;/td&gt;
+&lt;td&gt;同步&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;800&lt;/td&gt;
+&lt;td&gt;不丢&lt;/td&gt;
+&lt;td&gt;掉电前所有发送重新消费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RocketMQ&lt;/td&gt;
+&lt;td&gt;同步&lt;/td&gt;
+&lt;td&gt;60&lt;/td&gt;
+&lt;td&gt;4000&lt;/td&gt;
+&lt;td&gt;不丢&lt;/td&gt;
+&lt;td&gt;掉电前所有发送重新消费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;###测试结论&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;在Broker进程被Kill的场景， Kafka和RocketMQ都能在保证吞吐量的情况下，不丢消息，可靠性都比较高。&lt;/li&gt;
+&lt;li&gt;在宿主机掉电的场景，Kafka与RocketMQ均能做到不丢消息，此时Kafka的吞吐量会急剧下跌，几乎不可用。RocketMQ则仍能保持较高的吞吐量。&lt;/li&gt;
+&lt;li&gt;在单机可靠性方面，RocketMQ综合表现优于Kafka。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;/blockquote&gt;</description>
-    </item>
-    
-  </channel>
+        </item>
+        
+    </channel>
 </rss>

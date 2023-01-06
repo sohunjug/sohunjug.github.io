@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>随笔 on 聽的资料</title>
+        <link>https://sohunjug.com/categories/%E9%9A%8F%E7%AC%94/</link>
+        <description>Recent content in 随笔 on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Fri, 21 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/categories/%E9%9A%8F%E7%AC%94/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>末日杂记</title>
+        <link>https://sohunjug.com/2012/12/21/%E6%9C%AB%E6%97%A5%E6%9D%82%E8%AE%B0/</link>
+        <pubDate>Fri, 21 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/21/%E6%9C%AB%E6%97%A5%E6%9D%82%E8%AE%B0/</guid>
+        <description>&lt;p&gt;眨眼间半年就过去了，毕业后的日子终究没有上学时候自由，可是大家都希望毕业，有点纠结呀。&lt;/p&gt;
+&lt;p&gt;工作的生活有点千篇一律，天天都是代码，bug，需求。不过初次步入社会，与学校中的生活还真是区别甚大。天天的生活仿佛回到了小学，每天盼着下班，周末，放假。&lt;/p&gt;
+&lt;p&gt;不过公司到确实给了我一个学习的环境，从Tuxedo后台服务端，到webservice后台客户端，学习了好多，大公司的项目确实很锻炼人。
+我也从一个linux菜鸟，过滤到了新手的地步哈。大学之后用用ubuntu，看看apt-get 没事还得用用新得力，给人一种神秘感。即使刚进公司时，我也没想到会用linux替换windows系统。&lt;/p&gt;
+&lt;p&gt;刚开始看各种论坛说opensuse还不错，就用了2月，gnome桌面还算挺舒服，一些额外的插件基本能满足大部分人的使用。可惜本身带了好多的程序，感觉太累赘了。后来开始研究gentoo，发现了一块新大陆，编译内核确实有点难，不过主要是wpa2，虽然安装上了wpa2-support，可是就是不好用，之后又尝试了arch-linux，安装都可以，唯一缺点是内核问题，不知道为什么总是关机显示kvm：exiting hardware virtualization就卡了，找了好久也没弄明白什么问题。因为后来看了一些博客说国外的程序员很多都用fedora和ubuntu，之后也就尝试了一下kde的fedora，尝试发现kde用着确实很爽，界面美观，发现内存使用也不是很高，我的8G内存本本现在还算勉强够用吧，估计等闲余时间多了之后，我还会折腾折腾arch或者gentoo吧。哈哈～&lt;/p&gt;
+&lt;p&gt;现在已经彻底使用linux代替了windows系统，wine qq 基本也就够用了，其他各种工具也都有，不过最喜欢的就是写shell脚本，确实好方便呀。我会陆续发表分享的。&lt;/p&gt;
+&lt;p&gt;其实一直都想开博客，可惜总是有些事情给耽误了。不过既然末日都因故推迟了，我推迟推迟也是应该的哈～
+我会好好做下去，有些技术也可以分享分享哈。&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

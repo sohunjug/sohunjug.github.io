@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。
+其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。 因为使用模板来构造，所以目前只支持类成员函数的回调。 与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。
+此基于成员函数回调的线程池需要同优先级队列共同使用，原理是初始化一个初始为5个线程的线程池，并将自己的控制线程添加到最高优先级启动。控制线程的目的是当任务队列比较多时增加线程来增加效率，当任务队列少时减速线程来节约资源（目前未实现）
+连接池，需要同线程池与任务队列共同使用，同样为先初始化一定数量的连接，供多线程调度使用，其中包含一个控制线程，来控制连接池中的连接数量，当取出一个连接来用时，会给取出的连接加锁，所以使用完后需要调用返回函数，来归还使用完的连接。
+连接池的作用就是不必每次都创建连接使用完成后断开连接，而使用模板来构造扩展性更强，所以需要自己额外来写创建连接，与断开连接函数。
+需要注意连接池需要在线程之前析构。
+任务队列文件代码：
+'>
+<title>基于类成员函数回调的线程池-连接池-任务队列</title>
+
+<link rel='canonical' href='https://sohunjug.com/2013/11/28/%E5%9F%BA%E4%BA%8E%E7%B1%BB%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E5%9B%9E%E8%B0%83%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E8%BF%9E%E6%8E%A5%E6%B1%A0-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='基于类成员函数回调的线程池-连接池-任务队列'>
+<meta property='og:description' content='在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。
+其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。 因为使用模板来构造，所以目前只支持类成员函数的回调。 与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。
+此基于成员函数回调的线程池需要同优先级队列共同使用，原理是初始化一个初始为5个线程的线程池，并将自己的控制线程添加到最高优先级启动。控制线程的目的是当任务队列比较多时增加线程来增加效率，当任务队列少时减速线程来节约资源（目前未实现）
+连接池，需要同线程池与任务队列共同使用，同样为先初始化一定数量的连接，供多线程调度使用，其中包含一个控制线程，来控制连接池中的连接数量，当取出一个连接来用时，会给取出的连接加锁，所以使用完后需要调用返回函数，来归还使用完的连接。
+连接池的作用就是不必每次都创建连接使用完成后断开连接，而使用模板来构造扩展性更强，所以需要自己额外来写创建连接，与断开连接函数。
+需要注意连接池需要在线程之前析构。
+任务队列文件代码：
+'>
+<meta property='og:url' content='https://sohunjug.com/2013/11/28/%E5%9F%BA%E4%BA%8E%E7%B1%BB%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E5%9B%9E%E8%B0%83%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E8%BF%9E%E6%8E%A5%E6%B1%A0-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/'>
+<meta property='og:site_name' content='聽的资料'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Thread' /><meta property='article:tag' content='Pool' /><meta property='article:tag' content='Task' /><meta property='article:tag' content='C/C&#43;&#43;' /><meta property='article:published_time' content='2013-11-28T00:00:00&#43;08:00'/><meta property='article:modified_time' content='2013-11-28T00:00:00&#43;08:00'/>
+<meta name="twitter:site" content="@sohunjug">
+    <meta name="twitter:creator" content="@sohunjug"><meta name="twitter:title" content="基于类成员函数回调的线程池-连接池-任务队列">
+<meta name="twitter:description" content="在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。
+其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。 因为使用模板来构造，所以目前只支持类成员函数的回调。 与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。
+此基于成员函数回调的线程池需要同优先级队列共同使用，原理是初始化一个初始为5个线程的线程池，并将自己的控制线程添加到最高优先级启动。控制线程的目的是当任务队列比较多时增加线程来增加效率，当任务队列少时减速线程来节约资源（目前未实现）
+连接池，需要同线程池与任务队列共同使用，同样为先初始化一定数量的连接，供多线程调度使用，其中包含一个控制线程，来控制连接池中的连接数量，当取出一个连接来用时，会给取出的连接加锁，所以使用完后需要调用返回函数，来归还使用完的连接。
+连接池的作用就是不必每次都创建连接使用完成后断开连接，而使用模板来构造扩展性更强，所以需要自己额外来写创建连接，与断开连接函数。
+需要注意连接池需要在线程之前析构。
+任务队列文件代码：
+">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    <img src="/img/avatar.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">聽的资料</a></h1>
+            <h2 class="site-description">Opportunity favors only the prepared mind. And everything change with time.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sohunjug'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/sohunjug'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/c/c&#43;&#43;/" >
+                C/C&#43;&#43;
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2013/11/28/%E5%9F%BA%E4%BA%8E%E7%B1%BB%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E5%9B%9E%E8%B0%83%E7%9A%84%E7%BA%BF%E7%A8%8B%E6%B1%A0-%E8%BF%9E%E6%8E%A5%E6%B1%A0-%E4%BB%BB%E5%8A%A1%E9%98%9F%E5%88%97/">基于类成员函数回调的线程池-连接池-任务队列</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Nov 28, 2013</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>在现实生活中，经常会用到线程池与队列的应用，所以写了一套可复利用接口。</p>
+<p>其中优先级队列的蓝本从stl中复制出来的，唯一修改的地方就是添加了一个写锁，当top时加锁，pop后才解锁，保证真正不重复取出或丢失数据。
+因为使用模板来构造，所以目前只支持类成员函数的回调。
+与线程池共同使用时，外部调用时，需要new一个任务类来添加到队列中，线程池主函数会调用完成后自动delete析构。</p>
+<p>此基于成员函数回调的线程池需要同优先级队列共同使用，原理是初始化一个初始为5个线程的线程池，并将自己的控制线程添加到最高优先级启动。控制线程的目的是当任务队列比较多时增加线程来增加效率，当任务队列少时减速线程来节约资源（目前未实现）</p>
+<p>连接池，需要同线程池与任务队列共同使用，同样为先初始化一定数量的连接，供多线程调度使用，其中包含一个控制线程，来控制连接池中的连接数量，当取出一个连接来用时，会给取出的连接加锁，所以使用完后需要调用返回函数，来归还使用完的连接。</p>
+<p>连接池的作用就是不必每次都创建连接使用完成后断开连接，而使用模板来构造扩展性更强，所以需要自己额外来写创建连接，与断开连接函数。</p>
+<p><!-- raw HTML omitted -->需要注意连接池需要在线程之前析构。<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->任务队列文件代码：<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="cm">/*******************************************************************************
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Author : huwq
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Email : sohunjug@hotmail.com
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Last modified : 2013-11-18 10:46
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Filename : CTaskQueue.h
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Description : 
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * *****************************************************************************/</span>
+</span></span><span class="line"><span class="cl"><span class="cp">#ifndef __TASH_QUEUE_H__
+</span></span></span><span class="line"><span class="cl"><span class="cp">#define __TASH_QUEUE_H__
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;new&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">namespace</span> <span class="n">QUEUE</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">enum</span> <span class="nc">Priority</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Urgent</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Highest</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">High</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Middle</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Low</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">Minimum</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">class</span> <span class="nc">CTaskBase</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Priority</span> <span class="n">priority</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CTaskBase</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">is_virtual</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">argv</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="k">virtual</span> <span class="o">~</span><span class="n">CTaskBase</span><span class="p">(){}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">virtual</span> <span class="kt">int</span> <span class="nf">Start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">bool</span> <span class="nf">operator</span> <span class="p">()</span> <span class="p">(</span><span class="n">CTaskBase</span><span class="o">*</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="n">CTaskBase</span><span class="o">*</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="o">!</span><span class="p">((</span><span class="o">*</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;</span> <span class="p">(</span><span class="o">*</span><span class="n">b</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">bool</span> <span class="nf">operator</span> <span class="p">()</span> <span class="p">(</span><span class="n">CTaskBase</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">,</span> <span class="n">CTaskBase</span> <span class="o">&amp;</span><span class="n">b</span><span class="p">)</span> 
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">bool</span> <span class="k">operator</span> <span class="o">&lt;</span> <span class="p">(</span><span class="k">const</span> <span class="n">CTaskBase</span> <span class="o">&amp;</span><span class="n">a</span><span class="p">)</span> <span class="k">const</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="p">(</span><span class="kt">bool</span><span class="p">)((</span><span class="kt">int</span><span class="p">)</span><span class="n">priority</span> <span class="o">&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">a</span><span class="p">.</span><span class="n">priority</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span> <span class="o">*</span><span class="n">argv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span>  <span class="n">is_virtual</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span> <span class="o">&lt;</span><span class="k">class</span> <span class="nc">Type</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">class</span> <span class="nc">CTaskQueue</span> <span class="o">:</span> <span class="k">public</span> <span class="n">CTaskBase</span>
+</span></span><span class="line"><span class="cl">    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">union</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="p">(</span><span class="n">Type</span><span class="o">::*</span><span class="n">func</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">CallBack</span><span class="p">)(</span><span class="n">Type</span><span class="o">*</span><span class="p">,</span> <span class="kt">void</span><span class="o">*</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span><span class="n">func</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="n">CTaskQueue</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ClassName</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">func</span><span class="p">.</span><span class="n">func</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="o">~</span><span class="n">CTaskQueue</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">Clear</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">void</span> <span class="nf">Clear</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="n">argv</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">ClassName</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">func</span><span class="p">.</span><span class="n">func</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="nf">SetFunc</span><span class="p">(</span><span class="n">Priority</span> <span class="n">priority</span><span class="p">,</span> <span class="n">Type</span><span class="o">*</span> <span class="n">ClassName</span><span class="p">,</span> <span class="kt">int</span> <span class="p">(</span><span class="n">Type</span><span class="o">::*</span><span class="n">Func</span><span class="p">)(</span><span class="kt">void</span><span class="o">*</span><span class="p">),</span> <span class="kt">void</span><span class="o">*</span> <span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="o">-&gt;</span><span class="n">priority</span> <span class="o">=</span> <span class="n">priority</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="o">-&gt;</span><span class="n">ClassName</span> <span class="o">=</span> <span class="n">ClassName</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="o">-&gt;</span><span class="n">argv</span> <span class="o">=</span> <span class="n">argv</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">this</span><span class="o">-&gt;</span><span class="n">func</span><span class="p">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">Func</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="kt">int</span> <span class="nf">Start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">//return func.CallBack(ClassName, argv);
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="k">return</span> <span class="p">(</span><span class="n">ClassName</span><span class="o">-&gt;*</span><span class="p">(</span><span class="n">func</span><span class="p">.</span><span class="n">func</span><span class="p">))(</span><span class="n">argv</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">private</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">Type</span><span class="o">*</span> <span class="n">ClassName</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_Tp</span><span class="p">,</span> <span class="k">typename</span> <span class="n">_Sequence</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">_Tp</span><span class="o">&gt;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="k">typename</span> <span class="n">_Compare</span>  <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">less</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_Sequence</span><span class="o">::</span><span class="n">value_type</span><span class="o">&gt;</span> <span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">class</span> <span class="nc">priority_queue</span>
+</span></span><span class="line"><span class="cl">            <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">// concept requirements
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">pthread_rwlock_t</span> <span class="n">m_mutex</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">typedef</span> <span class="k">typename</span> <span class="n">_Sequence</span><span class="o">::</span><span class="n">value_type</span>                <span class="n">value_type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">typedef</span> <span class="k">typename</span> <span class="n">_Sequence</span><span class="o">::</span><span class="n">reference</span>                 <span class="n">reference</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">typedef</span> <span class="k">typename</span> <span class="n">_Sequence</span><span class="o">::</span><span class="n">const_reference</span>           <span class="n">const_reference</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">typedef</span> <span class="k">typename</span> <span class="n">_Sequence</span><span class="o">::</span><span class="n">size_type</span>                 <span class="n">size_type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="k">typedef</span>          <span class="n">_Sequence</span>                            <span class="n">container_type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">protected</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="c1">//  See queue::c for notes on these names.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>                <span class="n">_Sequence</span>  <span class="n">c</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="n">_Compare</span>   <span class="n">comp</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">public</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">explicit</span> <span class="n">priority_queue</span><span class="p">(</span><span class="k">const</span> <span class="n">_Compare</span><span class="o">&amp;</span> <span class="n">__x</span> <span class="o">=</span> <span class="n">_Compare</span><span class="p">(),</span> <span class="k">const</span> <span class="n">_Sequence</span><span class="o">&amp;</span> <span class="n">__s</span> <span class="o">=</span> <span class="n">_Sequence</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">:</span> <span class="n">c</span><span class="p">(</span><span class="n">__s</span><span class="p">),</span> <span class="n">comp</span><span class="p">(</span><span class="n">__x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">std</span><span class="o">::</span><span class="n">make_heap</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">comp</span><span class="p">);</span> 
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">_InputIterator</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">priority_queue</span><span class="p">(</span><span class="n">_InputIterator</span> <span class="n">__first</span><span class="p">,</span> <span class="n">_InputIterator</span> <span class="n">__last</span><span class="p">,</span> <span class="k">const</span> <span class="n">_Compare</span><span class="o">&amp;</span> <span class="n">__x</span> <span class="o">=</span> <span class="n">_Compare</span><span class="p">(),</span> <span class="k">const</span> <span class="n">_Sequence</span><span class="o">&amp;</span> <span class="n">__s</span> <span class="o">=</span> <span class="n">_Sequence</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">                    <span class="o">:</span> <span class="n">c</span><span class="p">(</span><span class="n">__s</span><span class="p">),</span> <span class="n">comp</span><span class="p">(</span><span class="n">__x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">pthread_rwlock_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">__glibcxx_requires_valid_range</span><span class="p">(</span><span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">c</span><span class="p">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">__first</span><span class="p">,</span> <span class="n">__last</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                        <span class="n">std</span><span class="o">::</span><span class="n">make_heap</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">comp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="kt">bool</span> <span class="nf">empty</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl">                <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_wrlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="kt">bool</span> <span class="n">e</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">empty</span><span class="p">();</span> 
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">return</span> <span class="n">e</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="n">size_type</span> <span class="nf">size</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl">                <span class="p">{</span> 
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_wrlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">size_type</span> <span class="n">_size</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> 
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">return</span> <span class="n">_size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="n">const_reference</span> <span class="nf">top</span><span class="p">()</span> 
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_wrlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">const_reference</span> <span class="n">reference_value</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">return</span> <span class="n">reference_value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="kt">void</span> <span class="nf">push</span><span class="p">(</span><span class="k">const</span> <span class="n">value_type</span><span class="o">&amp;</span> <span class="n">__x</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_wrlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">c</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">__x</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">std</span><span class="o">::</span><span class="n">push_heap</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">comp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">                <span class="kt">void</span> <span class="nf">pop</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">                <span class="p">{</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">std</span><span class="o">::</span><span class="n">pop_heap</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">c</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="n">comp</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">c</span><span class="p">.</span><span class="n">pop_back</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">m_mutex</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">                <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="k">typedef</span> <span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">CTaskBase</span><span class="o">*</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">CTaskBase</span><span class="o">*&gt;</span><span class="p">,</span> <span class="n">CTaskBase</span><span class="o">&gt;</span> <span class="n">queue_priority</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cp">#endif
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p><!-- raw HTML omitted --><!-- raw HTML omitted -->线程池与连接池文件代码：<!-- raw HTML omitted --><!-- raw HTML omitted -->
+{% codeblock lang:cpp %}
+/*******************************************************************************</p>
+<ul>
+<li>Author : RKhuwq</li>
+<li>Email : <a class="link" href="mailto:sohunjug@hotmail.com" >sohunjug@hotmail.com</a></li>
+<li>Last modified : 2013-11-18 16:55</li>
+<li>Filename : Pool.h</li>
+<li>Description :</li>
+<li>*****************************************************************************/</li>
+</ul>
+<p>#ifndef <strong>POOL_H</strong>
+#define <strong>POOL_H</strong></p>
+<p>#include &lt;pthread.h&gt;
+#include <!-- raw HTML omitted -->
+#include &lt;stdio.h&gt;
+#include &ldquo;TaskQueue.h&rdquo;
+#include &lt;signal.h&gt;</p>
+<p>namespace POOL
+{
+enum PoolStatue
+{
+Wait = 1,
+Kill
+};
+class CPoolBase
+{
+protected:
+int m_init;
+int m_iNum;
+int m_iCount;
+pthread_attr_t m_attr;
+virtual void  Create() = 0;
+virtual int   ControlThread(void* argv) = 0;
+public:
+PoolStatue statues;
+pthread_mutex_t m_mutex;
+pthread_mutexattr_t  m_mutexAttr;
+CPoolBase(int num, PoolStatue statue) : m_init(num), m_iNum(5), m_iCount(0), statues(statue)
+{
+pthread_attr_init(&amp;m_attr);
+pthread_attr_setdetachstate(&amp;m_attr,PTHREAD_CREATE_JOINABLE);
+pthread_mutexattr_init(&amp;m_mutexAttr);
+pthread_mutex_init(&amp;m_mutex, &amp;m_mutexAttr);
+}
+virtual ~CPoolBase()
+{
+pthread_mutexattr_destroy(&amp;m_mutexAttr);
+};
+};</p>
+<pre><code>class CThreadPool : public CPoolBase
+{
+    struct pthread_statue
+    {
+        pthread_t pthread_id;
+        int statue;
+        pthread_mutex_t m_threadMutex;
+        pthread_cond_t  m_threadCond;
+    };
+    public:
+    std::map&lt;pthread_t, pthread_statue*&gt; m_mthread;
+    std::map&lt;pthread_t, pthread_statue*&gt;::iterator m_iter;
+    QUEUE::queue_priority&amp; queue;
+
+    private:
+    bool is_clear;
+    pthread_mutex_t m_mutexCount;
+    QUEUE::CTaskQueue&lt;CThreadPool&gt; *owntask;
+    void Create()
+    {
+        pthread_statue *new_pthread = new pthread_statue();
+        pthread_mutex_lock(&amp;m_mutex);
+        if(pthread_create(&amp;new_pthread-&gt;pthread_id, &amp;m_attr, ThreadMain, this)!=0)
+        {
+            return ;
+        }
+        m_mthread.insert(std::pair&lt;pthread_t, pthread_statue*&gt; (new_pthread-&gt;pthread_id, new_pthread));
+        pthread_mutex_unlock(&amp;m_mutex);
+        pthread_mutex_lock(&amp;m_mutexCount);
+        m_iCount++;
+        pthread_mutex_unlock(&amp;m_mutexCount);
+    }
+    int   ControlThread(void* argv)
+    {
+        int in_count_add = 0;
+        int in_count_del = 0;
+        int task_count;
+        bool change;
+        CThreadPool* pclass = (CThreadPool*)argv;
+        pthread_statue *statue_self;
+        std::map&lt;pthread_t, pthread_statue*&gt;::iterator iter;
+        pthread_mutex_lock(&amp;pclass-&gt;m_mutex);
+        statue_self = pclass-&gt;m_mthread.find(pthread_self())-&gt;second;
+        pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
+        statue_self-&gt;statue = 1;
+        while(1)
+        {
+            while (m_iCount &lt; m_init &amp;&amp; m_iCount &lt; m_iNum &amp;&amp; ((statues == Wait &amp;&amp; !queue.empty()) || !is_clear))
+            {
+                Create();
+            }
+            task_count = queue.size();
+            if (task_count)
+            {
+                pthread_mutex_lock(&amp;m_mutex);
+                iter = m_mthread.begin();
+                while (iter != m_mthread.end() &amp;&amp; ((statues == Wait &amp;&amp; !queue.empty()) || !is_clear))
+                {
+                    if (iter-&gt;second-&gt;statue == 2 &amp;&amp; iter-&gt;second-&gt;pthread_id != pthread_self())
+                    {
+                        pthread_cond_signal (&amp;iter-&gt;second-&gt;m_threadCond);
+                        break;
+                    }
+                    iter++;
+                }
+                if (iter == m_mthread.end())
+                    m_iNum ++;
+                pthread_mutex_unlock(&amp;m_mutex);
+                if (task_count &gt; m_iCount)
+                {
+                    in_count_add++;
+                    in_count_del = 0;
+                }
+                else if (task_count &lt; m_iCount)
+                {
+                    //in_count_del++;
+                    in_count_add = 0;
+                }
+                if (in_count_add &gt; 10)
+                {
+                    in_count_add = 0;
+                    m_iNum++;
+                    change = true;
+                }
+                if (in_count_del &gt; 10 &amp;&amp; m_iNum &gt; m_init)
+                {
+                    m_iNum--;
+                    change = true;
+                }
+            }
+            if (task_count == 0)
+                usleep(100);
+
+            if ((statue_self-&gt;statue == 0 || is_clear) &amp;&amp; !(statues == Wait &amp;&amp; !queue.empty()))
+            {
+                pthread_mutex_lock(&amp;m_mutexCount);
+                pclass-&gt;m_iCount--;
+                pthread_mutex_unlock(&amp;m_mutexCount);
+                break;
+            }
+        }
+        return 0;
+    } 
+    public:
+    static void* ThreadMain(void *arg)
+    {
+        pthread_statue* statue_self;
+        CThreadPool* pclass = (CThreadPool*)arg;
+        QUEUE::CTaskBase* task = NULL;
+        pthread_mutex_lock(&amp;pclass-&gt;m_mutex);
+        statue_self = pclass-&gt;m_mthread.find(pthread_self())-&gt;second;
+        pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
+        pthread_mutex_init (&amp;statue_self-&gt;m_threadMutex, &amp;pclass-&gt;m_mutexAttr);
+        pthread_cond_init (&amp;statue_self-&gt;m_threadCond, NULL);
+        statue_self-&gt;statue = 1;
+        //timespec time;
+        statue_self-&gt;pthread_id = pthread_self();
+        while(1)
+        { 
+            if (pclass-&gt;statues != Wait || pclass-&gt;queue.empty())
+            {
+                if (statue_self-&gt;statue == 0)
+                {
+                    pthread_mutex_lock(&amp;pclass-&gt;m_mutexCount);
+                    pclass-&gt;m_iCount--;
+                    pthread_mutex_unlock(&amp;pclass-&gt;m_mutexCount);
+                    break;
+                }
+            }
+            task = NULL;
+
+            pthread_mutex_lock(&amp;pclass-&gt;m_mutex);
+            if(pclass-&gt;queue.empty())
+            {
+                if (pthread_mutex_trylock(&amp;statue_self-&gt;m_threadMutex) != 0)
+                {
+                    pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
+                    continue;
+                }
+                pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
+                statue_self-&gt;statue = 2;
+                pthread_cond_wait(&amp;statue_self-&gt;m_threadCond, &amp;statue_self-&gt;m_threadMutex);
+                pthread_mutex_unlock(&amp;statue_self-&gt;m_threadMutex);
+                continue;
+            }
+
+            task=pclass-&gt;queue.top();
+            pclass-&gt;queue.pop();
+            pthread_mutex_unlock(&amp;pclass-&gt;m_mutex);
+
+            if (task)
+            {
+                statue_self-&gt;statue = 1;
+                if (task-&gt;Start() != 0)
+                {
+                }
+                if (!task)
+                    delete task;
+            }
+        }
+        return NULL;
+    }
+    void Stop(pthread_t pthread_id)
+    {
+        pthread_statue *temp;
+        pthread_mutex_lock(&amp;m_mutex);
+        temp = m_mthread.find(pthread_id)-&gt;second;
+        pthread_mutex_unlock(&amp;m_mutex);
+        if (!temp)
+            return;
+        while(pthread_kill(temp-&gt;pthread_id, 0) == 0)
+        {
+            pthread_mutex_lock(&amp;temp-&gt;m_threadMutex);
+            temp-&gt;statue = 0;
+            pthread_mutex_unlock(&amp;temp-&gt;m_threadMutex);
+            pthread_cond_signal(&amp;temp-&gt;m_threadCond);
+            usleep(10000);
+        }
+        pthread_mutex_lock(&amp;m_mutex);
+        temp = m_mthread.find(pthread_id)-&gt;second;
+        m_mthread.erase(pthread_id);
+        pthread_mutex_unlock(&amp;m_mutex);
+        delete temp;
+    }
+    void ClearQueue() 
+    { 
+        while (!queue.empty())
+        {
+            delete queue.top();
+            queue.pop();
+        }
+    }
+    void Clear()
+    {
+        is_clear = true;
+        pthread_mutex_lock(&amp;m_mutex); 
+        std::map&lt;pthread_t, pthread_statue*&gt;::iterator iter = m_mthread.begin();
+        for (; iter != m_mthread.end(); iter = m_mthread.begin())
+        {
+            pthread_mutex_unlock(&amp;m_mutex); 
+            Stop(iter-&gt;first);
+            pthread_mutex_lock(&amp;m_mutex); 
+        }
+        pthread_mutex_unlock(&amp;m_mutex); 
+    }
+
+    public:
+    CThreadPool(int num, QUEUE::queue_priority&amp; queue, PoolStatue Pool = Wait) : CPoolBase(num, Pool), queue(queue), is_clear(false) 
+    { 
+        pthread_mutex_init (&amp;m_mutexCount, NULL);
+        owntask = new QUEUE::CTaskQueue&lt;CThreadPool&gt;;
+        owntask-&gt;SetFunc(QUEUE::Urgent, this, &amp;CThreadPool::ControlThread, this);
+        queue.push(owntask);
+        Create(); 
+    }
+    ~CThreadPool()
+    { 
+        if (statues == Wait)
+            Clear(); 
+        ClearQueue(); 
+        if (statues != Wait)
+            Clear();
+    }
+};
+
+template&lt;typename CConnectionClass&gt;
+    class CConnectPool : public CPoolBase
+{
+    private:
+        std::map&lt;CConnectionClass*, pthread_mutex_t&gt; m_mapConnection;
+        typename std::map&lt;CConnectionClass*, pthread_mutex_t&gt;::iterator m_iter;
+        bool is_clear;
+        typedef bool (CConnectionClass::*Connect)(const char*, const char*, const char*);
+        typedef void (CConnectionClass::*Close)(void);
+        Connect m_fconnect;
+        Close m_fclose;
+        char* m_sConnectParam[3];
+        int m_iUsed;
+        pthread_mutex_t m_mapmutex;
+    public:
+        CConnectPool(int num) : CPoolBase(num, Wait), m_iUsed(0)
+    {
+        is_clear = false;
+        m_mapConnection.clear();
+        m_sConnectParam[0] = NULL;
+        m_sConnectParam[1] = NULL;
+        m_sConnectParam[2] = NULL;
+        pthread_mutex_init(&amp;m_mapmutex, NULL);
+    }
+        ~CConnectPool()
+        {
+            Clear();
+            free(m_sConnectParam[0]);
+            free(m_sConnectParam[1]);
+            free(m_sConnectParam[2]);
+        }
+
+        void Clear()
+        {
+            is_clear = true;
+            m_iter = m_mapConnection.begin();
+            while (m_iter != m_mapConnection.end())
+            {
+                if (pthread_mutex_trylock(&amp;m_iter-&gt;second) == 0)
+                {
+                    (m_iter-&gt;first-&gt;*(m_fclose))();
+                    delete m_iter-&gt;first;
+                    m_mapConnection.erase(m_iter);
+                    m_iter = m_mapConnection.begin();
+                    pthread_mutex_lock(&amp;m_mutex);
+                    m_iCount --;
+                    pthread_mutex_unlock(&amp;m_mutex);
+                }
+                else m_iter++;
+                if (m_iter == m_mapConnection.end())
+                    m_iter = m_mapConnection.begin();
+            }
+            m_mapConnection.clear();
+        }
+
+        void SetFunc(Connect connect, Close close, char* value[])
+        {
+            m_fconnect = connect;
+            m_fclose = close;
+            m_sConnectParam[0] = (char*)malloc(strlen(value[0]) + 1);
+            m_sConnectParam[1] = (char*)malloc(strlen(value[1]) + 1);
+            m_sConnectParam[2] = (char*)malloc(strlen(value[2]) + 1);
+            strcpy(m_sConnectParam[0], value[0]);
+            strcpy(m_sConnectParam[1], value[1]);
+            strcpy(m_sConnectParam[2], value[2]);
+        }
+
+        CConnectionClass* GetConnection()
+        {
+            pthread_mutex_lock(&amp;m_mapmutex);
+            int count = 0;
+            m_iter = m_mapConnection.begin();
+            while (1)
+            {
+                if (m_iter == m_mapConnection.end())
+                {
+                    count ++;
+                    m_iter = m_mapConnection.begin();
+                    if (count &gt; 10)
+                    {
+                        Create();
+                        pthread_mutex_lock(&amp;m_mutex);
+                        m_iNum++;
+                        pthread_mutex_unlock(&amp;m_mutex);
+                        m_iter = m_mapConnection.begin();
+                    }
+                }
+                if (m_iter != m_mapConnection.end())
+                    if (pthread_mutex_trylock(&amp;m_iter-&gt;second) == 0)
+                    {
+                        pthread_mutex_lock(&amp;m_mutex);
+                        m_iUsed++;
+                        pthread_mutex_unlock(&amp;m_mutex);
+                        pthread_mutex_unlock(&amp;m_mapmutex);
+                        return m_iter-&gt;first;
+                    }
+                    else m_iter++;
+            }
+            pthread_mutex_unlock(&amp;m_mapmutex);
+            return NULL;
+        }
+
+        void BackConnection(CConnectionClass* oneConnect)
+        {
+            if (!oneConnect)
+                return;
+            pthread_mutex_lock(&amp;m_mapmutex);
+            pthread_mutex_unlock(&amp;m_mapConnection.find(oneConnect)-&gt;second);
+            pthread_mutex_unlock(&amp;m_mapmutex);
+            pthread_mutex_lock(&amp;m_mutex);
+            m_iUsed--;
+            pthread_mutex_unlock(&amp;m_mutex);
+        }
+
+        void Create()
+        {
+            pthread_mutex_t rwlock;
+            pthread_mutex_init(&amp;rwlock, NULL);
+            pthread_mutex_lock(&amp;m_mutex);
+            CConnectionClass* oneConnect = new CConnectionClass();
+            (oneConnect-&gt;*(m_fconnect))(m_sConnectParam[0], m_sConnectParam[1], m_sConnectParam[2]);
+            m_mapConnection.insert(std::pair&lt;CConnectionClass*, pthread_mutex_t&gt; (oneConnect, rwlock));
+            m_iCount ++;
+            pthread_mutex_unlock(&amp;m_mutex);
+        }
+
+        int  Count()
+        {
+            return m_mapConnection.size();
+        }
+
+        int  ControlThread(void* argv)
+        {
+            int in_count_add = 0;
+            int in_count_del = 0;
+            int task_count;
+            int second = 10000;
+            bool change;
+            while(1)
+            {
+                task_count = this-&gt;Count();
+                if (task_count &lt;= m_iNum)
+                {
+                    pthread_mutex_lock(&amp;m_mapmutex);
+                    Create();
+                    pthread_mutex_unlock(&amp;m_mapmutex);
+                }
+                if (m_iUsed &gt; 0)
+                    if (task_count)
+                    {
+                        if (task_count &gt; m_iUsed)
+                            in_count_del++;
+                        if (in_count_del &gt; 10)
+                            change = true;
+                    }
+                if (task_count != 0)
+                    usleep(second);
+
+                if (is_clear)
+                    break;
+            }
+            return 0;
+        }
+};
+</code></pre>
+<p>};</p>
+<p>#endif
+{% endcodeblock %}</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted -->测试文件代码：<!-- raw HTML omitted --><!-- raw HTML omitted -->
+{% codeblock lang:cpp %}
+#include &lt;stdio.h&gt;
+#include &ldquo;Pool.h&rdquo;
+#include &ldquo;TaskQueue.h&rdquo;
+#include &ldquo;DBDatabase.h&rdquo;
+#include &ldquo;DBStatement.h&rdquo;</p>
+<p>using namespace POOL;</p>
+<p>using namespace QUEUE;
+class B
+{
+public:
+B(){printf(&ldquo;B\n&rdquo;);}
+virtual int process(void* arg){return 0;};
+virtual ~B(){printf(&ldquo;B\n&rdquo;);}
+};
+class A : public B
+{
+public:
+A(){}
+~A(){}
+int process(void* arg)
+{
+char** argv = (char**)arg;
+for (int iLoop = 0; iLoop &lt; 2; iLoop++)
+{
+printf(&quot;%s &ldquo;, argv[iLoop]);
+}
+printf(&quot;\n&rdquo;);
+return 0;
+}
+};</p>
+<p>int main(int argc, char** argv)
+{
+CThreadPool threadpool(2, task_priority_queue);
+char conn[3][20] = {&ldquo;system&rdquo;, &ldquo;system&rdquo;, &ldquo;tsdc&rdquo;};
+char <em>value[3];
+value[0] = conn[0];
+value[1] = conn[1];
+value[2] = conn[2];
+CConnectPool<!-- raw HTML omitted --> connnectpool(5);
+connnectpool.SetFunc(&amp;CDBDatabase::Connect, &amp;CDBDatabase::Disconnect, value);
+int count = 0;
+A p;
+CTaskQueue&lt;CConnectPool<!-- raw HTML omitted --> &gt;</em> atask = new CTaskQueue&lt;CConnectPool<!-- raw HTML omitted --> &gt;;
+char se[10] = &ldquo;10000000&rdquo;;
+char <em>s[2];
+s[0] = se;
+s[1] = NULL;
+atask-&gt;SetFunc(Highest, &amp;connnectpool, &amp;CConnectPool<!-- raw HTML omitted -->::ControlThread, s);
+task_priority_queue.push(atask);
+CDBDatabase <em>temp = connnectpool.GetConnection();
+CDBDatabase <em>temp2 = connnectpool.GetConnection();
+CDBStatement</em> dbstatement = new CDBStatement(temp);
+CDBStatement</em> dbs = new CDBStatement(temp2);
+dbstatement-&gt;Prepare(&ldquo;select city_code from bb_device_rent_info_t where user_id = 48303537&rdquo;);
+dbs-&gt;Prepare(&ldquo;select user_id from bb_device_rent_info_t where user_id = 48303537&rdquo;);
+dbstatement-&gt;Open();
+dbs-&gt;Open();
+if (dbstatement-&gt;Next() &amp;&amp; dbs-&gt;Next())
+{
+printf(&quot;%s\n&quot;, dbstatement-&gt;Field(0).AsString());
+printf(&quot;%s\n&quot;, dbs-&gt;Field(0).AsString());
+}
+connnectpool.BackConnection(temp);
+connnectpool.BackConnection(temp2);
+while(1)
+{
+char time[2][10];
+char <em>ttt[3];
+sprintf(time[0], &ldquo;time:&rdquo;);
+sprintf(time[1], &ldquo;%d&rdquo;, count++);
+ttt[0] = time[0];
+ttt[1] = time[1];
+ttt[2] = NULL;
+CTaskQueue<!-- raw HTML omitted --></em> task = new CTaskQueue<!-- raw HTML omitted -->;
+task-&gt;SetFunc(Low, &amp;p, &amp;A::process, (void</em>)ttt);
+task_priority_queue.push(task);
+usleep(1000000);
+}</p>
+<pre><code>A a;
+CTaskQueue&lt;A&gt;* task = new CTaskQueue&lt;A&gt;;
+char aaa[2][10] = {&quot;aaa&quot;, &quot;bbb&quot;};
+char *aa[3];
+char *bb[3];
+aa[0] = aaa[0];
+aa[1] = aaa[1];
+aa[2] = NULL;
+task-&gt;SetFunc(Low, &amp;a, &amp;A::process, (void*)aa);
+task_priority_queue.push(task);
+char bbb[2][10] = {&quot;ccc&quot;, &quot;bbb&quot;};
+bb[0] = bbb[0];
+bb[1] = bbb[1];
+bb[2] = NULL;
+task = new CTaskQueue&lt;A&gt;;
+task-&gt;SetFunc(Minimum, &amp;a, &amp;A::process, (void*)bb);
+//task_priority_queue.push(task);
+
+connnectpool.Clear();
+usleep(30000);
+threadpool.Clear();
+
+return 0;
+</code></pre>
+<p>}
+{% endcodeblock %}
+github: <a class="link" href="https://github.com/sohunjug/queue_thread-connection_pool.git"  target="_blank" rel="noopener"
+    >GitLink&hellip;.</a></p>
+<p>可能还有bug,还有很多不足，欢迎大家帮忙测试.</p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/thread/">Thread</a>
+        
+            <a href="/tags/pool/">Pool</a>
+        
+            <a href="/tags/task/">Task</a>
+        
+            <a href="/tags/c/c&#43;&#43;/">C/C&#43;&#43;</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+<aside class="related-content--wrapper">
+    <h2 class="section-title">相关文章</h2>
+    <div class="related-content">
+        <div class="flex article-list--tile">
+            
+                
+<article class="">
+    <a href="/2015/01/13/c-defined/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">C/C&#43;&#43;中宏定义的用法</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2013/06/26/%E7%AE%80%E5%8D%95%E7%9A%84%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E7%B1%BB%E5%85%B3%E4%BA%8Emalloc%E4%B8%8Efree/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">简单的内存管理类（关于malloc与free）</h2>
+        </div>
+    </a>
+</article>
+
+            
+                
+<article class="">
+    <a href="/2013/06/23/%E5%85%B3%E4%BA%8Emakefile%E7%9A%84%E9%80%9A%E7%94%A8%E6%96%B9%E6%A1%88%E4%B8%AA%E4%BA%BA%E6%B5%8B%E8%AF%95%E6%8E%A8%E8%8D%90%E6%96%B9%E6%A1%88/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">关于makefile的通用方案（个人测试推荐方案）</h2>
+        </div>
+    </a>
+</article>
+
+            
+        </div>
+    </div>
+</aside>
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2012 - 
+        
+        2023 聽的资料
+    </section>
+    
+    <section class="powerby">
+        
+            <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备14034266号</a> <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

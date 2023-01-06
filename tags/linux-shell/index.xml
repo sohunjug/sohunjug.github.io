@@ -1,27 +1,69 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Linux shell on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/linux-shell/</link>
-    <description>Recent content in Linux shell on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Sun, 23 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/linux-shell/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Linux脚本</title>
-      <link>https://sohunjug.com/posts/linux-shell/</link>
-      <pubDate>Sun, 23 Dec 2012 00:00:00 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/linux-shell/</guid>
-      <description>&lt;p&gt;Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。&lt;/p&gt;
+    <channel>
+        <title>Linux shell on 聽的资料</title>
+        <link>https://sohunjug.com/tags/linux-shell/</link>
+        <description>Recent content in Linux shell on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 23 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/linux-shell/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Linux脚本</title>
+        <link>https://sohunjug.com/2012/12/23/linux%E8%84%9A%E6%9C%AC/</link>
+        <pubDate>Sun, 23 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/23/linux%E8%84%9A%E6%9C%AC/</guid>
+        <description>&lt;p&gt;Linux下开发人员时间长了会使用各种脚本，来增加开发效率，分享一个本人常使用的自动登录脚本。&lt;/p&gt;
 &lt;p&gt;首先需要安装插件
 {% codeblock lang:bash %}
 ubuntu       apt-get install expect
 fedora       yum install expect.x86_64
 opensuse     zypper install expect
 {% endcodeblock %}
-之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+之后就可以这么写脚本了，需要传参数 IP、用户名、密码、服务器的语言类型，可以使用locale命令查看。&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:bash%}
+#!/usr/bin/expect -f&lt;/p&gt;
+&lt;p&gt;set user [lindex $argv 1]
+set host [lindex $argv 0]
+set password [lindex $argv 2]
+set lang [lindex $argv 3]
+set timeout -1&lt;/p&gt;
+&lt;p&gt;spawn ssh $user@$host&lt;/p&gt;
+&lt;p&gt;expect {
+&amp;ldquo;&lt;em&gt;yes/no&lt;/em&gt;&amp;rdquo; { send &amp;ldquo;yes\r&amp;rdquo;;exp_continue }&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;&lt;em&gt;assword:&lt;/em&gt;&amp;rdquo; { send &amp;ldquo;$password\r&amp;rdquo; }&lt;/p&gt;
+&lt;p&gt;}
+sleep 1
+#send &amp;ldquo;export LANG=$lang &amp;amp;&amp;amp; export LC_ALL=$lang \r&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;interact
+{% endcodeblock %}
+而登录的时候可以将密码等信息存入文件中，然后自动读取。如：
+{% codeblock lang:bash %}
+#!/bin/bash&lt;/p&gt;
+&lt;p&gt;if [ -f $HOME/Documents/ssh/conn.profile ]; then
+source $HOME/Documents/ssh/conn.profile
+fi&lt;/p&gt;
+&lt;p&gt;ip=$1
+CONIP=&lt;code&gt;cat $HOME/Documents/ssh/conn.profile | grep CONNIP$ip | grep -v grep | awk -F= &#39;{print \$2}&#39;&lt;/code&gt;
+CONUSER=&lt;code&gt;cat $HOME/Documents/ssh/conn.profile | grep CONNUSER$ip | grep -v grep | awk -F= &#39;{print \$2}&#39;&lt;/code&gt;
+CONPASS=&lt;code&gt;cat $HOME/Documents/ssh/conn.profile | grep CONNPASS$ip | grep -v grep | awk -F= &#39;{print \$2}&#39;&lt;/code&gt;
+CONLANG=&lt;code&gt;cat $HOME/Documents/ssh/conn.profile | grep CONNLANG$ip | grep -v grep | awk -F= &#39;{print \$2}&#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;if [ -z ${CONIP} ]
+then
+echo error:  没有那个IP
+else
+echo ${CONIP}
+echo ${CONUSER}
+echo ${CONPASS}
+echo ${CONLANG}
+export LANG=${CONLANG} &amp;amp;&amp;amp; export LC_ALL=${CONLANG}
+$HOME/Documents/ssh/sshend.sh ${CONIP} ${CONUSER} ${CONPASS} ${CONLANG}
+`qdbus org.kde.konsole $session org.kde.konsole.Session.setCodec UTF-8`
+export LANG=zh_CN.UTF-8
+export LC_ALL=zh_CN.UTF-8
+fi
+{% endcodeblock %}
+给这个文件建立一个alias，之后直接登录加上标志，用ssh或者ftp等命令就方便了很多吧～&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

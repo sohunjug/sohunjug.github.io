@@ -1,21 +1,58 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>makefile on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/makefile/</link>
-    <description>Recent content in makefile on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Sun, 23 Jun 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/makefile/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>关于makefile的通用方案（个人测试推荐方案）</title>
-      <link>https://sohunjug.com/posts/makefile/</link>
-      <pubDate>Sun, 23 Jun 2013 00:00:00 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/makefile/</guid>
-      <description>&lt;p&gt;在使用linux或者mac时，有时大家会写一些自己测试功能一类的小程序，可是如果只有1个文件时候还可以，直接gcc就OK了。&lt;/p&gt;
-&lt;p&gt;而一旦文件多了以后可能就会很麻烦。这个makefile可以作为一个解决方案。&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>makefile on 聽的资料</title>
+        <link>https://sohunjug.com/tags/makefile/</link>
+        <description>Recent content in makefile on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sun, 23 Jun 2013 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/makefile/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>关于makefile的通用方案（个人测试推荐方案）</title>
+        <link>https://sohunjug.com/2013/06/23/%E5%85%B3%E4%BA%8Emakefile%E7%9A%84%E9%80%9A%E7%94%A8%E6%96%B9%E6%A1%88%E4%B8%AA%E4%BA%BA%E6%B5%8B%E8%AF%95%E6%8E%A8%E8%8D%90%E6%96%B9%E6%A1%88/</link>
+        <pubDate>Sun, 23 Jun 2013 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2013/06/23/%E5%85%B3%E4%BA%8Emakefile%E7%9A%84%E9%80%9A%E7%94%A8%E6%96%B9%E6%A1%88%E4%B8%AA%E4%BA%BA%E6%B5%8B%E8%AF%95%E6%8E%A8%E8%8D%90%E6%96%B9%E6%A1%88/</guid>
+        <description>&lt;p&gt;在使用linux或者mac时，有时大家会写一些自己测试功能一类的小程序，可是如果只有1个文件时候还可以，直接gcc就OK了。&lt;/p&gt;
+&lt;p&gt;而一旦文件多了以后可能就会很麻烦。这个makefile可以作为一个解决方案。&lt;/p&gt;
+&lt;p&gt;首先自己修改需要生成的程序文件名的获取脚本，我是测试这类的小程序都在一个文件夹下分不同的子文件夹，所以在子文件夹外加入这个文件FileName.sh，不要忘记执行权限哦。（其中的awk自行更改哦，我的路径是/Users/sohunjug/Documents/sohunjug/）
+{% codeblock lang:bash %}
+FileName=`pwd | awk -Fsohunjug &amp;lsquo;{print $3}&amp;rsquo; | awk -F/ &amp;lsquo;{print $2}&amp;rsquo;`
+echo &amp;ldquo;$FileName&amp;rdquo;
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;之后就可以将makefile考入需要的路径，然后执行make，就会生成以子文件夹名来命名的程序了～&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:makefile %}&lt;/p&gt;
+&lt;h1 id=&#34;gcc编译通用的makefile文件&#34;&gt;gcc编译通用的Makefile文件&lt;/h1&gt;
+&lt;p&gt;#######################################################
+FileName=`../FileName.sh`
+Exe=$(FileName)
+CC = g++
+CFLAGS = -Wall -g&lt;/p&gt;
+&lt;p&gt;OBJ_PATH = objs
+LINKFLAGS = -ldl -lpthread&lt;/p&gt;
+&lt;p&gt;#Cpp文件夹
+SRCDIR = .&lt;/p&gt;
+&lt;p&gt;CPP_SRCDIR = $(SRCDIR)
+CPP_SOURCES = $(foreach d,$(CPP_SRCDIR),$(wildcard $(d)/*.cpp) )
+CPP_OBJS = $(patsubst %.cpp, $(OBJ_PATH)/%.o, $(CPP_SOURCES))&lt;/p&gt;
+&lt;p&gt;default: test init compile&lt;/p&gt;
+&lt;p&gt;$(C_OBJS):$(OBJ_PATH)/%.o:%.c
+$(CC) -c $(CFLAGS) &amp;lt; -o $@&lt;/p&gt;
+&lt;p&gt;$(CPP_OBJS):$(OBJ_PATH)/%.o:%.cpp
+$(CC) -c $(CFLAGS) &amp;lt; -o $@&lt;/p&gt;
+&lt;p&gt;test:
+@echo &amp;ldquo;$(FileName)&amp;rdquo;
+@echo &amp;ldquo;CPP_SOURCES: $(CPP_SOURCES)&amp;rdquo;
+@echo &amp;ldquo;CPP_OBJS: $(CPP_OBJS)&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;init:
+$(foreach d,$(SRCDIR), mkdir -p $(OBJ_PATH)/$(d);)&lt;/p&gt;
+&lt;p&gt;compile:$(C_OBJS) $(CPP_OBJS)
+$(CC)  $^ -o $(Exe)  $(LINKFLAGS) $(LIBS)&lt;/p&gt;
+&lt;p&gt;clean:
+rm -rf $(OBJ_PATH)
+rm -f $(Exe)
+########################################################
+{% endcodeblock %}&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

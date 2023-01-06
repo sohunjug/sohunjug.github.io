@@ -1,20 +1,61 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>wordpress menu on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/wordpress-menu/</link>
-    <description>Recent content in wordpress menu on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 19 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/wordpress-menu/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>让wordpress支持自定义菜单</title>
-      <link>https://sohunjug.com/posts/custom-wordpress-menu/</link>
-      <pubDate>Wed, 19 Dec 2012 00:00:00 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/custom-wordpress-menu/</guid>
-      <description>&lt;p&gt;&lt;strong&gt;WORDPRESS博客有些主题不支持自定义菜单，只能够选择页面和所有的分页目录作为菜单，所以为了解决这一问题，找了一些资料&lt;/strong&gt;&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+    <channel>
+        <title>wordpress menu on 聽的资料</title>
+        <link>https://sohunjug.com/tags/wordpress-menu/</link>
+        <description>Recent content in wordpress menu on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Wed, 19 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/wordpress-menu/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>让wordpress支持自定义菜单</title>
+        <link>https://sohunjug.com/2012/12/19/%E8%AE%A9wordpress%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95/</link>
+        <pubDate>Wed, 19 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/19/%E8%AE%A9wordpress%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95/</guid>
+        <description>&lt;p&gt;&lt;strong&gt;WORDPRESS博客有些主题不支持自定义菜单，只能够选择页面和所有的分页目录作为菜单，所以为了解决这一问题，找了一些资料&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;在这个之前首先对wordpress的wp_nav_menu() 函数应该了解：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法如下：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:php %}
+wp_nav_menu( &lt;br&gt;
+array( &lt;br&gt;
+&amp;rsquo;theme_location&amp;rsquo;  =&amp;gt; &amp;rsquo;&amp;rsquo; //指定显示的导航名，如果没有设置，则显示第一个 &lt;br&gt;
+&amp;lsquo;menu&amp;rsquo;            =&amp;gt; &amp;lsquo;header-menu&amp;rsquo;, &lt;br&gt;
+&amp;lsquo;container&amp;rsquo;       =&amp;gt; &amp;rsquo;nav&amp;rsquo;, //最外层容器标签名  &lt;br&gt;
+&amp;lsquo;container_class&amp;rsquo; =&amp;gt; &amp;lsquo;primary&amp;rsquo;, //最外层容器class名  &lt;br&gt;
+&amp;lsquo;container_id&amp;rsquo;    =&amp;gt; &amp;lsquo;&amp;rsquo;,//最外层容器id值  &lt;br&gt;
+&amp;lsquo;menu_class&amp;rsquo;      =&amp;gt; &amp;lsquo;sf-menu&amp;rsquo;, //ul标签class &lt;br&gt;
+&amp;lsquo;menu_id&amp;rsquo;         =&amp;gt; &amp;rsquo;topnav&amp;rsquo;,//ul标签id  &lt;br&gt;
+&amp;rsquo;echo&amp;rsquo;            =&amp;gt; true,//是否打印，默认是true，如果想将导航的代码作为赋值使用，可设置为false &lt;br&gt;
+&amp;lsquo;fallback_cb&amp;rsquo;     =&amp;gt; &amp;lsquo;wp_page_menu&amp;rsquo;,//备用的导航菜单函数，用于没有在后台设置导航时调用 &lt;br&gt;
+&amp;lsquo;before&amp;rsquo;          =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航a标签之前 &lt;br&gt;
+&amp;lsquo;after&amp;rsquo;           =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航a标签之后 &lt;br&gt;
+&amp;rsquo;link_before&amp;rsquo;     =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航链接名之后 &lt;br&gt;
+&amp;rsquo;link_after&amp;rsquo;      =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航链接名之前 &lt;br&gt;
+&amp;lsquo;items_wrap&amp;rsquo;      =&amp;gt;&lt;br&gt;
+&amp;lsquo;depth&amp;rsquo;           =&amp;gt; 0,////显示的菜单层数，默认0，0是显示所有层&lt;br&gt;
+&amp;lsquo;walker&amp;rsquo;          =&amp;gt; &amp;lsquo;&amp;rsquo;// //调用一个对象定义显示导航菜单 ));&lt;br&gt;
+{% endcodeblock %}&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;为了能够使后台支持自定义菜单，我们需要在主题下functions.php下 加入register_nav_menus():&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:php %}
+if(function_exists(&amp;lsquo;register_nav_menus&amp;rsquo;)){
+register_nav_menus(
+array(
+&amp;lsquo;header-menu&amp;rsquo; =&amp;gt; &lt;strong&gt;( &amp;lsquo;导航自定义菜单&amp;rsquo; ),
+// 还可以在这里添加一些菜单 显示在其他位置
+//footer-menu=&amp;gt;&lt;/strong&gt;( &amp;lsquo;页面底部自定义菜单&amp;rsquo; ),
+)
+);
+}
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;在添加之后，你就会发现主题位置已经支持一个菜单了&lt;/p&gt;
+&lt;p&gt;然后找到header.php文件, 类似这样添加：&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:php %}&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;好了, 大家可以自己制作属于自己的自定义菜单了~&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

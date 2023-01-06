@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Vim profile on 聽sohunjug</title>
-    <link>https://sohunjug.com/tags/vim-profile/</link>
-    <description>Recent content in Vim profile on 聽sohunjug</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Sat, 22 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/vim-profile/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>我的vim配置</title>
-      <link>https://sohunjug.com/posts/vim-profile/</link>
-      <pubDate>Sat, 22 Dec 2012 00:00:00 +0800</pubDate>
-      
-      <guid>https://sohunjug.com/posts/vim-profile/</guid>
-      <description>&lt;p&gt;我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。&lt;/p&gt;
+    <channel>
+        <title>Vim profile on 聽的资料</title>
+        <link>https://sohunjug.com/tags/vim-profile/</link>
+        <description>Recent content in Vim profile on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sat, 22 Dec 2012 00:00:00 +0800</lastBuildDate><atom:link href="https://sohunjug.com/tags/vim-profile/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>我的vim配置</title>
+        <link>https://sohunjug.com/2012/12/22/%E6%88%91%E7%9A%84vim%E9%85%8D%E7%BD%AE/</link>
+        <pubDate>Sat, 22 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/22/%E6%88%91%E7%9A%84vim%E9%85%8D%E7%BD%AE/</guid>
+        <description>&lt;p&gt;我用vimrc，其中配置了函数列表，目录列表，函数跳转，定义跳转，xml排版，自动关联cscope和tags，快捷注释。&lt;/p&gt;
 &lt;p&gt;其中需要下载一些插件才能用，比如我用的fedora，需要下载的列表为
 {% codeblock %}
 vim-X11.x86_64
@@ -26,8 +25,313 @@ vim-perl-support.noarch
 cscope.x86_64
 ctags.x86_64
 {% endcodeblock %}
-之后配置$HOME目录下的.vimrc&lt;/p&gt;</description>
-    </item>
-    
-  </channel>
+之后配置$HOME目录下的.vimrc&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:vim %}
+if has(&amp;ldquo;cscope&amp;rdquo;)
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+set csto=0
+set cst
+set csverb
+endif&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+&amp;ldquo;获取当前路径的上一级的路径
+function! GET_UP_PATH(dir)
+let pos=strlen(a:dir)-1
+while pos&amp;gt;0
+if (a:dir[pos]==&amp;rdquo;/&amp;rdquo; )
+return  strpart(a:dir,0,pos)
+endif
+let pos=pos-1
+endwhile
+return  &amp;quot;&amp;quot;
+endfunction&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置相关tags
+function! s:SET_TAGS()
+let dir = getcwd() &amp;ldquo;获得源文件路径
+&amp;ldquo;在路径上递归向上查找tags文件
+while dir!=&amp;rdquo;&amp;rdquo;
+if findfile(&amp;ldquo;tags&amp;rdquo;,dir ) !=&amp;rdquo;&amp;quot;
+&amp;ldquo;找到了就加入到tags
+exec &amp;ldquo;set tags+=&amp;quot;.dir.&amp;quot;/tags&amp;rdquo;
+return
+endif
+&amp;ldquo;得到上级路径
+let dir=GET_UP_PATH(dir)
+endwhile
+endfunction&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置php cscope.out
+function! SET_CSPHP()
+if(executable(&amp;lsquo;cscope&amp;rsquo;) &amp;amp;&amp;amp; has(&amp;ldquo;cscope&amp;rdquo;) )
+silent! execute &amp;ldquo;!find . -name &amp;lsquo;&lt;em&gt;.php&amp;rsquo;  -o -name &amp;lsquo;&lt;/em&gt;.inc&amp;rsquo; -o -name &amp;lsquo;*.module&amp;rsquo; &amp;gt; cscope.files&amp;rdquo;
+silent! execute &amp;ldquo;!cscope -bkq -i cscope.files&amp;rdquo;
+if filereadable(&amp;ldquo;cscope.out&amp;rdquo;)
+silent! execute &amp;ldquo;cs add cscope.out&amp;rdquo;
+endif
+silent! execute &amp;ldquo;!ctags -R &amp;ndash;langmap=php:.engine.inc.module.theme.php  &amp;ndash;php-kinds=cdf  &amp;ndash;languages=php &amp;quot;
+endif
+endfunction&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置c cscope.out
+function! SET_CSAD()
+if(executable(&amp;lsquo;cscope&amp;rsquo;) &amp;amp;&amp;amp; has(&amp;ldquo;cscope&amp;rdquo;) )
+silent! execute &amp;ldquo;!find . -name &amp;lsquo;&lt;em&gt;.h&amp;rsquo; -o -name &amp;lsquo;&lt;/em&gt;.c&amp;rsquo; -o -name &amp;lsquo;*.cpp&amp;rsquo; &amp;gt; cscope.files&amp;rdquo;
+silent! execute &amp;ldquo;!cscope -bkq -i cscope.files&amp;rdquo;
+if filereadable(&amp;ldquo;cscope.out&amp;rdquo;)
+silent! execute &amp;ldquo;cs add cscope.out&amp;rdquo;
+endif
+silent! execute &amp;ldquo;!ctags -R &amp;ndash;c-kinds=+p &amp;ndash;c++-kinds=+p &amp;ndash;fields=+iaS &amp;ndash;extra=+q .&amp;rdquo;
+endif
+endfunction&lt;/p&gt;
+&lt;p&gt;function! s:SET_CSC()
+let dir = expand(&amp;rdquo;%:p:h&amp;rdquo;) &amp;ldquo;获得源文件路径
+&amp;ldquo;在路径上递归向上查找tags文件
+while dir!=&amp;rdquo;&amp;rdquo;
+if findfile(&amp;ldquo;cscope.out&amp;rdquo;,dir ) !=&amp;rdquo;&amp;rdquo;
+&amp;ldquo;找到了就加入到tags
+if 0 == cscope_connection(1, &amp;ldquo;cscope.out&amp;rdquo;, dir)
+execute &amp;ldquo;cs add &amp;ldquo;.dir.&amp;quot;/cscope.out &amp;ldquo;.dir
+endif
+return
+endif
+&amp;ldquo;得到上级路径
+let dir=GET_UP_PATH(dir)
+endwhile
+endfunction&lt;/p&gt;
+&lt;p&gt;autocmd BufEnter * call s:SET_CSC()
+autocmd BufEnter * call s:SET_TAGS()
+&amp;ldquo;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+set laststatus=2            &amp;quot; 显示状态栏 (默认值为 1, 无法显示状态栏)&lt;/p&gt;
+&lt;p&gt;nmap &lt;!-- raw HTML omitted --&gt; :bnext&lt;!-- raw HTML omitted --&gt;
+nmap &lt;!-- raw HTML omitted --&gt; :bprevious&lt;!-- raw HTML omitted --&gt;
+nmap &lt;!-- raw HTML omitted --&gt; :w!&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;nmap &lt;!-- raw HTML omitted --&gt;1 :set filetype=xhtml&lt;!-- raw HTML omitted --&gt;
+nmap &lt;!-- raw HTML omitted --&gt;2 :set filetype=css&lt;!-- raw HTML omitted --&gt;
+nmap &lt;!-- raw HTML omitted --&gt;3 :set filetype=javascript&lt;!-- raw HTML omitted --&gt;
+nmap &lt;!-- raw HTML omitted --&gt;4 :set filetype=php&lt;!-- raw HTML omitted --&gt;
+nmap &lt;!-- raw HTML omitted --&gt;5 :set filetype=default&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;nmap &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;hl &lt;!-- raw HTML omitted --&gt;MarkSet
+nmap &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;hh &lt;!-- raw HTML omitted --&gt;MarkClear
+nmap &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;hr &lt;!-- raw HTML omitted --&gt;MarkRegex
+vmap &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;hl &lt;!-- raw HTML omitted --&gt;MarkSet
+vmap &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;hh &lt;!-- raw HTML omitted --&gt;MarkClear
+vmap &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;hr &lt;!-- raw HTML omitted --&gt;MarkRegex&lt;/p&gt;
+&lt;p&gt;let g:miniBufExplMapWindowNavVim = 1&lt;br&gt;
+let g:miniBufExplMapWindowNavArrows = 1&lt;br&gt;
+let g:miniBufExplMapCTabSwitchBufs = 1&lt;br&gt;
+let g:miniBufExplModSelTarget = 1&lt;br&gt;
+let g:miniBufExplMoreThanOne=0&lt;/p&gt;
+&lt;p&gt;set mouse=a&lt;/p&gt;
+&lt;p&gt;set noswf&lt;/p&gt;
+&lt;p&gt;let g:winManagerWindowLayout=&amp;ldquo;FileExplorer|TagList&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;let Tlist_File_Fold_Auto_Close=1&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;当文件在外部被修改，自动更新该文件
+set autoread&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置历史记录步数
+set history=400&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;快速退出（保存）为,&lt;!-- raw HTML omitted --&gt;
+map &lt;!-- raw HTML omitted --&gt; :set mouse=v&lt;!-- raw HTML omitted --&gt;
+map &lt;!-- raw HTML omitted --&gt; :set mouse=a&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;开启语法
+syntax enable
+syntax on&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;头文件与实现文件转换
+map &lt;!-- raw HTML omitted --&gt; :A &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置字体&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置配色
+colorscheme candycode&lt;/p&gt;
+&lt;p&gt;set completeopt=menu&lt;/p&gt;
+&lt;p&gt;set t_Co=256&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;高亮显示当前行
+set cursorline
+hi cursorline guibg=#222222
+hi CursorColumn guibg=#333333&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;tag
+set tags=tags;&lt;/p&gt;
+&lt;p&gt;&amp;quot;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;
+&amp;quot; =&amp;gt; 缩进
+&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;
+&amp;ldquo;自动缩进
+set ai&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;智能缩进
+set si&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置缩进的空格数为4
+set autoindent&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置自动缩进:即每行的缩进值与上一行相等；使用 noautoindent 取消设置
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置使用 C/C++ 语言的自动缩进方式
+set cin
+set cindent&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;显示标尺
+set ruler&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置命令行的高度
+set cmdheight=1&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;显示行数
+set number&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;显示匹配的括号([{和}])
+set showmatch&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;高亮显示搜索的内容
+set hlsearch&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;taglist
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1&lt;/p&gt;
+&lt;p&gt;&amp;quot;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;rdquo;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;
+&amp;quot; =&amp;gt; 编码设置
+&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&amp;quot;&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;Vim 内部使用的字符编码方式，包括 Vim 的 buffer (缓冲区)、菜单文本、
+&amp;ldquo;消息文本等。用户手册上建议只在 .vimrc 中改变它的值，
+&amp;ldquo;事实上似乎也只有在 .vimrc 中改变它的值才有意义。
+set encoding=utf-8&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;Vim 启动时会按照它所列出的字符编码方式逐一探测即将打开的文件的
+&amp;ldquo;字符编码方式，并且将 fileencoding 设置为最终探测到的字符编码方式。
+&amp;ldquo;因此最好将 Unicode 编码方式放到这个列表的最前面。
+&amp;ldquo;set fileencodings=Unicode,utf-8,gb2312,gbk,gb18030,latin-1
+&amp;ldquo;set fencs=utf-8,Unicode,gb2312,gbk,gb18030,latin-1,cp936
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936,latin-1,prc
+&amp;ldquo;set fileencodings=ucs-bom,utf8,prc&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;Vim 中当前编辑的文件的字符编码方式，
+&amp;ldquo;Vim 保存文件时也会将文件保存为这种字符编码方式。
+set fileencoding=utf-8
+&amp;ldquo;set fileencoding=prc&lt;/p&gt;
+&lt;p&gt;&amp;quot; termencoding: Vim 所工作的终端 (或者 Windows 的 Console 窗口)
+&amp;quot; 的字符编码方式。这个选项对 GUI 模式的 gVim 无效，
+&amp;quot; 而对 Console 模式的 Vim 而言就是Windows 控制台的代码页
+&amp;quot; (对于 Windows 而言)，并且通常我们不需要改变它。
+&amp;quot; 下面这句只影响普通模式 (非图形界面) 下的 Vim。
+&amp;ldquo;set termencoding=prc
+let &amp;amp;termencoding=&amp;amp;encoding&lt;/p&gt;
+&lt;p&gt;&amp;quot; &amp;ldquo;代码折叠, 命令 za
+set foldmethod=syntax
+set foldlevel=100  &amp;ldquo;启动vim时不要自动折叠代码&lt;/p&gt;
+&lt;p&gt;&amp;quot; &amp;ldquo;自动换行
+if (has(&amp;ldquo;gui_running&amp;rdquo;)) &amp;ldquo;图形界面下的设置
+&amp;quot; &amp;quot;
+&amp;quot; &amp;ldquo;指定不折行。如果一行太长，超过屏幕宽度，则向右边延伸到屏幕外面
+set nowrap
+&amp;quot;
+&amp;ldquo;添加水平滚动条。如果你指定了不折行，那为窗口添加一个水平滚动条就非常有必要
+&amp;quot; 了
+set guioptions+=b
+&amp;quot;
+else
+&amp;ldquo;字符界面下的设置
+set nowrap
+endif&lt;/p&gt;
+&lt;p&gt;&amp;quot; &amp;ldquo;&lt;!-- raw HTML omitted --&gt;code_complete.vim插件：函数自动完成
+map &lt;!-- raw HTML omitted --&gt; :silent %!xmllint -format %&lt;!-- raw HTML omitted --&gt;
+if !exists(&amp;ldquo;g:completekey&amp;rdquo;)
+let g:completekey = &amp;ldquo;&lt;!-- raw HTML omitted --&gt;&amp;rdquo;   &amp;ldquo;hotkey
+endif&lt;/p&gt;
+&lt;p&gt;map &lt;!-- raw HTML omitted --&gt; gu
+map &lt;!-- raw HTML omitted --&gt; gU&lt;/p&gt;
+&lt;p&gt;map &lt;!-- raw HTML omitted --&gt; :cp &lt;!-- raw HTML omitted --&gt;
+map &lt;!-- raw HTML omitted --&gt; :cn &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;&amp;quot; &amp;ldquo;当前目录生成tags语法文件，用于自动完成，函数提示：code_complete.vim
+&amp;ldquo;OmniCppComplete.vim &amp;hellip;
+&amp;ldquo;map &lt;!-- raw HTML omitted --&gt; :call SET_CSAD() &lt;!-- raw HTML omitted --&gt;
+&amp;quot;
+&amp;quot; &amp;ldquo;函数和变量列表
+map &lt;!-- raw HTML omitted --&gt; :TlistToggle&lt;!-- raw HTML omitted --&gt;
+&amp;quot;
+&amp;quot; &amp;ldquo;文件浏览器
+&amp;ldquo;map &lt;!-- raw HTML omitted --&gt; :WMToggle&lt;!-- raw HTML omitted --&gt;
+&amp;quot;
+&amp;quot; &amp;ldquo;文件树状列表
+nmap &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt; :execute &amp;lsquo;NERDTreeToggle &amp;lsquo;. expand(&amp;rdquo;%:p:h&amp;rdquo;)&lt;!-- raw HTML omitted --&gt;
+&amp;quot;
+&amp;quot; &amp;ldquo;映射复制、粘贴、剪贴ctrl+c ctrl+v ctrl+x
+&amp;quot; map &lt;!-- raw HTML omitted --&gt; &amp;ldquo;+pa&lt;!-- raw HTML omitted --&gt;
+&amp;quot; map! &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;&amp;quot;+pa
+map &lt;!-- raw HTML omitted --&gt; &amp;ldquo;+y
+map &lt;!-- raw HTML omitted --&gt; &amp;ldquo;+x
+&amp;quot;
+&amp;quot; &amp;quot; 映射全选 ctrl+a
+map &lt;!-- raw HTML omitted --&gt; ggVG
+map! &lt;!-- raw HTML omitted --&gt; &lt;!-- raw HTML omitted --&gt;ggVG
+&amp;quot;
+&amp;quot; &amp;quot; 多行缩进
+map &lt;!-- raw HTML omitted --&gt; &amp;gt;
+map &lt;!-- raw HTML omitted --&gt; &amp;lt;&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;设置自动补齐
+&amp;ldquo;filetype plugin indent on
+&amp;ldquo;set completeopt=longest,menu&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;if has(&amp;ldquo;autocmd&amp;rdquo;) &amp;amp;&amp;amp; exists(&amp;quot;+omnifunc&amp;rdquo;)
+&amp;quot;     autocmd Filetype *
+&amp;quot;   \ if &amp;amp;omnifunc == &amp;quot;&amp;rdquo; |
+&amp;quot;   \   setlocal omnifunc=syntaxcomplete#Complete |
+&amp;quot;   \ endif
+&amp;ldquo;endif&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;let g:SuperTabDefaultCompletionType=&amp;quot;&lt;!-- raw HTML omitted --&gt;&amp;lt;C-]&amp;gt;&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;let g:SuperTabRetainCompletionType=0
+&amp;quot; 0 - 不记录上次的补全方式
+&amp;quot; 1 - 记住上次的补全方式,直到用其他的补全命令改变它
+&amp;quot; 2 - 记住上次的补全方式,直到按ESC退出插入模式为止&lt;/p&gt;
+&lt;p&gt;map &lt;!-- raw HTML omitted --&gt; :call TitleDet()&amp;rsquo;s &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;map &lt;!-- raw HTML omitted --&gt; :call SET_CSAD()&amp;rsquo;s &lt;!-- raw HTML omitted --&gt;
+map &lt;!-- raw HTML omitted --&gt; :call SET_CSPHP()&amp;rsquo;s &lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
+&lt;p&gt;function AddTitle()
+call append(0,&amp;rdquo;/*******************************************************************************&amp;rdquo;)
+&amp;ldquo;call append(1,&amp;rdquo;#&amp;rdquo;)
+call append(1,&amp;rdquo; * Author : RKhuwq&amp;rdquo;)
+&amp;ldquo;call append(3,&amp;rdquo;#&amp;rdquo;)
+call append(2,&amp;rdquo; * Email : &lt;a class=&#34;link&#34; href=&#34;mailto:huwq@neusoft.com&#34; &gt;huwq@neusoft.com&lt;/a&gt;&amp;rdquo;)
+&amp;ldquo;call append(5,&amp;rdquo;#&amp;rdquo;)
+call append(3,&amp;rdquo; * Last modified : &amp;ldquo;.strftime(&amp;quot;%Y-%m-%d %H:%M&amp;rdquo;))
+&amp;ldquo;call append(7,&amp;rdquo;#&amp;rdquo;)
+call append(4,&amp;rdquo; * Filename : &amp;ldquo;.expand(&amp;rdquo;%&amp;rdquo;))
+&amp;ldquo;call append(9,&amp;rdquo;#&amp;rdquo;)
+call append(5,&amp;rdquo; * Description : &amp;ldquo;)
+&amp;ldquo;call append(11,&amp;rdquo;#&amp;rdquo;)
+call append(6,&amp;rdquo; * *****************************************************************************/&amp;rdquo;)
+echohl WarningMsg | echo &amp;ldquo;Successful in adding the copyright.&amp;rdquo; | echohl None
+endfunction&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;更新最近修改时间和文件名
+function UpdateTitle()
+normal m&amp;rsquo;
+execute &amp;rsquo; * Last modified : /s@:.&lt;em&gt;$@=strftime(&amp;rdquo;:\t%Y-%m-%d %H:%M&amp;rdquo;)@&amp;rsquo;
+normal &amp;quot;
+normal mk
+execute &amp;rsquo; * Filename : /s@:.&lt;/em&gt;$@=&amp;rdquo;:\t\t&amp;rdquo;.expand(&amp;rdquo;%:t&amp;rdquo;)@&amp;rsquo;
+execute &amp;ldquo;noh&amp;rdquo;
+normal &amp;lsquo;k
+echohl WarningMsg | echo &amp;ldquo;Successful in updating the copy right.&amp;quot;| echohl None
+endfunction&lt;/p&gt;
+&lt;p&gt;autocmd BufEnter :/ * Last modified : /s@:.*$@=strftime(&amp;rdquo; : %Y-%m-%d %H:%M&amp;rdquo;)@&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;判断第四行行代码里面，是否有Last modified这个单词，
+&amp;ldquo;如果没有的话，代表没有添加过作者信息，需要新添加；
+&amp;ldquo;如果有的话，那么只需要更新即可
+function TitleDet()
+let line = getline(4)
+if line =~ &amp;lsquo;\s*\sLast\smodified\s:\s\S*&amp;rsquo;
+:/ * Last modified : /s@:.*$@=strftime(&amp;rdquo;: %Y-%m-%d %H:%M&amp;rdquo;)@
+return
+endif
+call AddTitle()
+endfunction&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;自动补全
+set completeopt=menu,menuone
+let OmniCpp_MayCompleteDot = 1 &amp;quot; autocomplete with .
+let OmniCpp_MayCompleteArrow = 1 &amp;quot; autocomplete with -&amp;gt;
+let OmniCpp_MayCompleteScope = 1 &amp;quot; autocomplete with ::
+let OmniCpp_SelectFirstItem = 2 &amp;quot; select first item (but don&amp;rsquo;t insert)
+let OmniCpp_NamespaceSearch = 2 &amp;quot; search namespaces in this and included files
+let OmniCpp_ShowPrototypeInAbbr = 1 &amp;quot; show function prototype  in popup window
+let OmniCpp_GlobalScopeSearch=1
+let OmniCpp_DisplayMode=1
+let OmniCpp_DefaultNamespaces=[&amp;ldquo;std&amp;rdquo;]&lt;/p&gt;
+&lt;p&gt;&amp;quot; ~/.vimrc (configuration file for vim only)
+&amp;quot; skeletons
+&amp;ldquo;autocmd BufNewFile	*.spec	call SKEL_spec()
+&amp;quot; filetypes
+filetype plugin on
+filetype indent on
+&amp;quot; ~/.vimrc ends here
+{% endcodeblock %}
+其中F2为xml排版，F3为cscope搜索上一条，F4下一条，F6当前文件函数列表，F7目录列表，F8启用鼠标，F9不使用鼠标，F12 C语言中头文件与代码文件转换&lt;/p&gt;
+&lt;p&gt;Ctrl+E注释，Ctrl+F5生成C语言ctags与cscope，Ctrl+F6生成php语言ctags与cscope&lt;/p&gt;
+&lt;p&gt;之后下载本文的配置。复制到$HOME目录的.vim目录中。&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://sohunjug.com/files/vim.zip&#34; &gt;下载地址&lt;/a&gt;&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
 </rss>

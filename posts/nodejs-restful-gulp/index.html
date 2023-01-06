@@ -1,179 +1,286 @@
 <!DOCTYPE html>
-<head>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='前言 最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C&#43;&#43;功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。
+'>
+<title>TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端</title>
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel='canonical' href='https://sohunjug.com/posts/nodejs-restful-gulp/'>
 
-    
-    <link rel="icon" type="image/png" href="/images/favicon.png" />
-<link rel="shortcut icon" type="image/png" href="/images/favicon.png" />
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端'>
+<meta property='og:description' content='前言 最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C&#43;&#43;功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。
+'>
+<meta property='og:url' content='https://sohunjug.com/posts/nodejs-restful-gulp/'>
+<meta property='og:site_name' content='聽的资料'>
+<meta property='og:type' content='article'><meta property='article:section' content='Posts' /><meta property='article:tag' content='JavaScript' /><meta property='article:tag' content='Node.JS' /><meta property='article:tag' content='gulp' /><meta property='article:tag' content='TypeScript' /><meta property='article:tag' content='express' /><meta property='article:tag' content='RESTful' /><meta property='article:published_time' content='2016-09-13T15:58:43&#43;08:00'/><meta property='article:modified_time' content='2016-09-13T15:58:43&#43;08:00'/>
+<meta name="twitter:title" content="TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端">
+<meta name="twitter:description" content="前言 最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C&#43;&#43;功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。
+">
+    <link rel="shortcut icon" href="/favicon.png" />
 
-    
-    
-    <title>TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端 - 聽的资料</title>
-    
-    
-    <meta name="author" content="sohunjug" /> 
-     
-    
-    
-    <meta name="keywords" content="JavaScript, Node.JS, gulp, TypeScript, express, RESTful" />
-    
-    <meta property="og:title" content="TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端" />
-<meta property="og:description" content="前言
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
 
-最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C&#43;&#43;功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。
-" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://sohunjug.com/posts/nodejs-restful-gulp/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2016-09-13T15:58:43+08:00" />
-<meta property="article:modified_time" content="2016-09-13T15:58:43+08:00" />
-
-    <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端"/>
-<meta name="twitter:description" content="前言
-
-最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C&#43;&#43;功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。
-"/>
-
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@1.3.0/dist/disqusjs.css" />
-    
-    
-
-    
-    
-    <link rel="stylesheet" href="https://sohunjug.com/scss/main.min.3796779d99b798f0ae24d49c5a420db134eef2207610ed71453e417ce3ab44ed.css" integrity="sha256-N5Z3nZm3mPCuJNScWkINsTTu8iB2EO1xRT5BfOOrRO0=" crossorigin="anonymous" media="screen">
-	<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-</head>
-  
-</head>
-<body>
-  <span class="mobile btn-mobile-menu">
-
-    <i class="fa fa-list btn-mobile-menu__icon"></i>
-    <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
-
-  </span>
-
-  <header class="  panel-cover panel-cover--collapsed " style="background-image: url('/images/background-cover.jpg')">
-
-    <div class="panel-main">
-  
-      <div class="panel-main__inner panel-inverted">
-      <div class="panel-main__content">
-  
-          <a href="/#blog" title="Homepage of 聽的资料 " class="blog-button"><img src="/images/avatar.jpg" width="80" alt="聽的资料 logo" class="panel-cover__logo logo" /></a>
-          <h1 class="panel-cover__title panel-title"><a href="/#blog" title="Homepage of 聽的资料" class="blog-button">聽的资料</a></h1>
-          
-          <span class="panel-cover__subtitle panel-subtitle">Opportunity favors only the prepared mind. And everything change with time.</span>
-          
-          <hr class="panel-cover__divider" />
-          <p class="panel-cover__description"></p>
-          <hr class="panel-cover__divider panel-cover__divider--secondary" />
-          
-          
-          
-          <div class="navigation-wrapper">
-            <div>
-              <nav class="cover-navigation cover-navigation--primary">
-                <ul class="navigation">
-                  <li class="navigation__item"><a href="/#blog" title="Blog" class="blog-button">Blog</a></li>
-                  
-                    <li class="navigation__item"><a href="/tags/" target="_blank" title="Tags">Tags</a></li>
-                  
-                </ul>
-              </nav>
-            </div>
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
             
-            <div><nav class="cover-navigation navigation--social">
-    <ul class="navigation">
-  
-    
-    
-    <li class="navigation__item">
-      <a href="http://weibo.com/sohunjug" title="@sohunjug" target="_blank">
-        <i class='social fa fa-weibo'></i>
-        <span class="label">Weibo</span>
-      </a>
-    </li>
-    
-  
-    
-    
-    <li class="navigation__item">
-      <a href="https://github.com/sohunjug" title="@sohunjug" target="_blank">
-        <i class='social fa fa-github'></i>
-        <span class="label">Github</span>
-      </a>
-    </li>
-    
-    
-    
-    
-    <li class="navigation__item">
-      <a href="https://twitter.com/sohunjug" title="@sohunjug" target="_blank">
-        <i class='social fa fa-twitter'></i>
-        <span class="label">Twitter</span>
-      </a>
-    </li>
-    
 
-    
-  
-    
-  
-    
-    <li class="navigation__item">
-      <a href="/index.xml" rel="author" title="RSS" target="_blank">
-        <i class='social fa fa-rss'></i>
-        <span class="label">RSS</span>
-      </a>
-    </li>
-  
-    
-    
-    <li class="navigation__item">
-      <a href="mailto:sohunjug@gmail.com" title="Contact me">
-        <i class='social fa fa-envelope'></i>
-        <span class="label">Email</span>
-      </a>
-    </li>
-    
-  
-    </ul>
-  </nav>
-  </div>
-          </div>
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    
+                    
+                    
+                        
+                    
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">聽的资料</a></h1>
+            <h2 class="site-description">Opportunity favors only the prepared mind. And everything change with time.</h2>
         </div>
-      </div>
-      
-      
-      <div class="panel-cover--overlay cover-red"></div>
-      
-    </div>
-  </header>
-  
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sohunjug'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
 
-  <div class="content-wrapper">
-    <div class="content-wrapper__inner">
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/sohunjug'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+
+        <div class="menu-bottom-section">
+                <li id="i18n-switch">  
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M4 5h7" />
+  <path d="M9 3v2c0 4.418 -2.239 8 -5 8" />
+  <path d="M5 9c-.003 2.144 2.952 3.908 6.7 4" />
+  <path d="M12 20l4 -9l4 9" />
+  <path d="M19.1 18h-6.2" />
+</svg>
+
+
+
+                    <select name="language" onchange="window.location.href = this.selectedOptions[0].value">
+                        
+                            <option value="https://sohunjug.com/en/" >English</option>
+                        
+                            <option value="https://sohunjug.com/" selected>中文</option>
+                        
+                    </select>
+                </li>
+            
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li><a href="#前言">前言</a></li>
+    <li><a href="#typescript简介">TypeScript简介</a></li>
+    <li><a href="#环境搭建">环境搭建</a>
+      <ol>
+        <li><a href="#初始化项目">初始化项目</a></li>
+        <li><a href="#依赖库安装">依赖库安装</a></li>
+        <li><a href="#typescript中依赖安装">TypeScript中依赖安装</a></li>
+        <li><a href="#gulp配置">gulp配置</a></li>
+      </ol>
+    </li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/node.js/" >
+                Node.JS
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/posts/nodejs-restful-gulp/">TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Sep 13, 2016</time>
+            </div>
+        
 
         
-<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
-    <header class="post-header">
-        <div class="post-meta">
-            <time datetime=" 2016-09-13 15:58:43 &#43;0800 " itemprop="datePublished" class="post-meta__date date">2016-09-13</time>
-             <span class="post-meta__tags tags">   • <a href="https://sohunjug.com/tags/javascript">JavaScript</a>   • <a href="https://sohunjug.com/tags/node.js">Node.JS</a>   • <a href="https://sohunjug.com/tags/gulp">gulp</a>   • <a href="https://sohunjug.com/tags/typescript">TypeScript</a>   • <a href="https://sohunjug.com/tags/express">express</a>   • <a href="https://sohunjug.com/tags/restful">RESTful</a>  </span> 
-        </div>
-        <h1 class="post-title">TypeScript: (Node.JS &#43; gulp &#43; express) 写RESTful API 做后端</h1>
-    </header>
-    <section class="post">
-        <h2 id="前言">前言</h2>
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h2 id="前言">前言</h2>
 <blockquote>
 <p>最近应公司项目要求，入坑Ionic，查了很多资料之后感觉还是使用TypeScript来写比较好，因本人本身的C++功底，TypeScript正好是类似面向对象形式的，这样接受新语言环境也比较快。</p>
 </blockquote>
@@ -189,330 +296,691 @@
 <blockquote>
 <p>既然最终是编译成js，环境就是Node.JS了。配置好node与npm后创建一个Project目录:</p>
 </blockquote>
-<pre tabindex="0"><code>mkdir localtest
-cd localtest
-npm init
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">mkdir localtest
+</span></span><span class="line"><span class="cl">cd localtest
+</span></span><span class="line"><span class="cl">npm init
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>初始化项目会生成package.json文件，此文件为项目依赖库的跟踪文件，当你将项目分享给其他人时，无需全部分享，只需分享项目代码与此文件，对方即可使用npm install来自己创建项目依赖环境</p>
 </blockquote>
 <blockquote>
 <p>package.json 样例:</p>
 </blockquote>
-<pre tabindex="0"><code>cat package.json
-{
-  &#34;name&#34;: &#34;localtest&#34;,
-  &#34;version&#34;: &#34;1.0.0&#34;,
-  &#34;description&#34;: &#34;This is a test.&#34;,
-  &#34;main&#34;: &#34;index.js&#34;,
-  &#34;dependencies&#34;: {},
-  &#34;devDependencies&#34;: {},
-  &#34;scripts&#34;: {
-    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
-  },
-  &#34;author&#34;: &#34;sohunjug&#34;,
-  &#34;license&#34;: &#34;ISC&#34;
-}
-</code></pre><h3 id="依赖库安装">依赖库安装</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat package.json
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">  &#34;name&#34;: &#34;localtest&#34;,
+</span></span><span class="line"><span class="cl">  &#34;version&#34;: &#34;1.0.0&#34;,
+</span></span><span class="line"><span class="cl">  &#34;description&#34;: &#34;This is a test.&#34;,
+</span></span><span class="line"><span class="cl">  &#34;main&#34;: &#34;index.js&#34;,
+</span></span><span class="line"><span class="cl">  &#34;dependencies&#34;: {},
+</span></span><span class="line"><span class="cl">  &#34;devDependencies&#34;: {},
+</span></span><span class="line"><span class="cl">  &#34;scripts&#34;: {
+</span></span><span class="line"><span class="cl">    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
+</span></span><span class="line"><span class="cl">  },
+</span></span><span class="line"><span class="cl">  &#34;author&#34;: &#34;sohunjug&#34;,
+</span></span><span class="line"><span class="cl">  &#34;license&#34;: &#34;ISC&#34;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="依赖库安装">依赖库安装</h3>
 <blockquote>
 <p>下一步开始安装typescript、express、gulp等依赖库。</p>
 </blockquote>
-<pre tabindex="0"><code>npm install -g typescript
-npm install -g typings
-npm install -g tslint
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">npm install -g typescript
+</span></span><span class="line"><span class="cl">npm install -g typings
+</span></span><span class="line"><span class="cl">npm install -g tslint
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>国内可能npm速度不是很给力，可以使用阿里出品的cnpm:</p>
 </blockquote>
-<pre tabindex="0"><code>npm install -g cnpm --registry=https://registry.npm.taobao.org
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">npm install -g cnpm --registry=https://registry.npm.taobao.org
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>之后上边的安装就可以使用新的cnpm，速度提升很大哦:</p>
 </blockquote>
-<pre tabindex="0"><code>cnpm install -g typescript
-cnpm install -g typings
-cnpm install -g tslint
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cnpm install -g typescript
+</span></span><span class="line"><span class="cl">cnpm install -g typings
+</span></span><span class="line"><span class="cl">cnpm install -g tslint
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>这些常用的可以安装为全局及使用-g，也可以在项目中安装取消-g，加上&ndash;save</p>
 </blockquote>
-<pre tabindex="0"><code>cnpm install --save typescript
-cnpm install --save typings
-cnpm install --save tslint
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cnpm install --save typescript
+</span></span><span class="line"><span class="cl">cnpm install --save typings
+</span></span><span class="line"><span class="cl">cnpm install --save tslint
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>下面开始安装express等依赖库:</p>
 </blockquote>
-<pre tabindex="0"><code>cnpm install --save express
-cnpm install --save body-parser
-cnpm install --save jade
-cnpm install --save cookie-parser
-cnpm install --save morgan
-cnpm install --save gulp
-cnpm install --save gulp-tsc
-cnpm install --save run-sequence
-cnpm install --save gulp-util
-cnpm install --save gulp-clean
-cnpm install --save tiny-lr
-cnpm install --save gulp-live-server
-cnpm install --save gulp-tslint
-cnpm install --save debug
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cnpm install --save express
+</span></span><span class="line"><span class="cl">cnpm install --save body-parser
+</span></span><span class="line"><span class="cl">cnpm install --save jade
+</span></span><span class="line"><span class="cl">cnpm install --save cookie-parser
+</span></span><span class="line"><span class="cl">cnpm install --save morgan
+</span></span><span class="line"><span class="cl">cnpm install --save gulp
+</span></span><span class="line"><span class="cl">cnpm install --save gulp-tsc
+</span></span><span class="line"><span class="cl">cnpm install --save run-sequence
+</span></span><span class="line"><span class="cl">cnpm install --save gulp-util
+</span></span><span class="line"><span class="cl">cnpm install --save gulp-clean
+</span></span><span class="line"><span class="cl">cnpm install --save tiny-lr
+</span></span><span class="line"><span class="cl">cnpm install --save gulp-live-server
+</span></span><span class="line"><span class="cl">cnpm install --save gulp-tslint
+</span></span><span class="line"><span class="cl">cnpm install --save debug
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>此时package.json变为:</p>
 </blockquote>
-<pre tabindex="0"><code>cat package.json
-{
-  &#34;name&#34;: &#34;localtest&#34;,
-  &#34;version&#34;: &#34;1.0.0&#34;,
-  &#34;description&#34;: &#34;This is a test.&#34;,
-  &#34;main&#34;: &#34;index.js&#34;,
-  &#34;dependencies&#34;: {
-    &#34;body-parser&#34;: &#34;^1.15.2&#34;,
-    &#34;cookie-parser&#34;: &#34;^1.4.3&#34;,
-    &#34;debug&#34;: &#34;^2.2.0&#34;,
-    &#34;express&#34;: &#34;^4.14.0&#34;,
-    &#34;gulp&#34;: &#34;^3.9.1&#34;,
-    &#34;gulp-clean&#34;: &#34;^0.3.2&#34;,
-    &#34;gulp-live-server&#34;: &#34;^0.0.30&#34;,
-    &#34;gulp-tsc&#34;: &#34;^1.2.3&#34;,
-    &#34;gulp-tslint&#34;: &#34;^6.1.1&#34;,
-    &#34;gulp-util&#34;: &#34;^3.0.7&#34;,
-    &#34;jade&#34;: &#34;^1.11.0&#34;,
-    &#34;morgan&#34;: &#34;^1.7.0&#34;,
-    &#34;run-sequence&#34;: &#34;^1.2.2&#34;,
-    &#34;tiny-lr&#34;: &#34;^0.2.1&#34;
-  },
-  &#34;devDependencies&#34;: {},
-  &#34;scripts&#34;: {
-    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
-  },
-  &#34;author&#34;: &#34;sohunjug&#34;,
-  &#34;license&#34;: &#34;ISC&#34;
-}
-</code></pre><h3 id="typescript中依赖安装">TypeScript中依赖安装</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat package.json
+</span></span><span class="line"><span class="cl">{
+</span></span><span class="line"><span class="cl">  &#34;name&#34;: &#34;localtest&#34;,
+</span></span><span class="line"><span class="cl">  &#34;version&#34;: &#34;1.0.0&#34;,
+</span></span><span class="line"><span class="cl">  &#34;description&#34;: &#34;This is a test.&#34;,
+</span></span><span class="line"><span class="cl">  &#34;main&#34;: &#34;index.js&#34;,
+</span></span><span class="line"><span class="cl">  &#34;dependencies&#34;: {
+</span></span><span class="line"><span class="cl">    &#34;body-parser&#34;: &#34;^1.15.2&#34;,
+</span></span><span class="line"><span class="cl">    &#34;cookie-parser&#34;: &#34;^1.4.3&#34;,
+</span></span><span class="line"><span class="cl">    &#34;debug&#34;: &#34;^2.2.0&#34;,
+</span></span><span class="line"><span class="cl">    &#34;express&#34;: &#34;^4.14.0&#34;,
+</span></span><span class="line"><span class="cl">    &#34;gulp&#34;: &#34;^3.9.1&#34;,
+</span></span><span class="line"><span class="cl">    &#34;gulp-clean&#34;: &#34;^0.3.2&#34;,
+</span></span><span class="line"><span class="cl">    &#34;gulp-live-server&#34;: &#34;^0.0.30&#34;,
+</span></span><span class="line"><span class="cl">    &#34;gulp-tsc&#34;: &#34;^1.2.3&#34;,
+</span></span><span class="line"><span class="cl">    &#34;gulp-tslint&#34;: &#34;^6.1.1&#34;,
+</span></span><span class="line"><span class="cl">    &#34;gulp-util&#34;: &#34;^3.0.7&#34;,
+</span></span><span class="line"><span class="cl">    &#34;jade&#34;: &#34;^1.11.0&#34;,
+</span></span><span class="line"><span class="cl">    &#34;morgan&#34;: &#34;^1.7.0&#34;,
+</span></span><span class="line"><span class="cl">    &#34;run-sequence&#34;: &#34;^1.2.2&#34;,
+</span></span><span class="line"><span class="cl">    &#34;tiny-lr&#34;: &#34;^0.2.1&#34;
+</span></span><span class="line"><span class="cl">  },
+</span></span><span class="line"><span class="cl">  &#34;devDependencies&#34;: {},
+</span></span><span class="line"><span class="cl">  &#34;scripts&#34;: {
+</span></span><span class="line"><span class="cl">    &#34;test&#34;: &#34;echo \&#34;Error: no test specified\&#34; &amp;&amp; exit 1&#34;
+</span></span><span class="line"><span class="cl">  },
+</span></span><span class="line"><span class="cl">  &#34;author&#34;: &#34;sohunjug&#34;,
+</span></span><span class="line"><span class="cl">  &#34;license&#34;: &#34;ISC&#34;
+</span></span><span class="line"><span class="cl">}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="typescript中依赖安装">TypeScript中依赖安装</h3>
 <blockquote>
 <p>本人使用typings，据网上资料显示，tsd已经过时了，所以也木有研究，此处不做评论。</p>
 </blockquote>
 <blockquote>
 <p>此处typings，我是使用-g安装的全局:</p>
 </blockquote>
-<pre tabindex="0"><code>typings install --global --save dt~express
-typings install --global --save dt~node 
-typings install --global --save dt~serve-static 
-typings install --global --save dt~express-serve-static-core 
-typings install --global --save dt~mime 
-typings install --global --save dt~body-parser 
-typings install --global --save dt~debug 
-typings install --global --save dt~cookie-parser 
-typings install --global --save dt~morgan
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">typings install --global --save dt~express
+</span></span><span class="line"><span class="cl">typings install --global --save dt~node 
+</span></span><span class="line"><span class="cl">typings install --global --save dt~serve-static 
+</span></span><span class="line"><span class="cl">typings install --global --save dt~express-serve-static-core 
+</span></span><span class="line"><span class="cl">typings install --global --save dt~mime 
+</span></span><span class="line"><span class="cl">typings install --global --save dt~body-parser 
+</span></span><span class="line"><span class="cl">typings install --global --save dt~debug 
+</span></span><span class="line"><span class="cl">typings install --global --save dt~cookie-parser 
+</span></span><span class="line"><span class="cl">typings install --global --save dt~morgan
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>使用&ndash;save安装本地则使用:</p>
 </blockquote>
-<pre tabindex="0"><code>node_modules/.bin/typings install --global --save dt~express
-node_modules/.bin/typings install --global --save dt~node 
-node_modules/.bin/typings install --global --save dt~serve-static 
-node_modules/.bin/typings install --global --save dt~express-serve-static-core 
-node_modules/.bin/typings install --global --save dt~mime 
-node_modules/.bin/typings install --global --save dt~body-parser 
-node_modules/.bin/typings install --global --save dt~debug 
-node_modules/.bin/typings install --global --save dt~cookie-parser 
-node_modules/.bin/typings install --global --save dt~morgan
-</code></pre><h3 id="gulp配置">gulp配置</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~express
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~node 
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~serve-static 
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~express-serve-static-core 
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~mime 
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~body-parser 
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~debug 
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~cookie-parser 
+</span></span><span class="line"><span class="cl">node_modules/.bin/typings install --global --save dt~morgan
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="gulp配置">gulp配置</h3>
 <blockquote>
 <p>同样看到网上评论，grunt为基于json配置来管理自动化部署，而gulp基于代码形式，更倾向于程序员使用，而且可以自己制作部署细节。</p>
 </blockquote>
 <blockquote>
 <p>基于网上找到的配置，使用了一下发现对于express的app形式的热更新不支持，所以又找了些资料，终于自己配置出来了，现分享下:</p>
 </blockquote>
-<pre tabindex="0"><code>var gulp = require(&#39;gulp&#39;);
-var tsc = require(&#39;gulp-tsc&#39;);
-var seq = require(&#39;run-sequence&#39;);
-var del = require(&#39;gulp-clean&#39;);
-var gls = require(&#39;gulp-live-server&#39;);
-var chalk = require(&#39;chalk&#39;);
-var gutil = require(&#39;gulp-util&#39;);
-var tslint = require(&#39;gulp-tslint&#39;);
-
-var paths = {
-    ts: {
-        src: [
-            &#39;app/**/*.ts&#39;
-        ],
-        dest: &#39;build&#39;
-    }
-}
-
-gulp.task(&#39;serve&#39;, () =&gt; {
-    seq(&#39;clean&#39;, &#39;build&#39;, &#39;watch&#39;);
-})
-
-gulp.task(&#39;watch&#39;, () =&gt; {
-    var server = gls.new(&#39;build/www.js&#39;);
-    server.start();
-    gulp.watch([&#39;app/**/*.ts&#39;], () =&gt; seq(&#39;tslint&#39;, &#39;clean&#39;, &#39;build&#39;));
-    gulp.watch([&#39;build/**/*.js&#39;, &#39;build/**/*.css&#39;, &#39;build/**/*.html&#39;], file =&gt;
-      server.notify.apply(server, [file])
-    );
-    gulp.watch(&#39;build/www.js&#39;, () =&gt; {
-      setTimeout(() =&gt; gutil.log(&#39;Restart Succeed!&#39;), 500);
-      server.start.bind(server)()
-    });
-});
-
-gulp.task(&#39;build&#39;, () =&gt; {
-    return gulp.src(paths.ts.src)
-        .pipe(tslint({
-            formatter: &#34;verbose&#34;
-        }))
-        .pipe(tsc({
-            module: &#34;CommonJS&#34;,
-            sourcemap: true,
-            emitError: false
-        }))
-        .pipe(gulp.dest(paths.ts.dest));
-});
-
-gulp.task(&#39;clean&#39;, () =&gt; {
-    del(paths.ts.dest);
-});
-
-gulp.task(&#39;rebuild&#39;, file =&gt; {
-    seq(&#39;clean&#39;, &#39;build&#39;);
-});
-
-gulp.task(&#34;tslint&#34;, () =&gt; {
-    return gulp.src(paths.ts.src)
-        .pipe(tslint({
-            formatter: &#34;verbose&#34;
-        }))
-        .pipe(tslint.report());
-});
-
-gulp.task(&#39;default&#39;, [&#39;rebuild&#39;]);
-</code></pre><blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">var gulp = require(&#39;gulp&#39;);
+</span></span><span class="line"><span class="cl">var tsc = require(&#39;gulp-tsc&#39;);
+</span></span><span class="line"><span class="cl">var seq = require(&#39;run-sequence&#39;);
+</span></span><span class="line"><span class="cl">var del = require(&#39;gulp-clean&#39;);
+</span></span><span class="line"><span class="cl">var gls = require(&#39;gulp-live-server&#39;);
+</span></span><span class="line"><span class="cl">var chalk = require(&#39;chalk&#39;);
+</span></span><span class="line"><span class="cl">var gutil = require(&#39;gulp-util&#39;);
+</span></span><span class="line"><span class="cl">var tslint = require(&#39;gulp-tslint&#39;);
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">var paths = {
+</span></span><span class="line"><span class="cl">    ts: {
+</span></span><span class="line"><span class="cl">        src: [
+</span></span><span class="line"><span class="cl">            &#39;app/**/*.ts&#39;
+</span></span><span class="line"><span class="cl">        ],
+</span></span><span class="line"><span class="cl">        dest: &#39;build&#39;
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gulp.task(&#39;serve&#39;, () =&gt; {
+</span></span><span class="line"><span class="cl">    seq(&#39;clean&#39;, &#39;build&#39;, &#39;watch&#39;);
+</span></span><span class="line"><span class="cl">})
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gulp.task(&#39;watch&#39;, () =&gt; {
+</span></span><span class="line"><span class="cl">    var server = gls.new(&#39;build/www.js&#39;);
+</span></span><span class="line"><span class="cl">    server.start();
+</span></span><span class="line"><span class="cl">    gulp.watch([&#39;app/**/*.ts&#39;], () =&gt; seq(&#39;tslint&#39;, &#39;clean&#39;, &#39;build&#39;));
+</span></span><span class="line"><span class="cl">    gulp.watch([&#39;build/**/*.js&#39;, &#39;build/**/*.css&#39;, &#39;build/**/*.html&#39;], file =&gt;
+</span></span><span class="line"><span class="cl">      server.notify.apply(server, [file])
+</span></span><span class="line"><span class="cl">    );
+</span></span><span class="line"><span class="cl">    gulp.watch(&#39;build/www.js&#39;, () =&gt; {
+</span></span><span class="line"><span class="cl">      setTimeout(() =&gt; gutil.log(&#39;Restart Succeed!&#39;), 500);
+</span></span><span class="line"><span class="cl">      server.start.bind(server)()
+</span></span><span class="line"><span class="cl">    });
+</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gulp.task(&#39;build&#39;, () =&gt; {
+</span></span><span class="line"><span class="cl">    return gulp.src(paths.ts.src)
+</span></span><span class="line"><span class="cl">        .pipe(tslint({
+</span></span><span class="line"><span class="cl">            formatter: &#34;verbose&#34;
+</span></span><span class="line"><span class="cl">        }))
+</span></span><span class="line"><span class="cl">        .pipe(tsc({
+</span></span><span class="line"><span class="cl">            module: &#34;CommonJS&#34;,
+</span></span><span class="line"><span class="cl">            sourcemap: true,
+</span></span><span class="line"><span class="cl">            emitError: false
+</span></span><span class="line"><span class="cl">        }))
+</span></span><span class="line"><span class="cl">        .pipe(gulp.dest(paths.ts.dest));
+</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gulp.task(&#39;clean&#39;, () =&gt; {
+</span></span><span class="line"><span class="cl">    del(paths.ts.dest);
+</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gulp.task(&#39;rebuild&#39;, file =&gt; {
+</span></span><span class="line"><span class="cl">    seq(&#39;clean&#39;, &#39;build&#39;);
+</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gulp.task(&#34;tslint&#34;, () =&gt; {
+</span></span><span class="line"><span class="cl">    return gulp.src(paths.ts.src)
+</span></span><span class="line"><span class="cl">        .pipe(tslint({
+</span></span><span class="line"><span class="cl">            formatter: &#34;verbose&#34;
+</span></span><span class="line"><span class="cl">        }))
+</span></span><span class="line"><span class="cl">        .pipe(tslint.report());
+</span></span><span class="line"><span class="cl">});
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gulp.task(&#39;default&#39;, [&#39;rebuild&#39;]);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
 <p>此配置可以在当前目录中使用gulp来启动了，默认gulp执行default任务(即重新编译)，还可以手动自己执行不同的task任务，其中gulp serve是自动热更新部署。</p>
 </blockquote>
 <blockquote>
 <p>效果为：</p>
 </blockquote>
-<pre tabindex="0"><code>$ gulp serve
-[15:27:30] Using gulpfile xxxx/localtest/gulpfile.js
-[15:27:30] Starting &#39;serve&#39;...
-[15:27:30] Starting &#39;clean&#39;...
-[15:27:30] Finished &#39;clean&#39; after 1.36 ms
-[15:27:30] Starting &#39;build&#39;...
-[15:27:30] Finished &#39;serve&#39; after 15 ms
-[15:27:30] Compiling TypeScript files using tsc version 1.8.10
-[15:27:32] Finished &#39;build&#39; after 2.6 s
-[15:27:32] Starting &#39;watch&#39;...
-[15:27:32] Finished &#39;watch&#39; after 57 ms
-livereload[tiny-lr] listening on 35729 ...
-[15:27:38] Starting &#39;tslint&#39;...
-[15:27:38] Finished &#39;tslint&#39; after 213 ms
-[15:27:38] Starting &#39;clean&#39;...
-[15:27:38] Finished &#39;clean&#39; after 266 μs
-[15:27:38] Starting &#39;build&#39;...
-[15:27:38] Compiling TypeScript files using tsc version 1.8.10
-[15:27:40] Finished &#39;build&#39; after 2.39 s
-[15:27:41] Restart Succeed!
-</code></pre><blockquote>
-<p>项目样例代码已更新GitHub(<a href="https://github.com/sohunjug/TypeScript-RESTful-sample.git">TypeScript-RESTful-sample</a>)</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ gulp serve
+</span></span><span class="line"><span class="cl">[15:27:30] Using gulpfile xxxx/localtest/gulpfile.js
+</span></span><span class="line"><span class="cl">[15:27:30] Starting &#39;serve&#39;...
+</span></span><span class="line"><span class="cl">[15:27:30] Starting &#39;clean&#39;...
+</span></span><span class="line"><span class="cl">[15:27:30] Finished &#39;clean&#39; after 1.36 ms
+</span></span><span class="line"><span class="cl">[15:27:30] Starting &#39;build&#39;...
+</span></span><span class="line"><span class="cl">[15:27:30] Finished &#39;serve&#39; after 15 ms
+</span></span><span class="line"><span class="cl">[15:27:30] Compiling TypeScript files using tsc version 1.8.10
+</span></span><span class="line"><span class="cl">[15:27:32] Finished &#39;build&#39; after 2.6 s
+</span></span><span class="line"><span class="cl">[15:27:32] Starting &#39;watch&#39;...
+</span></span><span class="line"><span class="cl">[15:27:32] Finished &#39;watch&#39; after 57 ms
+</span></span><span class="line"><span class="cl">livereload[tiny-lr] listening on 35729 ...
+</span></span><span class="line"><span class="cl">[15:27:38] Starting &#39;tslint&#39;...
+</span></span><span class="line"><span class="cl">[15:27:38] Finished &#39;tslint&#39; after 213 ms
+</span></span><span class="line"><span class="cl">[15:27:38] Starting &#39;clean&#39;...
+</span></span><span class="line"><span class="cl">[15:27:38] Finished &#39;clean&#39; after 266 μs
+</span></span><span class="line"><span class="cl">[15:27:38] Starting &#39;build&#39;...
+</span></span><span class="line"><span class="cl">[15:27:38] Compiling TypeScript files using tsc version 1.8.10
+</span></span><span class="line"><span class="cl">[15:27:40] Finished &#39;build&#39; after 2.39 s
+</span></span><span class="line"><span class="cl">[15:27:41] Restart Succeed!
+</span></span></code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>项目样例代码已更新GitHub(<a class="link" href="https://github.com/sohunjug/TypeScript-RESTful-sample.git"  target="_blank" rel="noopener"
+    >TypeScript-RESTful-sample</a>)</p>
 </blockquote>
 <blockquote>
 <p>代码中RESTFul样例我开发了一个简单的路由小框架。欢迎star。</p>
 </blockquote>
 <blockquote>
 <p>参考链接：
-<a href="http://brianflove.com/2016/03/29/typescript-express-node-js/">http://brianflove.com/2016/03/29/typescript-express-node-js/</a></p>
-<p><a href="https://www.npmjs.com/package/gulp-live-server">https://www.npmjs.com/package/gulp-live-server</a></p>
+<a class="link" href="http://brianflove.com/2016/03/29/typescript-express-node-js/"  target="_blank" rel="noopener"
+    >http://brianflove.com/2016/03/29/typescript-express-node-js/</a></p>
+<p><a class="link" href="https://www.npmjs.com/package/gulp-live-server"  target="_blank" rel="noopener"
+    >https://www.npmjs.com/package/gulp-live-server</a></p>
 </blockquote>
-    </section>
-</article>
-<section class="read-more">
-    
-
-
-    
-    <div class="read-more-item">
-        <span class="read-more-item-dim">更早的文章</span>
-        <h2 class="post-list__post-title post-title"><a href="/posts/packetsender/" title="link to PacketSender 发送接收socket macOS App">PacketSender 发送接收socket macOS App</a></h2>
-        <p class="excerpt"><h4 id="更新">更新</h4>
-<blockquote>
-<p>问题原因可能为 macOS 10.12 beta 系统问题，新更新为 10.12 beta 6 问题解决。</p>
-</blockquote>
-<blockquote>
-<p>目前版本已更新为 1.4.3，支持多窗口。</p>
-</blockquote>
-<h2 id="起因">起因</h2>
-<blockquote>
-<p>最近工作发现有时候需要测试发送 TCP 包，而目前 Mac 上又没有找到功能很好的软件，所以就自己开发了一个简单而实用的工具。<a href="https://itunes.apple.com/us/app/packetsender/id906185173?l=zh&amp;ls=1&amp;mt=12">PacketSender</a>
-因后来实用 ObjC 重写了的原因，所以开源旧版本的 Swift 版本吧。<a href="https://gitlab.com/sohunjug/PacketSender-Swift.git">GitLab</a>、<a href="https://github.com/sohunjug/PacketSender-Swift.git">GitHub</a></p>
-</blockquote>&hellip;</p>
-        <div class="post-list__meta">
-            <time datetime=" 2016-09-13 15:58:43 &#43;0800" class="post-list__meta--date date">2016-08-18</time>
-             
-            <span class="post-list__meta--tags tags"> 
-                  • <a href="https://sohunjug.com/tags/objective-c">Objective-C</a>   • <a href="https://sohunjug.com/tags/swift">Swift</a>   • <a href="https://sohunjug.com/tags/tcp">TCP</a>   • <a href="https://sohunjug.com/tags/udp">UDP</a>  
-            </span>
-            
-            <a class="btn-border-small" href="/posts/packetsender/">继续阅读</a>
-        </div>
-    </div>
-    
- </section>
- 
-<section class="post-comments">
-    
-      <div id="disqus_thread"></div>
-      <script>
-      
-      var disqus_config = function () {
-          this.page.url = "https:\/\/sohunjug.com\/posts\/nodejs-restful-gulp\/";
-          this.page.identifier = "https:\/\/sohunjug.com\/posts\/nodejs-restful-gulp\/";
-      };
-  
-      var disqus_shortname = 'sohunjug';
-      
-      (function() { 
-          var d = document, s = d.createElement('script');
-          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          s.setAttribute('data-timestamp', +new Date());
-              (d.head || d.body).appendChild(s);
-          })();
-      </script>
-      <noscript>To view comments from<a href="http://disqus.com/?ref_noscript"> Disqus </a>, please enable JavaScript.</noscript>
-      
-    
-
-    
-    
-  </section>
-  
-
-        <section class="footer">
-    <footer>
-        <span class="footer__copyright">&copy; 2013-2023, By sohunjug  备案号：<a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备14034266号</a></span>
-        <span class="footer__copyright">本站点内容基于 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 协议发布。</span>
-        <span class="footer__copyright">由 <a href="https://gohugo.io/">Hugo</a> 于 2023-01-05 生成， 采用 <a href="https://github.com/xslingcn/vno-hugo"> Vno - Hugo</a> 作为主题。</span>
-    </footer>
 </section>
 
 
-    </div>
-  </div>
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/javascript/">JavaScript</a>
+        
+            <a href="/tags/node.js/">Node.JS</a>
+        
+            <a href="/tags/gulp/">gulp</a>
+        
+            <a href="/tags/typescript/">TypeScript</a>
+        
+            <a href="/tags/express/">express</a>
+        
+            <a href="/tags/restful/">RESTful</a>
+        
+    </section>
 
-  <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="/js/main.js"></script><script>
-    (function(i, s, o, g, r, a, m) {
-        i['GoogleAnalyticsObject'] = r;
-        i[r] = i[r] || function() {
-            (i[r].q = i[r].q || []).push(arguments)
-        }, i[r].l = 1 * new Date();
-        a = s.createElement(o),
-            m = s.getElementsByTagName(o)[0];
-        a.async = 1;
-        a.src = g;
-        m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-    ga('create', 'your_ga_id', 'your_host');
-    ga('send', 'pageview');
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
 </script>
 
-  
-</body>
+    
 
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2013 - 
+        
+        2023 聽的资料
+    </section>
+    
+    <section class="powerby">
+        
+            粤ICP备14034266号 <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

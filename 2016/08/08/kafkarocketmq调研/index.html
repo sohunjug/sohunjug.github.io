@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Kafka是Linkin开源的消息中间件 Kafka的设计目标是： （1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。 （2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。 （3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。 （4）同时支持离线数据处理和实时数据处理。 （5）Scale out：支持在线水平扩展。
+RocketMQ是阿里开源的消息中间件 其最初也是基于Kafka发展而来。
+'>
+<title>Kafka、RocketMQ调研</title>
+
+<link rel='canonical' href='https://sohunjug.com/2016/08/08/kafkarocketmq%E8%B0%83%E7%A0%94/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='Kafka、RocketMQ调研'>
+<meta property='og:description' content='Kafka是Linkin开源的消息中间件 Kafka的设计目标是： （1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。 （2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。 （3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。 （4）同时支持离线数据处理和实时数据处理。 （5）Scale out：支持在线水平扩展。
+RocketMQ是阿里开源的消息中间件 其最初也是基于Kafka发展而来。
+'>
+<meta property='og:url' content='https://sohunjug.com/2016/08/08/kafkarocketmq%E8%B0%83%E7%A0%94/'>
+<meta property='og:site_name' content='聽的资料'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Kafka' /><meta property='article:tag' content='RocketMQ' /><meta property='article:published_time' content='2016-08-08T09:10:28&#43;08:00'/><meta property='article:modified_time' content='2016-08-08T09:10:28&#43;08:00'/>
+<meta name="twitter:site" content="@sohunjug">
+    <meta name="twitter:creator" content="@sohunjug"><meta name="twitter:title" content="Kafka、RocketMQ调研">
+<meta name="twitter:description" content="Kafka是Linkin开源的消息中间件 Kafka的设计目标是： （1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。 （2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。 （3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。 （4）同时支持离线数据处理和实时数据处理。 （5）Scale out：支持在线水平扩展。
+RocketMQ是阿里开源的消息中间件 其最初也是基于Kafka发展而来。
+">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    <img src="/img/avatar.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">聽的资料</a></h1>
+            <h2 class="site-description">Opportunity favors only the prepared mind. And everything change with time.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sohunjug'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/sohunjug'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    <aside class="sidebar right-sidebar sticky">
+        
+            
+                
+    <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <line x1="5" y1="9" x2="19" y2="9" />
+  <line x1="5" y1="15" x2="19" y2="15" />
+  <line x1="11" y1="4" x2="7" y2="20" />
+  <line x1="17" y1="4" x2="13" y2="20" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">目录</h2>
+        
+        <div class="widget--toc">
+            <nav id="TableOfContents">
+  <ol>
+    <li>
+      <ol>
+        <li><a href="#kafka是linkin开源的消息中间件">Kafka是Linkin开源的消息中间件</a>
+          <ol>
+            <li><a href="#kafka的设计目标是">Kafka的设计目标是：</a></li>
+          </ol>
+        </li>
+        <li><a href="#rocketmq是阿里开源的消息中间件">RocketMQ是阿里开源的消息中间件</a></li>
+      </ol>
+    </li>
+    <li><a href="#数据可靠性">数据可靠性</a></li>
+    <li><a href="#性能对比">性能对比</a></li>
+    <li><a href="#单机支持的队列数">单机支持的队列数</a></li>
+    <li><a href="#严格的消息顺序">严格的消息顺序</a></li>
+    <li><a href="#分布式事务消息">分布式事务消息</a></li>
+    <li><a href="#消息查询">消息查询</a></li>
+    <li><a href="#消息回溯">消息回溯</a></li>
+    <li><a href="#消费并行度">消费并行度</a></li>
+    <li><a href="#broker端消息过滤">Broker端消息过滤</a></li>
+    <li><a href="#单机系统可靠性">单机系统可靠性</a></li>
+  </ol>
+</nav>
+        </div>
+    </section>
+
+            
+        
+    </aside>
+
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/java/" >
+                Java
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2016/08/08/kafkarocketmq%E8%B0%83%E7%A0%94/">Kafka、RocketMQ调研</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Aug 08, 2016</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 5 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <h3 id="kafka是linkin开源的消息中间件">Kafka是Linkin开源的消息中间件</h3>
+<h4 id="kafka的设计目标是">Kafka的设计目标是：</h4>
+<blockquote>
+<p>（1）以时间复杂度为O(1)的方式提供消息持久化能力，即使对TB级以上数据也能保证常数时间复杂度的访问性能。
+（2）高吞吐率。即使在非常廉价的商用机器上也能做到单机支持每秒100K条以上消息的传输。
+（3）支持Kafka Server间的消息分区，及分布式消费，同时保证每个Partition内的消息顺序传输。
+（4）同时支持离线数据处理和实时数据处理。
+（5）Scale out：支持在线水平扩展。</p>
+</blockquote>
+<h3 id="rocketmq是阿里开源的消息中间件">RocketMQ是阿里开源的消息中间件</h3>
+<blockquote>
+<p>其最初也是基于Kafka发展而来。</p>
+</blockquote>
+<h2 id="数据可靠性">数据可靠性</h2>
+<ul>
+<li>RocketMQ支持异步实时刷盘，同步刷盘，同步Replication，异步Replication</li>
+<li>Kafka使用异步刷盘方式，异步Replication/同步Replication</li>
+</ul>
+<h2 id="性能对比">性能对比</h2>
+<ul>
+<li>Kafka会在Producer端将多个小消息合并，批量发向Broker，所以在批量发送消息时有着大量的优势，在批量时，Kafka单机写入TPS约在百万条/秒，消息大小100个字节</li>
+<li>RocketMQ单机写入TPS单实例约7万条/秒，RocketMQ在阿里使用在淘宝支付宝端，在处理异步消息需要保证消息到达，所以未实现api级别批量发送消息</li>
+</ul>
+<h2 id="单机支持的队列数">单机支持的队列数</h2>
+<ul>
+<li>Kafka单机超过64个队列/分区，Load会发生明显的飙高现象，队列越多，load越高，发送消息响应时间变长。</li>
+<li>RocketMQ单机支持最高5万个队列，Load不会发生明显变化</li>
+</ul>
+<h2 id="严格的消息顺序">严格的消息顺序</h2>
+<ul>
+<li>Kafka支持消息顺序，但是一台Broker宕机后，就会产生消息乱序</li>
+<li>RocketMQ支持严格的消息顺序，在顺序消息场景下，一台Broker宕机后，发送消息会失败，但是不会乱序</li>
+</ul>
+<h2 id="分布式事务消息">分布式事务消息</h2>
+<ul>
+<li>Kafka不支持分布式事务消息</li>
+<li>阿里云MQ支持分布式事务消息，未来开源版本的RocketMQ也有计划支持分布式事务消息</li>
+</ul>
+<h2 id="消息查询">消息查询</h2>
+<ul>
+<li>Kafka不支持消息查询</li>
+<li>RocketMQ支持根据Message Id查询消息，也支持根据消息内容查询消息（发送消息时指定一个Message Key，任意字符串，例如指定为订单Id）</li>
+</ul>
+<blockquote>
+<p>总结：消息查询对于定位消息丢失问题非常有帮助，例如某个订单处理失败，是消息没收到还是收到处理出错了。</p>
+</blockquote>
+<h2 id="消息回溯">消息回溯</h2>
+<ul>
+<li>Kafka理论上可以按照Offset来回溯消息</li>
+<li>RocketMQ支持按照时间来回溯消息，精度毫秒，例如从一天之前的某时某分某秒开始重新消费消息</li>
+</ul>
+<blockquote>
+<p>总结：典型业务场景如consumer做订单分析，但是由于程序逻辑或者依赖的系统发生故障等原因，导致今天消费的消息全部无效，需要重新从昨天零点开始消费，那么以时间为起点的消息重放功能对于业务非常有帮助。</p>
+</blockquote>
+<h2 id="消费并行度">消费并行度</h2>
+<ul>
+<li>Kafka的消费并行度依赖Topic配置的分区数，如分区数为10，那么最多10台机器来并行消费（每台机器只能开启一个线程），或者一台机器消费（10个线程并行消费）。即消费并行度和分区数一致。</li>
+<li>RocketMQ消费并行度分两种情况
+<ul>
+<li>顺序消费方式并行度同Kafka完全一致</li>
+<li>乱序方式并行度取决于Consumer的线程数，如Topic配置10个队列，10台机器消费，每台机器100个线程，那么并行度为1000。</li>
+</ul>
+</li>
+</ul>
+<h2 id="broker端消息过滤">Broker端消息过滤</h2>
+<ul>
+<li>Kafka不支持Broker端的消息过滤</li>
+<li>RocketMQ支持两种Broker端消息过滤方式
+<ul>
+<li>根据Message Tag来过滤，相当于子topic概念</li>
+<li>向服务器上传一段Java代码，可以对消息做任意形式的过滤，甚至可以做Message Body的过滤拆分。</li>
+</ul>
+</li>
+</ul>
+<h2 id="单机系统可靠性">单机系统可靠性</h2>
+<ul>
+<li>模拟进程退出</li>
+</ul>
+<blockquote>
+<p>在消息收发过程中，利用Kill -9 命令使Broker进程终止，然后重新启动，得到可靠性数据如下：</p>
+</blockquote>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th style="text-align:left">产品</th>
+<th style="text-align:left">刷盘策略</th>
+<th style="text-align:left">并发</th>
+<th style="text-align:left">tps</th>
+<th style="text-align:left">丢失</th>
+<th style="text-align:left">重复</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">Kafka</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">600</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">Kafka</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">30</td>
+<td style="text-align:left">10500</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">Kafka</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">150</td>
+<td style="text-align:left">49200</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">重复7条</td>
+</tr>
+<tr>
+<td style="text-align:left">RocketMQ</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">4066</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">RocketMQ</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">10900</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+<tr>
+<td style="text-align:left">RocketMQ</td>
+<td style="text-align:left">异步</td>
+<td style="text-align:left">140</td>
+<td style="text-align:left">52428</td>
+<td style="text-align:left">不丢</td>
+<td style="text-align:left">不重复</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>在Broker进程被终止重启，Kafka和RMQ都能保证同步发送的消息不丢，因为进程退出后操作系统能确保将该进程遗留在内存的数据刷到磁盘上。实验中，Kafka出现了极少量的消息重复。再次可以确定此场景中，二者的可靠性都很高。</p>
+</blockquote>
+<ul>
+<li>模拟机器掉电</li>
+</ul>
+<blockquote>
+<p>在消息收发过程中，直接拔掉Broker所在的宿主机电源，然后重启宿主机和Broker应用。因受到机房断电限制，我们在本场景测试中使用的是普通PC机器。得到可靠性数据如下：</p>
+</blockquote>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>产品</th>
+<th>刷盘策略</th>
+<th>并发</th>
+<th>tps</th>
+<th>丢失</th>
+<th>重复</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kafka</td>
+<td>异步</td>
+<td>5</td>
+<td>2000</td>
+<td>丢失3条</td>
+<td>掉电前所有发送重新消费</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>同步</td>
+<td>5</td>
+<td>300</td>
+<td>不丢</td>
+<td>重复3条</td>
+</tr>
+<tr>
+<td>Kafka</td>
+<td>同步</td>
+<td>60</td>
+<td>500</td>
+<td>不丢</td>
+<td>重复2w条</td>
+</tr>
+<tr>
+<td>RocketMQ</td>
+<td>异步</td>
+<td>5</td>
+<td>2500</td>
+<td>丢失19条</td>
+<td>不重复</td>
+</tr>
+<tr>
+<td>RocketMQ</td>
+<td>同步</td>
+<td>5</td>
+<td>800</td>
+<td>不丢</td>
+<td>掉电前所有发送重新消费</td>
+</tr>
+<tr>
+<td>RocketMQ</td>
+<td>同步</td>
+<td>60</td>
+<td>4000</td>
+<td>不丢</td>
+<td>掉电前所有发送重新消费</td>
+</tr>
+</tbody>
+</table></div>
+<p>###测试结论</p>
+<blockquote>
+<ol>
+<li>在Broker进程被Kill的场景， Kafka和RocketMQ都能在保证吞吐量的情况下，不丢消息，可靠性都比较高。</li>
+<li>在宿主机掉电的场景，Kafka与RocketMQ均能做到不丢消息，此时Kafka的吞吐量会急剧下跌，几乎不可用。RocketMQ则仍能保持较高的吞吐量。</li>
+<li>在单机可靠性方面，RocketMQ综合表现优于Kafka。</li>
+</ol>
+</blockquote>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/kafka/">Kafka</a>
+        
+            <a href="/tags/rocketmq/">RocketMQ</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2012 - 
+        
+        2023 聽的资料
+    </section>
+    
+    <section class="powerby">
+        
+            <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备14034266号</a> <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="zh-cn" dir="ltr">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。
+目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64
+'>
+<title>MacBook Pro – Fan Control</title>
+
+<link rel='canonical' href='https://sohunjug.com/2013/07/26/macbook-pro-fan-control/'>
+
+<link rel="stylesheet" href="/scss/style.min.8191399262444ab68b72a18c97392f5349be20a1615d77445be51e974c144cff.css"><meta property='og:title' content='MacBook Pro – Fan Control'>
+<meta property='og:description' content='这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。
+目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64
+'>
+<meta property='og:url' content='https://sohunjug.com/2013/07/26/macbook-pro-fan-control/'>
+<meta property='og:site_name' content='聽的资料'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='Mac' /><meta property='article:published_time' content='2013-07-26T00:00:00&#43;08:00'/><meta property='article:modified_time' content='2013-07-26T00:00:00&#43;08:00'/>
+<meta name="twitter:site" content="@sohunjug">
+    <meta name="twitter:creator" content="@sohunjug"><meta name="twitter:title" content="MacBook Pro – Fan Control">
+<meta name="twitter:description" content="这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。
+目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64
+">
+    <link rel="shortcut icon" href="/favicon.png" />
+
+    </head>
+    <body class="
+    article-page
+    ">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.scheme = 'dark';
+        } else {
+            document.documentElement.dataset.scheme = 'light';
+        }
+    })();
+</script>
+<div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky ">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header>
+        
+            
+            <figure class="site-avatar">
+                <a href="/">
+                
+                    <img src="/img/avatar.jpg" width="300" height="300" class="site-logo" loading="lazy" alt="Avatar">
+                
+                </a>
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+            
+        
+        
+        <div class="site-meta">
+            <h1 class="site-name"><a href="/">聽的资料</a></h1>
+            <h2 class="site-description">Opportunity favors only the prepared mind. And everything change with time.</h2>
+        </div>
+    </header><ol class="social-menu">
+            
+                <li>
+                    <a 
+                        href='https://github.com/sohunjug'
+                        target="_blank"
+                        title="GitHub"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+                <li>
+                    <a 
+                        href='https://twitter.com/sohunjug'
+                        target="_blank"
+                        title="Twitter"
+                        rel="me"
+                    >
+                        
+                        
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+  <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+</svg>
+
+
+
+                        
+                    </a>
+                </li>
+            
+        </ol><ol class="menu" id="main-menu">
+        
+        
+        
+        <li >
+            <a href='/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>主页</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E5%85%B3%E4%BA%8E/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>关于</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/archives/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>归档</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/search/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>搜索</span>
+            </a>
+        </li>
+        
+        
+        <li >
+            <a href='/%E9%93%BE%E6%8E%A5/' >
+                
+                
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>链接</span>
+            </a>
+        </li>
+        
+
+        <div class="menu-bottom-section">
+            
+            
+                <li id="dark-mode-toggle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                    <span>暗色模式</span>
+                </li>
+            
+        </div>
+    </ol>
+</aside>
+
+    
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/mac/" >
+                Mac
+            </a>
+        
+    </header>
+    
+
+    <div class="article-title-wrapper">
+        <h2 class="article-title">
+            <a href="/2013/07/26/macbook-pro-fan-control/">MacBook Pro – Fan Control</a>
+        </h2>
+    
+        
+    </div>
+
+    
+    
+    
+    
+    <footer class="article-time">
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11.795 21h-6.795a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v4" />
+  <circle cx="18" cy="18" r="4" />
+  <path d="M15 3v4" />
+  <path d="M7 3v4" />
+  <path d="M3 11h16" />
+  <path d="M18 16.496v1.504l1 1" />
+</svg>
+                <time class="article-time--published">Jul 26, 2013</time>
+            </div>
+        
+
+        
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+                <time class="article-time--reading">
+                    阅读时长: 4 分钟
+                </time>
+            </div>
+        
+    </footer>
+    
+
+    
+</div>
+
+</header>
+
+    <section class="article-content">
+    
+    
+    <p>这篇文章主要介绍了在Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64三个系统平台下对MacBook Pro（以下简称：MBP）的风扇控制，因为不知道为什么的原因，我个人和不少人的MBP都表现出风扇调速迟钝的问题，通常都是2000RPM左右，然后等到机器超过90摄氏度后风扇开始提速到6000RPM进行散热，但这个肯定不是我们需要的效果，我们要的是，要么自己控制，要么自动调整。</p>
+<p>目前，本人的电脑装的是三系统共存，就是Mac OS X 10.8.4、Ubuntu 13.04 x64和Windows 7 x64</p>
+<!-- raw HTML omitted -->
+<hr>
+<p>这个身为MBP原生的，与硬件契合度最高的系统同样存在风扇自动调整的问题，至少在我重置了N次SMC的情况依然还是只能达到90度附近才会提速，于是只能用软件来对付了，我个人觉得效果比较好的是Fan Control。</p>
+<p>名称：Fan Control</p>
+<p>下载：<a class="link" href="http://www.lobotomo.com/products/FanControl/"  target="_blank" rel="noopener"
+    >http://www.lobotomo.com/products/FanControl/</a></p>
+<p>安装之后，会在“系统偏好设置”里面增加一个叫“Fan Control”的设置面板。</p>
+<p><img src="/img/blog/1.gif"
+	
+	
+	
+	loading="lazy"
+	
+		alt="Mac FanControl"
+	
+	
+></p>
+<p>进去之后三项设置，</p>
+<p>Base Speed，初始速度，系统默认是2000RPM，系统启动之后会以这个初始速度为基准；</p>
+<p>Lower Threshold，温度下限阀值，这个是配合Base Speed工作的，在这个温度下，转速是Base Speed；</p>
+<p>Upper Threshold，温度上限阀值，这个是值达到时系统将以最高转速跑风扇，我的MBP 13是6200。</p>
+<p>风扇的转速会自动在Lower和Upper之间自动调整。</p>
+<p><em><!-- raw HTML omitted -->Ubuntu 13.04 x64</em></p>
+<hr>
+<p>遇到Linux有个好处，直接修改配置文件就行，可以省掉软件了，但是这个没法进行曲线调速了，所以有的人是直接把速度一步到位直接上到5500RPM，喜欢6000RPM的也行，反正风扇的作用就是处理积热嘛~</p>
+<p>不过我个人只是上班使用linux，所以我设置3800就完全够用了，一点不热，感觉灰常好啊~</p>
+<p>操作如下：</p>
+<p>开启终端（Terminal），输入以下指令，之后需要输入你当前用户的密码，然后回车，
+{% codeblock lang:bash %}
+sudo sh -c &ldquo;echo 5000 &gt; /sys/devices/platform/applesmc.768/fan1_min&rdquo;
+{% endcodeblock %}</p>
+<p>通过修改fan1_min中的数字“1”，可以调整各个不同风扇的转速，因为MBP 13只有一个风扇，所以也只有fan1，像MBP 15这一类的，可以分别调整fan1和fan2的转速等。并且每次开机的话系统都会自动重置，所以如果需要每次开机都保持一个转速的话，可以自行修改rc脚本。</p>
+<p><em><!-- raw HTML omitted -->Windows 7 x64<!-- raw HTML omitted --></em></p>
+<hr>
+<p>在Windows下也是需要依靠第三方软件的，据说是有类似于OSX下Fan Control那样的自动调速软件，不过我个人还是比较喜欢把速度调整到4000左右，基本也就够用了。软件叫“Mac/SMC Fan Control for Windows (+ Temp) ”。</p>
+<p>名称：Mac/SMC Fan Control for Windows (+ Temp)</p>
+<p>平台：32-bit MS Windows (NT/2000/XP/7/8/8.1), 64-bit MS Windows 7/8/8.1, Vista, WinXP.</p>
+<p>下载：<a class="link" href="http://sourceforge.net/projects/macfan/"  target="_blank" rel="noopener"
+    >http://sourceforge.net/projects/macfan/</a></p>
+<p>官方没有提到Win7，但是我的Win7-64bit也没有问题的。这是一个基于CLI（CommandLine Interface，命令行界面）的程序，而且同时还需要管理员权限，还要带参数，使用起来稍微有点麻烦，我个人是这么处理的：</p>
+<p>1.首先将解压缩后的文件放在\windows\mf目录；</p>
+<p>2.同时在目录里面增加一个批处理文件mf.cmd，内容如下：
+{% codeblock lang:bat %}
+@echo off
+@echo Input the fan speed (2000-6200):
+set /p speed=
+C:\Windows\mf\MacFanx64.exe %speed%
+{% endcodeblock %}
+3.之后按住Alt键，把mf.cmd拖到桌面上，之后在mf.cmd上右键，选择“属性”，选择“快捷方式”页面，点击“高级”，之后把“以管理员权限运行”勾上。</p>
+<p>4.双击桌面上的“mf.cmd – 快捷方式”，之后输入你想要调整的风扇转速，回车即可。</p>
+<p>因为我的是MBP 13，只有一个风扇，所以只需要提供一个参数，如果有多个风扇的话，请依据自己的需要进行修改，按照<!-- raw HTML omitted --></p>
+<p>基本上，我现在三系统使用的很完美，win7只是下个电影或者游戏下，平时上班linux，下班mac~</p>
+<p><strong>引用参考：</strong></p>
+<p>Fan Control: <a class="link" href="http://www.lobotomo.com/products/FanControl/"  target="_blank" rel="noopener"
+    >http://www.lobotomo.com/products/FanControl/</a></p>
+<p>MacFan: <a class="link" href="http://sourceforge.net/projects/macfan/"  target="_blank" rel="noopener"
+    >http://sourceforge.net/projects/macfan/</a></p>
+<p>Ubuntu Forum: http://ub<a class="link" href="http://ubuntuforums.org/showthread.php?t=1378663"  target="_blank" rel="noopener"
+    >untuforums.org/showthread.php?t=1378663</a></p>
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/mac/">Mac</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+
+    
+</article>
+
+    
+
+    
+
+     
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (typeof DISQUS == 'object') {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2012 - 
+        
+        2023 聽的资料
+    </section>
+    
+    <section class="powerby">
+        
+            <a href="http://www.beian.miit.gov.cn" target="_blank">粤ICP备14034266号</a> <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        主题 <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="3.16.0">Stack</a></b> 由 <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a> 设计
+    </section>
+</footer>
+
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css"crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css"crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js"integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z&#43;KMkF24hUW8WePSA9HM="crossorigin="anonymous"
+                
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

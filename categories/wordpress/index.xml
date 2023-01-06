@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>wordpress on 聽的资料</title>
+        <link>https://sohunjug.com/categories/wordpress/</link>
+        <description>Recent content in wordpress on 聽的资料</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>zh-cn</language>
+        <lastBuildDate>Sat, 19 Apr 2014 16:20:27 +0800</lastBuildDate><atom:link href="https://sohunjug.com/categories/wordpress/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>终于从wordpress转移到了octopress</title>
+        <link>https://sohunjug.com/2014/04/19/%E7%BB%88%E4%BA%8E%E4%BB%8Ewordpress%E8%BD%AC%E7%A7%BB%E5%88%B0%E4%BA%86octopress/</link>
+        <pubDate>Sat, 19 Apr 2014 16:20:27 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2014/04/19/%E7%BB%88%E4%BA%8E%E4%BB%8Ewordpress%E8%BD%AC%E7%A7%BB%E5%88%B0%E4%BA%86octopress/</guid>
+        <description>&lt;p&gt;从大学开始就折腾过wordpress，工作后也确实一直用着wordpress。步入社会发现大学里面的都算不上皮毛，不懂的东西实在太多了，如饥似渴的小小学习2年，终于换了份工作。&lt;/p&gt;
+&lt;p&gt;当日子一步步的步上正轨，我的学习热情也慢慢回升了。记得是半年前吧，突然听说了octopress这个博客，只看介绍(A blogging framework for hackers.)就给人一种高大上的感觉哈。当时就想折腾下，可惜因为工作也忙，也想换工作，一直拖到了现在。&lt;/p&gt;
+&lt;p&gt;新工作依然还是程序员，比较热爱这个职业吧。当做出一个作品时那种快感，没做过的人是体验不到的。平时上班因为刚入职，还不忙，正好下班就可以捅咕自己的东西了。可能因为处女座的原因，尤其喜欢把这些东西搞到自己的服务器上。没事看看vps，发现阿里云现在很便宜嘛，一个月才55，而且还可以申请试用5天，想到就办，申请个试用的，搭建环境测试，满意之后买vps。&lt;/p&gt;
+&lt;p&gt;首先找到了部署vps的文章才大概明白了一些原理(汗，原来以为还需要架设git服务器)。&lt;a class=&#34;link&#34; href=&#34;http://www.xiaozhou.net/deploy-octopress-to-your-vps-2013-08-13.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;部署Octopress到你的VPS&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;其实网上很多博客写的都不是很明白，octopress根本没有那么复杂，只需要下载&lt;a class=&#34;link&#34; href=&#34;http://octopress.org&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;octopress&lt;/a&gt;，然后在自己的本机上配置，设置好ssh连接，就会同步到vps主机上，因为octopress是静态网页，只需要同步到服务器的网站目录就OK了。&lt;/p&gt;
+&lt;p&gt;当时喜欢上octopress也是因为这个主题，我也找了好久，推荐给大家哈：&lt;a class=&#34;link&#34; href=&#34;http://shashankmehta.in/archive/2012/greyshade.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;链接地址&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;详细的个性化配置我就不阐述了，网上资料也是可以找得到的。&lt;/p&gt;
+&lt;p&gt;博客以后应该会经常更新了，欢迎大家前来指点哦！&lt;/p&gt;</description>
+        </item>
+        <item>
+        <title>让wordpress支持自定义菜单</title>
+        <link>https://sohunjug.com/2012/12/19/%E8%AE%A9wordpress%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95/</link>
+        <pubDate>Wed, 19 Dec 2012 00:00:00 +0800</pubDate>
+        
+        <guid>https://sohunjug.com/2012/12/19/%E8%AE%A9wordpress%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E8%8F%9C%E5%8D%95/</guid>
+        <description>&lt;p&gt;&lt;strong&gt;WORDPRESS博客有些主题不支持自定义菜单，只能够选择页面和所有的分页目录作为菜单，所以为了解决这一问题，找了一些资料&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;在这个之前首先对wordpress的wp_nav_menu() 函数应该了解：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法如下：&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:php %}
+wp_nav_menu( &lt;br&gt;
+array( &lt;br&gt;
+&amp;rsquo;theme_location&amp;rsquo;  =&amp;gt; &amp;rsquo;&amp;rsquo; //指定显示的导航名，如果没有设置，则显示第一个 &lt;br&gt;
+&amp;lsquo;menu&amp;rsquo;            =&amp;gt; &amp;lsquo;header-menu&amp;rsquo;, &lt;br&gt;
+&amp;lsquo;container&amp;rsquo;       =&amp;gt; &amp;rsquo;nav&amp;rsquo;, //最外层容器标签名  &lt;br&gt;
+&amp;lsquo;container_class&amp;rsquo; =&amp;gt; &amp;lsquo;primary&amp;rsquo;, //最外层容器class名  &lt;br&gt;
+&amp;lsquo;container_id&amp;rsquo;    =&amp;gt; &amp;lsquo;&amp;rsquo;,//最外层容器id值  &lt;br&gt;
+&amp;lsquo;menu_class&amp;rsquo;      =&amp;gt; &amp;lsquo;sf-menu&amp;rsquo;, //ul标签class &lt;br&gt;
+&amp;lsquo;menu_id&amp;rsquo;         =&amp;gt; &amp;rsquo;topnav&amp;rsquo;,//ul标签id  &lt;br&gt;
+&amp;rsquo;echo&amp;rsquo;            =&amp;gt; true,//是否打印，默认是true，如果想将导航的代码作为赋值使用，可设置为false &lt;br&gt;
+&amp;lsquo;fallback_cb&amp;rsquo;     =&amp;gt; &amp;lsquo;wp_page_menu&amp;rsquo;,//备用的导航菜单函数，用于没有在后台设置导航时调用 &lt;br&gt;
+&amp;lsquo;before&amp;rsquo;          =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航a标签之前 &lt;br&gt;
+&amp;lsquo;after&amp;rsquo;           =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航a标签之后 &lt;br&gt;
+&amp;rsquo;link_before&amp;rsquo;     =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航链接名之后 &lt;br&gt;
+&amp;rsquo;link_after&amp;rsquo;      =&amp;gt; &amp;lsquo;&amp;rsquo;,//显示在导航链接名之前 &lt;br&gt;
+&amp;lsquo;items_wrap&amp;rsquo;      =&amp;gt;&lt;br&gt;
+&amp;lsquo;depth&amp;rsquo;           =&amp;gt; 0,////显示的菜单层数，默认0，0是显示所有层&lt;br&gt;
+&amp;lsquo;walker&amp;rsquo;          =&amp;gt; &amp;lsquo;&amp;rsquo;// //调用一个对象定义显示导航菜单 ));&lt;br&gt;
+{% endcodeblock %}&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;为了能够使后台支持自定义菜单，我们需要在主题下functions.php下 加入register_nav_menus():&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:php %}
+if(function_exists(&amp;lsquo;register_nav_menus&amp;rsquo;)){
+register_nav_menus(
+array(
+&amp;lsquo;header-menu&amp;rsquo; =&amp;gt; &lt;strong&gt;( &amp;lsquo;导航自定义菜单&amp;rsquo; ),
+// 还可以在这里添加一些菜单 显示在其他位置
+//footer-menu=&amp;gt;&lt;/strong&gt;( &amp;lsquo;页面底部自定义菜单&amp;rsquo; ),
+)
+);
+}
+{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;在添加之后，你就会发现主题位置已经支持一个菜单了&lt;/p&gt;
+&lt;p&gt;然后找到header.php文件, 类似这样添加：&lt;/p&gt;
+&lt;p&gt;{% codeblock lang:php %}&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;!-- raw HTML omitted --&gt;
+&lt;p&gt;{% endcodeblock %}&lt;/p&gt;
+&lt;p&gt;好了, 大家可以自己制作属于自己的自定义菜单了~&lt;/p&gt;</description>
+        </item>
+        
+    </channel>
+</rss>

@@ -2,6 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://sohunjug.com/categories/</loc>
+    <lastmod>2016-09-13T15:58:43+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://sohunjug.com/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://sohunjug.com/categories/"
+                />
+  </url><url>
     <loc>https://sohunjug.com/tags/express/</loc>
     <lastmod>2016-09-13T15:58:43+08:00</lastmod>
   </url><url>
@@ -14,6 +27,9 @@
     <loc>https://sohunjug.com/tags/node.js/</loc>
     <lastmod>2016-09-13T15:58:43+08:00</lastmod>
   </url><url>
+    <loc>https://sohunjug.com/categories/node.js/</loc>
+    <lastmod>2016-09-13T15:58:43+08:00</lastmod>
+  </url><url>
     <loc>https://sohunjug.com/posts/</loc>
     <lastmod>2016-09-13T15:58:43+08:00</lastmod>
   </url><url>
@@ -24,8 +40,8 @@
     <lastmod>2016-09-13T15:58:43+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
-                href="https://sohunjug.com/en-us/tags/"
+                hreflang="en"
+                href="https://sohunjug.com/en/tags/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -43,8 +59,8 @@
     <lastmod>2016-09-13T15:58:43+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
-                href="https://sohunjug.com/en-us/"
+                hreflang="en"
+                href="https://sohunjug.com/en/"
                 />
     <xhtml:link
                 rel="alternate"
@@ -55,10 +71,16 @@
     <loc>https://sohunjug.com/tags/objective-c/</loc>
     <lastmod>2016-08-18T22:33:12+08:00</lastmod>
   </url><url>
+    <loc>https://sohunjug.com/categories/objective-c/</loc>
+    <lastmod>2016-08-18T22:33:12+08:00</lastmod>
+  </url><url>
     <loc>https://sohunjug.com/posts/packetsender/</loc>
     <lastmod>2016-08-18T22:33:12+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/tags/swift/</loc>
+    <lastmod>2016-08-18T22:33:12+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/swift/</loc>
     <lastmod>2016-08-18T22:33:12+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/tags/tcp/</loc>
@@ -66,6 +88,9 @@
   </url><url>
     <loc>https://sohunjug.com/tags/udp/</loc>
     <lastmod>2016-08-18T22:33:12+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/linux/</loc>
+    <lastmod>2016-08-08T17:31:53+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/tags/ssh/</loc>
     <lastmod>2016-08-08T17:31:53+08:00</lastmod>
@@ -76,6 +101,9 @@
     <loc>https://sohunjug.com/posts/ssh-telnet/</loc>
     <lastmod>2016-08-08T17:31:53+08:00</lastmod>
   </url><url>
+    <loc>https://sohunjug.com/categories/java/</loc>
+    <lastmod>2016-08-08T09:10:28+08:00</lastmod>
+  </url><url>
     <loc>https://sohunjug.com/tags/kafka/</loc>
     <lastmod>2016-08-08T09:10:28+08:00</lastmod>
   </url><url>
@@ -85,13 +113,10 @@
     <loc>https://sohunjug.com/tags/rocketmq/</loc>
     <lastmod>2016-08-08T09:10:28+08:00</lastmod>
   </url><url>
-    <loc>https://sohunjug.com/posts/c-define/</loc>
-    <lastmod>2015-01-13T15:59:59+08:00</lastmod>
-  </url><url>
-    <loc>https://sohunjug.com/tags/define/</loc>
-    <lastmod>2015-01-13T15:59:59+08:00</lastmod>
-  </url><url>
     <loc>https://sohunjug.com/tags/git/</loc>
+    <lastmod>2014-06-24T20:15:57+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/git/</loc>
     <lastmod>2014-06-24T20:15:57+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/tags/webmail/</loc>
@@ -101,6 +126,12 @@
     <lastmod>2014-06-24T20:15:57+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/tags/octopress/</loc>
+    <lastmod>2014-04-19T16:20:27+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/octopress/</loc>
+    <lastmod>2014-04-19T16:20:27+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/wordpress/</loc>
     <lastmod>2014-04-19T16:20:27+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/posts/octopress/</loc>
@@ -127,11 +158,20 @@
     <loc>https://sohunjug.com/tags/mongodb/</loc>
     <lastmod>2013-08-26T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://sohunjug.com/categories/mongodb/</loc>
+    <lastmod>2013-08-26T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://sohunjug.com/posts/mongodb-oracle/</loc>
     <lastmod>2013-08-26T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/tags/oracle/</loc>
     <lastmod>2013-08-26T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/oracle/</loc>
+    <lastmod>2013-08-26T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/mac/</loc>
+    <lastmod>2013-07-26T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/posts/mac-fan-control/</loc>
     <lastmod>2013-07-26T00:00:00+08:00</lastmod>
@@ -160,6 +200,9 @@
     <loc>https://sohunjug.com/posts/oracle-commit/</loc>
     <lastmod>2012-12-23T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://sohunjug.com/categories/vim/</loc>
+    <lastmod>2012-12-22T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://sohunjug.com/tags/vim-profile/</loc>
     <lastmod>2012-12-22T00:00:00+08:00</lastmod>
   </url><url>
@@ -178,6 +221,12 @@
     <loc>https://sohunjug.com/tags/%E9%9A%8F%E7%AC%94/</loc>
     <lastmod>2012-12-21T00:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://sohunjug.com/categories/%E9%9A%8F%E7%AC%94/</loc>
+    <lastmod>2012-12-21T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://sohunjug.com/categories/html/</loc>
+    <lastmod>2012-12-19T00:00:00+08:00</lastmod>
+  </url><url>
     <loc>https://sohunjug.com/tags/wordpress-custom/</loc>
     <lastmod>2012-12-19T00:00:00+08:00</lastmod>
   </url><url>
@@ -188,5 +237,7 @@
     <lastmod>2012-12-19T00:00:00+08:00</lastmod>
   </url><url>
     <loc>https://sohunjug.com/tags/c/c&#43;&#43;/</loc>
+  </url><url>
+    <loc>https://sohunjug.com/categories/c/c&#43;&#43;/</loc>
   </url>
 </urlset>
